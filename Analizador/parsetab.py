@@ -27,5 +27,5 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> init","S'",1,None,None,None),
-  ('init -> CADENA','init',1,'p_init','Gramatica.py',212),
+  ('init -> CADENA','init',1,'p_init','Gramatica.py',234),
 ]

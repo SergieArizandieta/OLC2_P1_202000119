@@ -1,10 +1,3 @@
-# -----------------------------------------------------------------------------
-# Rainman Sián
-# 26-02-2020
-#
-# Ejemplo interprete sencillo con Python utilizando ply en Ubuntu
-# -----------------------------------------------------------------------------
-
 reservadas = {
     # ACCESO
     'pub': 'PUBLICO',
@@ -69,45 +62,45 @@ reservadas = {
 }
 
 tokens = [
-             # ** ** ** ** ** OPERACION MATEMATICA ** ** ** ** **
-             'SUMA',
-             'RESTA',
-             'MULTI',
-             'DIVI',
-             'MODULO',
-             # ** ** ** ** ** OPERACION RELACIONAL ** ** ** ** **
-             'MENORIGUAL',
-             'MAYORIGUAL',
-             'IGUALDAD',
-             'DESIGUALDAD',
-             'MENOR',
-             'MAYOR',
-             # ** ** ** ** ** OPERACION LOGICA ** ** ** ** **
-             'OR',
-             'AND',
-             'NOT',
-             # ** ** ** ** ** SIMBOLOS LENGUAJE ** ** ** ** **
-             'LI',
-             'LD',
-             'CI',
-             'CD',
-             'PI',
-             'PD',
-             'PYC',
-             'DP',
-             'COMA',
-             'PUNTO',
-             'IGUAL',
-             'BARRA',
-             'GBAJO',
-             'REFER',
-             # ********** EXPRESIONES REGUALES **********
-             'FLOAT',
-             'ENTERO',
-             'CADENA',
-             'CARACTER',
-             'ID'
-         ] + list(reservadas.values())
+     # ** ** ** ** ** OPERACION MATEMATICA ** ** ** ** **
+     'SUMA',
+     'RESTA',
+     'MULTI',
+     'DIVI',
+     'MODULO',
+     # ** ** ** ** ** OPERACION RELACIONAL ** ** ** ** **
+     'MENORIGUAL',
+     'MAYORIGUAL',
+     'IGUALDAD',
+     'DESIGUALDAD',
+     'MENOR',
+     'MAYOR',
+     # ** ** ** ** ** OPERACION LOGICA ** ** ** ** **
+     'OR',
+     'AND',
+     'NOT',
+     # ** ** ** ** ** SIMBOLOS LENGUAJE ** ** ** ** **
+     'LI',
+     'LD',
+     'CI',
+     'CD',
+     'PI',
+     'PD',
+     'PYC',
+     'DP',
+     'COMA',
+     'PUNTO',
+     'IGUAL',
+     'BARRA',
+     'GBAJO',
+     'REFER',
+     # ********** EXPRESIONES REGUALES **********
+     'FLOAT',
+     'ENTERO',
+     'CADENA',
+     'CARACTER',
+     'ID'
+] + list(reservadas.values())
 
 # Tokens
 # ********** OPERACION MATEMATICA **********
@@ -137,7 +130,7 @@ t_PD = r'\)'
 t_PYC = r';'
 t_DP = r':'
 t_COMA = r','
-t_PUNTO = r'.'
+t_PUNTO = r'\.'
 t_IGUAL = r'='
 t_BARRA = r'\|'
 t_GBAJO = r'_'
@@ -168,9 +161,7 @@ def t_ENTERO(t):
 
 def t_Especiales_0(t):
     r'::[a-zA-Z_][a-zA-Z_0-9]*\(\)'
-    t.type = reservadas.get(t.value, 'ID')  # Check for reserved words
-    print("Se reconcio: ", t.type, ": ", t.value)
-    return t
+    return revicion_reservadas(t)
 
 
 def t_Especiales_1(t):
@@ -192,10 +183,9 @@ def t_Especiales_4(t):
     r'&[a-zA-Z][a-zA-Z_0-9]*'
     return revicion_reservadas(t)
 
-
+# [a-zA-Z_][a-zA-Z_0-9]*
 def t_ID(t):
     r'[a-zA-Z][a-zA-Z_0-9]*'
-    # [a-zA-Z_][a-zA-Z_0-9]*
     return revicion_reservadas(t)
 
 
@@ -229,13 +219,12 @@ def t_newline(t):
 
 
 def t_error(t):
-    print("Error lexico '%s'" % t.value[0])
+    print("Error lexico ", t.value[0])
     t.lexer.skip(1)
 
 
 # Construyendo el analizador léxico
 import ply.lex as lex
-
 lexer = lex.lex()
 
 
