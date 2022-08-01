@@ -63,3 +63,37 @@ mod
 
 true
 false
+
+
+// ********** OPERACION MATEMATICA **********
++
+-
+*
+/
+%
+// ********** OPERACION RELACIONAL **********
+<=
+>=
+==
+!=
+<
+>
+// ********** OPERACION LOGICA **********
+||
+&&
+!
+// ********** SIMBOLOS LENGUAJE **********
+{
+}
+[
+]
+(
+)
+;
+:
+,
+.
+=
+|
+_
+&

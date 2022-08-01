@@ -174,23 +174,28 @@ def t_Especiales_0(t):
 
 
 def t_Especiales_1(t):
-    r'[a-zA-Z_][a-zA-Z_0-9]*\(\)'
+    r'[a-zA-Z][a-zA-Z_0-9]*\(\)'
     return revicion_reservadas(t)
+
 
 def t_Especiales_2(t):
-    r'::[a-zA-Z_][a-zA-Z_0-9]*'
+    r'::[a-zA-Z][a-zA-Z_0-9]*'
     return revicion_reservadas(t)
+
 
 def t_Especiales_3(t):
-    r'[a-zA-Z_][a-zA-Z_0-9]*!'
+    r'[a-zA-Z][a-zA-Z_0-9]*!'
     return revicion_reservadas(t)
+
 
 def t_Especiales_4(t):
-    r'&[a-zA-Z_][a-zA-Z_0-9]*'
+    r'&[a-zA-Z][a-zA-Z_0-9]*'
     return revicion_reservadas(t)
 
+
 def t_ID(t):
-    r'[a-zA-Z_][a-zA-Z_0-9]*'
+    r'[a-zA-Z][a-zA-Z_0-9]*'
+    # [a-zA-Z_][a-zA-Z_0-9]*
     return revicion_reservadas(t)
 
 
