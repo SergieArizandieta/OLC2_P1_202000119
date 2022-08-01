@@ -18,9 +18,6 @@ def ventanas():
             #Boxtextt = TextBoxSeg.get("1.0", 'end-1c')
             messagebox.showinfo(title="Error", message="Ingrese un valor")
 
-
-
-
         notebook = ttk.Notebook(ventana)
         notebook.pack(fill=BOTH, expand=1)
 
@@ -49,13 +46,6 @@ def ventanas():
         ConsoleTxt.place(x=300, y=600)
 
         Button(pes1, text="💎RUN💎", command=ReporteSecuenciaIn).place(x=10, y=80)
-
-
-
-
-
-
-
 
         # Terminar ------------------------------------------------------------------------------------
 
