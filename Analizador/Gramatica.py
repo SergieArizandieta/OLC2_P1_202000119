@@ -1,227 +1,255 @@
-import ply.yacc as yacc
+# -----------------------------------------------------------------------------
+# Rainman Sián
+# 26-02-2020
+#
+# Ejemplo interprete sencillo con Python utilizando ply en Ubuntu
+# -----------------------------------------------------------------------------
 
-# Seccion de analizador lexico
-# ********** PALABRAS RESERVADAS **********
 reservadas = {
-
+    # ACCESO
+    'pub': 'PUBLICO',
+    # TIPOS
+    'i64': 'TIPOINT',
+    'f64': 'TIPOFLOAT',
+    'bool': 'TIPOBOOL',
+    'char': 'TIPOCHAR',
+    'String': 'TIPOSTRING',
+    '&str': 'DIRSTRING',
+    # CASTEO
+    'as': 'AS',
+    # IMPRIMIR
+    'println!': 'PRINTLN',
+    # DECLARAR
+    'let': 'LET',
+    'mut': 'MUT',
+    # FUNCIONES
+    'fn': 'FUNCION',
+    'main': 'MAIN',
+    # FUNCIONES NATIVAS
+    'abs': 'ABS',
+    'sqrt': 'SQRT',
+    'to_string()': 'TOSTRING',
+    'to_owned()': 'TOOWNED',
+    'clone()': 'CLONE',
+    # VECTORES
+    'Vec': 'VECTOR',
+    'vec!': 'VECT',
+    # FUNCIONES NATIVAS VECTORES
+    '::new()': 'NEW',
+    'len()': 'LEN',
+    'push': 'PUSH',
+    'remove': 'REMOVE',
+    'contains': 'CONTAINS',
+    'insert': 'INSERT',
+    'capacity()': 'CAPACITY',
+    '::with_capacity': 'WCAPACITY',
+    # SENTENCIAS
+    'if': 'IF',
+    'else': 'ELSE',
+    'match': 'MATCH',
+    # CICLOS
+    'loop': 'LOOP',
+    'while': 'WHILE',
+    'for': 'FOR',
+    'in': 'IN',
+    # SENTENCIAS DE RETORNO
+    'break': 'BREAK',
+    'continue': 'CONTINUE',
+    'return': 'RETURN',
+    # STRUCT
+    'struct': 'STRUCT',
+    # MODULO
+    'mod': 'MOD',
+    # POTENCIAS
+    '::pow': 'POW',
+    '::powf': 'POWF',
+    # BOOLS
+    'true': 'TRUE',
+    'false': 'FALSE'
 }
 
 tokens = [
-             # ACCESO
-             'TK_PUBLICO',
-             # TIPOS
-             'TK_TIPOINT',
-             'TK_TIPOFLOAT',
-             'TK_TIPOBOOL',
-             'TK_TIPOCHAR',
-             'TK_TIPOSTRING',
-             'TK_DIRSTRING',
-             # CASTEO
-             'TK_AS',
-             # IMPRIMIR
-             'TK_PRINTLN',
-             # DECLARAR
-             'TK_LET',
-             'TK_MUT',
-             # FUNCIONES
-             'TK_FUNCION',
-             'TK_MAIN',
-             # FUNCIONES NATIVAS
-             'TK_ABS',
-             'TK_SQRT',
-             'TK_TOSTRING',
-             'TK_TOOWNED',
-             'TK_CLONE',
-             # VECTORES
-             'TK_VECTOR',
-             'TK_VECT',
-             # FUNCIONES NATIVAS VECTORES
-             'TK_NEW',
-             'TK_LEN',
-             'TK_PUSH',
-             'TK_REMOVE',
-             'TK_CONTAINS',
-             'TK_INSERT',
-             'TK_CAPACITY',
-             'TK_WCAPACITY',
-             # SENTENCIAS
-             'TK_IF',
-             'TK_ELSE',
-             'TK_MATCH',
-             # CICLOS
-             'TK_LOOP',
-             'TK_WHILE',
-             'TK_FOR',
-             'TK_IN',
-             # SENTENCIAS DE RETORNO
-             'TK_BREAK',
-             'TK_CONTINUE',
-             'TK_RETURN',
-             # STRUCT
-             'TK_STRUCT',
-             # MODULO
-             'TK_MOD',
-             # POTENCIAS
-             'TK_POW',
-             'TK_POWF',
-             # BOOLS
-             'TK_TRUE',
-             'TK_FALSE',
-             'TK_PTCOMA',
              # ** ** ** ** ** OPERACION MATEMATICA ** ** ** ** **
-             'TK_SUMA',
-             'TK_RESTA',
-             'TK_MULTI',
-             'TK_DIVI',
-             'TK_MODULO',
+             'SUMA',
+             'RESTA',
+             'MULTI',
+             'DIVI',
+             'MODULO',
              # ** ** ** ** ** OPERACION RELACIONAL ** ** ** ** **
-             'TK_MENORIGUAL',
-             'TK_MAYORIGUAL',
-             'TK_IGUALDAD',
-             'TK_DESIGUALDAD',
-             'TK_MENOR',
-             'TK_MAYOR',
+             'MENORIGUAL',
+             'MAYORIGUAL',
+             'IGUALDAD',
+             'DESIGUALDAD',
+             'MENOR',
+             'MAYOR',
              # ** ** ** ** ** OPERACION LOGICA ** ** ** ** **
-             'TK_OR',
-             'TK_AND',
-             'TK_NOT',
+             'OR',
+             'AND',
+             'NOT',
              # ** ** ** ** ** SIMBOLOS LENGUAJE ** ** ** ** **
-             'TK_LI',
-             'TK_LD',
-             'TK_CI',
-             'TK_CD',
-             'TK_PI',
-             'TK_PD',
-             'TK_PYC',
-             'TK_DP',
-             'TK_COMA',
-             'TK_PUNTO',
-             'TK_IGUAL',
-             'TK_BARRA',
-             'TK_GBAJO',
-             'TK_REFER',
+             'LI',
+             'LD',
+             'CI',
+             'CD',
+             'PI',
+             'PD',
+             'PYC',
+             'DP',
+             'COMA',
+             'PUNTO',
+             'IGUAL',
+             'BARRA',
+             'GBAJO',
+             'REFER',
              # ********** EXPRESIONES REGUALES **********
-             'TK_FLOAT',
-             'TK_ENTERO',
-             'TK_CADENA',
-             'TK_CARACTER',
-             'TK_IDENTIFICADOR',
-             # ********** IGNORAR **********
-             'COMENTARIO_LIN',
-             'WHITESPACE'
+             'FLOAT',
+             'ENTERO',
+             'CADENA',
+             'CARACTER',
+             'ID'
          ] + list(reservadas.values())
 
-# ACCESO
-TK_PUBLICO = r'pub'
-# TIPOS
-TK_TIPOINT = r'i64'
-TK_TIPOFLOAT = r'f64'
-TK_TIPOBOOL = r'bool'
-TK_TIPOCHAR = r'char'
-TK_TIPOSTRING = r'String'
-TK_DIRSTRING = r'&str'
-# CASTEO
-TK_AS = r'as'
-# IMPRIMIR
-TK_PRINTLN = r'println!'
-# DECLARAR
-TK_LET = r'let'
-TK_MUT = r'mut'
-# FUNCIONES
-TK_FUNCION = r'fn'
-TK_MAIN = r'main'
-# FUNCIONES NATIVAS
-TK_ABS = r'abs'
-TK_SQRT = r'sqrt'
-TK_TOSTRING = r'to_string()'
-TK_TOOWNED = r'to_owned()'
-TK_CLONE = r'clone()'
-# VECTORES
-TK_VECTOR = r'Vec'
-TK_VECT = r'vec!'
-# FUNCIONES NATIVAS VECTORES
-TK_NEW = r'::new()'
-TK_LEN = r'len()'
-TK_PUSH = r'push'
-TK_REMOVE = r'remove'
-TK_CONTAINS = r'contains'
-TK_INSERT = r'insert'
-TK_CAPACITY = r'capacity()'
-TK_WCAPACITY = r'::with_capacity'
-# SENTENCIAS
-TK_IF = r'if'
-TK_ELSE = r'else'
-TK_MATCH = r'match'
-# CICLOS
-TK_LOOP = r'loop'
-TK_WHILE = r'while'
-TK_FOR = r'for'
-TK_IN = r'in'
-# SENTENCIAS DE RETORNO
-TK_BREAK = r'break'
-TK_CONTINUE = r'continue'
-TK_RETURN = r'return'
-# STRUCT
-TK_STRUCT = r'struct'
-# MODULO
-TK_MOD = r'mod'
-# POTENCIAS
-TK_POW = r'::pow'
-TK_POWF = r'::powf'
-# BOOLS
-TK_TRUE = r'true'
-TK_FALSE = r'false'
-
 # Tokens
-TK_PTCOMA = r','
-
 # ********** OPERACION MATEMATICA **********
-TK_SUMA = r'\+'
-TK_RESTA = r'-'
-TK_MULTI = r'\*'
-TK_DIVI = r'/'
-TK_MODULO = r'%'
+t_SUMA = r'\+'
+t_RESTA = r'-'
+t_MULTI = r'\*'
+t_DIVI = r'/'
+t_MODULO = r'%'
 # ********** OPERACION RELACIONAL **********
-TK_MENORIGUAL = r'<='
-TK_MAYORIGUAL = r'>='
-TK_IGUALDAD = r'=='
-TK_DESIGUALDAD = r'!='
-TK_MENOR = r'<'
-TK_MAYOR = r'>'
+t_MENORIGUAL = r'<='
+t_MAYORIGUAL = r'>='
+t_IGUALDAD = r'=='
+t_DESIGUALDAD = r'!='
+t_MENOR = r'<'
+t_MAYOR = r'>'
 # ********** OPERACION LOGICA **********
-TK_OR = r'||'
-TK_AND = r'&&'
-TK_NOT = r'!'
+t_OR = r'\|\|'
+t_AND = r'&&'
+t_NOT = r'!'
 # ********** SIMBOLOS LENGUAJE **********
-TK_LI = r'\{'
-TK_LD = r'\}'
-TK_CI = r'\['
-TK_CD = r'\]'
-TK_PI = r'\('
-TK_PD = r'\)'
-TK_PYC = r';'
-TK_DP = r':'
-TK_COMA = r','
-TK_PUNTO = r'.'
-TK_IGUAL = r'='
-TK_BARRA = r'|'
-TK_GBAJO = r'_'
-TK_REFER = r'&'
+t_LI = r'\{'
+t_LD = r'\}'
+t_CI = r'\['
+t_CD = r'\]'
+t_PI = r'\('
+t_PD = r'\)'
+t_PYC = r';'
+t_DP = r':'
+t_COMA = r','
+t_PUNTO = r'.'
+t_IGUAL = r'='
+t_BARRA = r'\|'
+t_GBAJO = r'_'
+t_REFER = r'&'
+
+
+def t_FLOAT(t):
+    r'\d+\.\d+'
+    try:
+        t.value = float(t.value)
+        print("Se reconcio FLOAT ", t.value)
+    except ValueError:
+        print("Float value too large %d", t.value)
+        t.value = 0
+    return t
+
+
+def t_ENTERO(t):
+    r'\d+'
+    try:
+        t.value = int(t.value)
+        print("Se reconcio ENTERO ", t.value)
+    except ValueError:
+        print("Integer value too large %d", t.value)
+        t.value = 0
+    return t
+
+
+def t_Especiales_0(t):
+    r'::[a-zA-Z_][a-zA-Z_0-9]*\(\)'
+    t.type = reservadas.get(t.value, 'ID')  # Check for reserved words
+    print("Se reconcio: ", t.type, ": ", t.value)
+    return t
+
+
+def t_Especiales_1(t):
+    r'[a-zA-Z_][a-zA-Z_0-9]*\(\)'
+    return revicion_reservadas(t)
+
+def t_Especiales_2(t):
+    r'::[a-zA-Z_][a-zA-Z_0-9]*'
+    return revicion_reservadas(t)
+
+def t_Especiales_3(t):
+    r'[a-zA-Z_][a-zA-Z_0-9]*!'
+    return revicion_reservadas(t)
+
+def t_Especiales_4(t):
+    r'&[a-zA-Z_][a-zA-Z_0-9]*'
+    return revicion_reservadas(t)
+
+def t_ID(t):
+    r'[a-zA-Z_][a-zA-Z_0-9]*'
+    return revicion_reservadas(t)
+
+
+def revicion_reservadas(t):
+    t.type = reservadas.get(t.value, 'ID')
+    print("Se reconcio: ", t.type, ": ", t.value)
+    return t
+
+
+def t_CADENA(t):
+    r'\".*?\"'
+    t.value = t.value[1:-1]  # remuevo las comillas
+    print("Se reconcio cadena ", t.value)
+    return t
+
 
 # Comentario simple // ...
-def t_COMENTARIO_SIMPLE(t):
+def t_COMENTARIO(t):
     r'//.*\n'
+    print("Se reconcio comentario ", t.value.replace('\n', ''))
     t.lexer.lineno += 1
 
 
 # Caracteres ignorados
-t_ignore = " \t"
+t_ignore = " \t\r"
+
+
+def t_newline(t):
+    r'\n+'
+    t.lexer.lineno += t.value.count("\n")
+
 
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
+    print("Error lexico '%s'" % t.value[0])
     t.lexer.skip(1)
+
 
 # Construyendo el analizador léxico
 import ply.lex as lex
 
 lexer = lex.lex()
+
+
+# Definición de la gramática
+def p_init(t):
+    'init            : CADENA'
+    t[0] = t[1]
+
+
+def p_error(t):
+    # print(t)
+    # print("Error sintáctico en '%s'" % t.value)
+    pass
+
+
+import ply.yacc as yacc
+
+parser = yacc.yacc()
+
+
+def parse(input):
+    return parser.parse(input)

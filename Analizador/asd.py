@@ -1,3 +1,10 @@
+# -----------------------------------------------------------------------------
+# Rainman Sián
+# 26-02-2020
+#
+# Ejemplo interprete sencillo con Python utilizando ply en Ubuntu
+# -----------------------------------------------------------------------------
+
 reservadas = {
     'numero': 'NUMERO',
     'imprimir': 'IMPRIMIR',
@@ -69,6 +76,7 @@ def t_ENTERO(t):
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
     t.type = reservadas.get(t.value.lower(), 'ID')  # Check for reserved words
+    print("algo pasa")
     return t
 
 
@@ -87,11 +95,12 @@ def t_COMENTARIO_MULTILINEA(t):
 # Comentario simple // ...
 def t_COMENTARIO_SIMPLE(t):
     r'//.*\n'
+    print("Se reconcio comenrt")
     t.lexer.lineno += 1
 
 
 # Caracteres ignorados
-t_ignore = " \t"
+t_ignore = " \t\r"
 
 
 def t_newline(t):
@@ -108,3 +117,52 @@ def t_error(t):
 import ply.lex as lex
 
 lexer = lex.lex()
+
+
+
+# Asociación de operadores y precedencia
+precedence = (
+    ('left', 'CONCAT'),
+    ('left', 'MAS', 'MENOS'),
+    ('left', 'POR', 'DIVIDIDO'),
+
+)
+
+# Definición de la gramática
+
+
+def p_init(t):
+    'init            : instrucciones'
+    t[0] = t[1]
+
+
+def p_instrucciones_lista(t):
+    'instrucciones    : instrucciones instruccion'
+    t[1].append(t[2])
+    t[0] = t[1]
+
+
+def p_instrucciones_instruccion(t):
+    'instrucciones    : instruccion '
+    t[0] = [t[1]]
+
+
+def p_instruccion(t):
+    '''instruccion      : IMPRIMIR PARIZQ CADENA PARDER PTCOMA'''
+    print("Se reconocio imprimir: ", t[3])
+    t[0] = t[1]
+
+
+
+
+def p_error(t):
+    print(t)
+    print("Error sintáctico en '%s'" % t.value)
+
+
+import ply.yacc as yacc
+parser = yacc.yacc()
+
+
+def parse(input):
+    return parser.parse(input)

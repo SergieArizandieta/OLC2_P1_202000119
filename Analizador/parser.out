@@ -1,0 +1,194 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    ABS
+    AND
+    AS
+    BARRA
+    BREAK
+    CAPACITY
+    CARACTER
+    CD
+    CI
+    CLONE
+    COMA
+    CONTAINS
+    CONTINUE
+    DESIGUALDAD
+    DIRSTRING
+    DIVI
+    DP
+    ELSE
+    ENTERO
+    FALSE
+    FLOAT
+    FOR
+    FUNCION
+    GBAJO
+    ID
+    IF
+    IGUAL
+    IGUALDAD
+    IN
+    INSERT
+    LD
+    LEN
+    LET
+    LI
+    LOOP
+    MAIN
+    MATCH
+    MAYOR
+    MAYORIGUAL
+    MENOR
+    MENORIGUAL
+    MOD
+    MODULO
+    MULTI
+    MUT
+    NEW
+    NOT
+    OR
+    PD
+    PI
+    POW
+    POWF
+    PRINTLN
+    PUBLICO
+    PUNTO
+    PUSH
+    PYC
+    REFER
+    REMOVE
+    RESTA
+    RETURN
+    SQRT
+    STRUCT
+    SUMA
+    TIPOBOOL
+    TIPOCHAR
+    TIPOFLOAT
+    TIPOINT
+    TIPOSTRING
+    TOOWNED
+    TOSTRING
+    TRUE
+    VECT
+    VECTOR
+    WCAPACITY
+    WHILE
+
+Grammar
+
+Rule 0     S' -> init
+Rule 1     init -> CADENA
+
+Terminals, with rules where they appear
+
+ABS                  : 
+AND                  : 
+AS                   : 
+BARRA                : 
+BREAK                : 
+CADENA               : 1
+CAPACITY             : 
+CARACTER             : 
+CD                   : 
+CI                   : 
+CLONE                : 
+COMA                 : 
+CONTAINS             : 
+CONTINUE             : 
+DESIGUALDAD          : 
+DIRSTRING            : 
+DIVI                 : 
+DP                   : 
+ELSE                 : 
+ENTERO               : 
+FALSE                : 
+FLOAT                : 
+FOR                  : 
+FUNCION              : 
+GBAJO                : 
+ID                   : 
+IF                   : 
+IGUAL                : 
+IGUALDAD             : 
+IN                   : 
+INSERT               : 
+LD                   : 
+LEN                  : 
+LET                  : 
+LI                   : 
+LOOP                 : 
+MAIN                 : 
+MATCH                : 
+MAYOR                : 
+MAYORIGUAL           : 
+MENOR                : 
+MENORIGUAL           : 
+MOD                  : 
+MODULO               : 
+MULTI                : 
+MUT                  : 
+NEW                  : 
+NOT                  : 
+OR                   : 
+PD                   : 
+PI                   : 
+POW                  : 
+POWF                 : 
+PRINTLN              : 
+PUBLICO              : 
+PUNTO                : 
+PUSH                 : 
+PYC                  : 
+REFER                : 
+REMOVE               : 
+RESTA                : 
+RETURN               : 
+SQRT                 : 
+STRUCT               : 
+SUMA                 : 
+TIPOBOOL             : 
+TIPOCHAR             : 
+TIPOFLOAT            : 
+TIPOINT              : 
+TIPOSTRING           : 
+TOOWNED              : 
+TOSTRING             : 
+TRUE                 : 
+VECT                 : 
+VECTOR               : 
+WCAPACITY            : 
+WHILE                : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+init                 : 0
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . init
+    (1) init -> . CADENA
+
+    CADENA          shift and go to state 2
+
+    init                           shift and go to state 1
+
+state 1
+
+    (0) S' -> init .
+
+
+
+state 2
+
+    (1) init -> CADENA .
+
+    $end            reduce using rule 1 (init -> CADENA .)
+
