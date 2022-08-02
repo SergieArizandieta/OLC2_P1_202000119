@@ -62,45 +62,46 @@ reservadas = {
 }
 
 tokens = [
-     # ** ** ** ** ** OPERACION MATEMATICA ** ** ** ** **
-     'SUMA',
-     'RESTA',
-     'MULTI',
-     'DIVI',
-     'MODULO',
-     # ** ** ** ** ** OPERACION RELACIONAL ** ** ** ** **
-     'MENORIGUAL',
-     'MAYORIGUAL',
-     'IGUALDAD',
-     'DESIGUALDAD',
-     'MENOR',
-     'MAYOR',
-     # ** ** ** ** ** OPERACION LOGICA ** ** ** ** **
-     'OR',
-     'AND',
-     'NOT',
-     # ** ** ** ** ** SIMBOLOS LENGUAJE ** ** ** ** **
-     'LI',
-     'LD',
-     'CI',
-     'CD',
-     'PI',
-     'PD',
-     'PYC',
-     'DP',
-     'COMA',
-     'PUNTO',
-     'IGUAL',
-     'BARRA',
-     'GBAJO',
-     'REFER',
-     # ********** EXPRESIONES REGUALES **********
-     'FLOAT',
-     'ENTERO',
-     'CADENA',
-     'CARACTER',
-     'ID'
-] + list(reservadas.values())
+             # ** ** ** ** ** OPERACION MATEMATICA ** ** ** ** **
+             'SUMA',
+             'RESTA',
+             'MULTI',
+             'DIVI',
+             'MODULO',
+             # ** ** ** ** ** OPERACION RELACIONAL ** ** ** ** **
+             'MENORIGUAL',
+             'MAYORIGUAL',
+             'IGUALDAD',
+             'DESIGUALDAD',
+             'MENOR',
+             'MAYOR',
+             # ** ** ** ** ** OPERACION LOGICA ** ** ** ** **
+             'OR',
+             'AND',
+             'NOT',
+             # ** ** ** ** ** SIMBOLOS LENGUAJE ** ** ** ** **
+             'LI',
+             'LD',
+             'CI',
+             'CD',
+             'PI',
+             'PD',
+             'PYC',
+             'DP',
+             'COMA',
+             'PUNTO',
+             'IGUAL',
+             'BARRA',
+             'GBAJO',
+             'REFER',
+             # ********** EXPRESIONES REGUALES **********
+             'FLOAT',
+             'ENTERO',
+             'CADENA',
+             'CARACTER',
+             'ID',
+             'ERR'
+         ] + list(reservadas.values())
 
 # Tokens
 # ********** OPERACION MATEMATICA **********
@@ -183,14 +184,17 @@ def t_Especiales_4(t):
     r'&[a-zA-Z][a-zA-Z_0-9]*'
     return revicion_reservadas(t)
 
+
 # [a-zA-Z_][a-zA-Z_0-9]*
 def t_ID(t):
     r'[a-zA-Z][a-zA-Z_0-9]*'
-    return revicion_reservadas(t)
+    t.type = reservadas.get(t.value, 'ID')
+    print("Se reconcio: ", t.type, ": ", t.value)
+    return t
 
 
 def revicion_reservadas(t):
-    t.type = reservadas.get(t.value, 'ID')
+    t.type = reservadas.get(t.value, 'ERR')
     print("Se reconcio: ", t.type, ": ", t.value)
     return t
 
@@ -225,6 +229,7 @@ def t_error(t):
 
 # Construyendo el analizador léxico
 import ply.lex as lex
+
 lexer = lex.lex()
 
 

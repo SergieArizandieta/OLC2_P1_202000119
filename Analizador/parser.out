@@ -21,6 +21,7 @@ Unused terminals:
     DP
     ELSE
     ENTERO
+    ERR
     FALSE
     FLOAT
     FOR
@@ -106,6 +107,7 @@ DIVI                 :
 DP                   : 
 ELSE                 : 
 ENTERO               : 
+ERR                  : 
 FALSE                : 
 FLOAT                : 
 FOR                  : 

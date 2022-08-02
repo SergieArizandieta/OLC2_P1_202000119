@@ -96,11 +96,21 @@ false
 =
 |
 _
-	&
+&
 
 //Errores
-阿
-$£¥¢¤®©ªº°
-ÑññññÑñÑñÑñÑ
+//阿
+//$£¥¢¤®©ªº°
+//ÑññññÑñÑñÑñÑ
 
 
+::new()
+::error()
+to_string()
+to_error()
+::with_capacity
+::with_error
+vec!
+error!
+identi_ficador
+No_error
