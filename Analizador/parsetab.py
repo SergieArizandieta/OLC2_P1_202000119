@@ -6,7 +6,7 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ABS AND AS BARRA BREAK CADENA CAPACITY CARACTER CD CI CLONE COMA CONTAINS CONTINUE DESIGUALDAD DIRSTRING DIVI DP ELSE ENTERO ERR FALSE FLOAT FOR FUNCION GBAJO ID IF IGUAL IGUALDAD IN INSERT LD LEN LET LI LOOP MAIN MATCH MAYOR MAYORIGUAL MENOR MENORIGUAL MOD MODULO MULTI MUT NEW NOT OR PD PI POW POWF PRINT PRINTLN PUBLICO PUNTO PUSH PYC REFER REMOVE RESTA RETURN SQRT STRUCT SUMA TIPOBOOL TIPOCHAR TIPOFLOAT TIPOINT TIPOSTRING TOOWNED TOSTRING TRUE VECT VECTOR WCAPACITY WHILEinit            : instruccionesinstrucciones    : instrucciones instruccioninstrucciones    : instruccion instruccion      : imprimirimprimir     : PRINTLN PI expresiones PD PYCexpresiones     : ID'
+_lr_signature = 'ABS AND AS BARRA BREAK CADENA CAPACITY CARACTER CD CI CLONE COMA CONTAINS CONTINUE DESIGUALDAD DIRSTRING DIVI DP ELSE ENTERO ERR FALSE FLOAT FOR FUNCION GBAJO ID IF IGUAL IGUALDAD IN INSERT LD LEN LET LI LOOP MAIN MATCH MAYOR MAYORIGUAL MENOR MENORIGUAL MOD MODULO MULTI MUT NEW NOT OR PD PI POW POWF PRINT PRINTLN PUBLICO PUNTO PUSH PYC REFER REMOVE RESTA RETURN SQRT STRUCT SUMA TIPOBOOL TIPOCHAR TIPOFLOAT TIPOINT TIPOSTRING TOOWNED TOSTRING TRUE VECT VECTOR WCAPACITY WHILEinit            : instruccionesinstrucciones    : instrucciones instruccion\n                        | instruccioninstruccion      : imprimirimprimir     : PRINTLN PI expresiones PD PYCexpresiones     : ID'
     
 _lr_action_items = {'PRINTLN':([0,2,3,4,6,11,],[5,5,-3,-4,-2,-5,]),'$end':([1,2,3,4,6,11,],[0,-1,-3,-4,-2,-5,]),'PI':([5,],[7,]),'ID':([7,],[9,]),'PD':([8,9,],[10,-6,]),'PYC':([10,],[11,]),}
 
@@ -27,10 +27,10 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> init","S'",1,None,None,None),
-  ('init -> instrucciones','init',1,'p_init','Gramatica.py',245),
-  ('instrucciones -> instrucciones instruccion','instrucciones',2,'p_instrucciones_lista','Gramatica.py',249),
-  ('instrucciones -> instruccion','instrucciones',1,'p_instrucciones_instruccion','Gramatica.py',254),
-  ('instruccion -> imprimir','instruccion',1,'p_instruccion','Gramatica.py',258),
-  ('imprimir -> PRINTLN PI expresiones PD PYC','imprimir',5,'p_instruccion_imprimir','Gramatica.py',262),
-  ('expresiones -> ID','expresiones',1,'p_expresiones','Gramatica.py',266),
+  ('init -> instrucciones','init',1,'p_init','Gramatica.py',247),
+  ('instrucciones -> instrucciones instruccion','instrucciones',2,'p_instrucciones_lista','Gramatica.py',252),
+  ('instrucciones -> instruccion','instrucciones',1,'p_instrucciones_lista','Gramatica.py',253),
+  ('instruccion -> imprimir','instruccion',1,'p_instruccion','Gramatica.py',264),
+  ('imprimir -> PRINTLN PI expresiones PD PYC','imprimir',5,'p_instruccion_imprimir','Gramatica.py',269),
+  ('expresiones -> ID','expresiones',1,'p_expresiones','Gramatica.py',275),
 ]

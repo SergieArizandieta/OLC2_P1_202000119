@@ -249,15 +249,15 @@ def p_init(t):
 
 
 def p_instrucciones_lista(t):
-    'instrucciones    : instrucciones instruccion'
-    t[1].append(t[2])
-    t[0] = t[1]
+    '''instrucciones    : instrucciones instruccion
+                        | instruccion'''
 
+    if len(t) > 2:
+        t[1].append(t[2])
+        t[0] = t[1]
 
-def p_instrucciones_instruccion(t):
-    'instrucciones    : instruccion '
-    t[0] = [t[1]]
-
+    else:
+        t[0] = [t[1]]
 
 def p_instruccion(t):
     '''instruccion      : imprimir'''
@@ -276,15 +276,16 @@ def p_expresiones(t):
 
 
 def p_error(t):
-
     print("\n========================= Error sintáctico en '%s'" % t.value, " =========================")
     if t:
-        print("Token: ", t,"\n")
+        print("Token: ", t, "\n")
         parser.errok()
     else:
         print("Syntax error at EOF")
 
+
 import ply.yacc as yacc
+
 parser = yacc.yacc()
 
 
