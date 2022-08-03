@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ABS AND AS BARRA BREAK CADENA CAPACITY CARACTER CD CI CLONE COMA CONTAINS CONTINUE DESIGUALDAD DIRSTRING DIVI DP ELSE ENTERO ERR FALSE FLOAT FOR FUNCION GBAJO ID IF IGUAL IGUALDAD IN INSERT LD LEN LET LI LOOP MAIN MATCH MAYOR MAYORIGUAL MENOR MENORIGUAL MOD MODULO MULTI MUT NEW NOT OR PD PI POW POWF PRINT PRINTLN PUBLICO PUNTO PUSH PYC REFER REMOVE RESTA RETURN SQRT STRUCT SUMA TIPOBOOL TIPOCHAR TIPOFLOAT TIPOINT TIPOSTRING TOOWNED TOSTRING TRUE VECT VECTOR WCAPACITY WHILEinit            : instruccionesinstrucciones    : instrucciones instruccion\n                        | instruccioninstruccion      : imprimirimprimir     : PRINTLN PI expresiones PD PYCexpresiones     : ID'
+_lr_signature = 'ABS AND AS BARRA BREAK CADENA CAPACITY CARACTER CD CI CLONE COMA CONTAINS CONTINUE DESIGUALDAD DIRSTRING DIVI DP ELSE ENTERO ERR FALSE FLOAT FOR FUNCION GBAJO ID IF IGUAL IGUALDAD IN INSERT LD LEN LET LI LOOP MAIN MATCH MAYOR MAYORIGUAL MENOR MENORIGUAL MOD MODULO MULTI MUT NEW NOT OR PD PI POW POWF PRINT PRINTLN PUBLICO PUNTO PUSH PYC REFER REMOVE RESTA RETURN SQRT STRUCT SUMA TIPOBOOL TIPOCHAR TIPOFLOAT TIPOINT TIPOSTRING TOOWNED TOSTRING TRUE VECT VECTOR WCAPACITY WHILEinit            : instruccionesinstrucciones    : instrucciones instruccion\n                        | instruccioninstruccion      : impresionesimpresiones     : PRINTLN PI expresiones PD PYC\n                       | PRINT PI expresiones PD PYCexpresiones  : ID\n                    | ENTERO\n                    | FLOAT'
     
-_lr_action_items = {'PRINTLN':([0,2,3,4,6,11,],[5,5,-3,-4,-2,-5,]),'$end':([1,2,3,4,6,11,],[0,-1,-3,-4,-2,-5,]),'PI':([5,],[7,]),'ID':([7,],[9,]),'PD':([8,9,],[10,-6,]),'PYC':([10,],[11,]),}
+_lr_action_items = {'PRINTLN':([0,2,3,4,7,17,18,],[5,5,-3,-4,-2,-5,-6,]),'PRINT':([0,2,3,4,7,17,18,],[6,6,-3,-4,-2,-5,-6,]),'$end':([1,2,3,4,7,17,18,],[0,-1,-3,-4,-2,-5,-6,]),'PI':([5,6,],[8,9,]),'ID':([8,9,],[11,11,]),'ENTERO':([8,9,],[12,12,]),'FLOAT':([8,9,],[13,13,]),'PD':([10,11,12,13,14,],[15,-7,-8,-9,16,]),'PYC':([15,16,],[17,18,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'init':([0,],[1,]),'instrucciones':([0,],[2,]),'instruccion':([0,2,],[3,6,]),'imprimir':([0,2,],[4,4,]),'expresiones':([7,],[8,]),}
+_lr_goto_items = {'init':([0,],[1,]),'instrucciones':([0,],[2,]),'instruccion':([0,2,],[3,7,]),'impresiones':([0,2,],[4,4,]),'expresiones':([8,9,],[10,14,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -30,7 +30,10 @@ _lr_productions = [
   ('init -> instrucciones','init',1,'p_init','Gramatica.py',247),
   ('instrucciones -> instrucciones instruccion','instrucciones',2,'p_instrucciones_lista','Gramatica.py',252),
   ('instrucciones -> instruccion','instrucciones',1,'p_instrucciones_lista','Gramatica.py',253),
-  ('instruccion -> imprimir','instruccion',1,'p_instruccion','Gramatica.py',264),
-  ('imprimir -> PRINTLN PI expresiones PD PYC','imprimir',5,'p_instruccion_imprimir','Gramatica.py',269),
-  ('expresiones -> ID','expresiones',1,'p_expresiones','Gramatica.py',275),
+  ('instruccion -> impresiones','instruccion',1,'p_instruccion','Gramatica.py',263),
+  ('impresiones -> PRINTLN PI expresiones PD PYC','impresiones',5,'p_instruccion_imprimir','Gramatica.py',268),
+  ('impresiones -> PRINT PI expresiones PD PYC','impresiones',5,'p_instruccion_imprimir','Gramatica.py',269),
+  ('expresiones -> ID','expresiones',1,'p_expresiones','Gramatica.py',283),
+  ('expresiones -> ENTERO','expresiones',1,'p_expresiones','Gramatica.py',284),
+  ('expresiones -> FLOAT','expresiones',1,'p_expresiones','Gramatica.py',285),
 ]

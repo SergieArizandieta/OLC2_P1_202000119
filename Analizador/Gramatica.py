@@ -259,20 +259,57 @@ def p_instrucciones_lista(t):
     else:
         t[0] = [t[1]]
 
+
 def p_instruccion(t):
-    '''instruccion      : imprimir'''
+    '''instruccion      : impresiones'''
     t[0] = t[1]
+
+
+from AST.Expresion import Primitivo
+from AST.Instruccion import Imprimir
 
 
 def p_instruccion_imprimir(t):
-    'imprimir     : PRINTLN PI expresiones PD PYC'
-    t[0] = t[3]
-    print("\nRe reocnocio imprimir con el token: ", t[3], "\n")
+    '''impresiones     : PRINTLN PI expresiones PD PYC
+                       | PRINT PI expresiones PD PYC'''
+
+    if t[1] == 'println!':
+        t[0] = Imprimir.Imprimir(t[3], True)
+        print("\nRe reocnocio: println! con el token: ", t[3], "\n")
+    elif t[1] == 'print!':
+        t[0] = Imprimir.Imprimir(t[3], False)
+        print("\nRe reocnocio: print! con el token: ", t[3], "\n")
+    else:
+        print("========ERR================")
 
 
 def p_expresiones(t):
-    'expresiones     : ID'
-    t[0] = t[1]
+    '''expresiones  : ID
+                    | ENTERO
+                    | FLOAT'''
+
+
+    if len(t) == 2:
+        if esEntero(t[1]):
+            t[0] = Primitivo.Primitivo(t[1], 'ENTERO')
+        elif esFloat(t[1]):
+            t[0] = Primitivo.Primitivo(t[1], 'DECIMAL')
+
+
+def esEntero(num):
+    try:
+        num = int(num)
+        return True
+    except:
+        return False
+
+
+def esFloat(num):
+    try:
+        num = float(num)
+        return True
+    except:
+        return False
 
 
 def p_error(t):

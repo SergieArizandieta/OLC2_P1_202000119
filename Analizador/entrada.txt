@@ -1,7 +1,8 @@
-println!(hola1);
-println!(hola2);
-println!(hola_3);
-//println!(::error);
-println!(hola4);
-println!(hola5);
-println!(hola_6);
+println!(1);
+println!(2);
+println!(3);
+//Separacion
+print!(4.23);
+print!(5.4235);
+println!(6.3262346236);
+println!("{}",6.12345678901234567890);

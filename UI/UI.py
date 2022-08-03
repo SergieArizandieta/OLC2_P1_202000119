@@ -1,6 +1,10 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
+import Analizador.Gramatica as g
+from AST.AST_Ejecucion.AST import AST
+from AST.Controlador import Controlador
+from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos
 
 opcion = ["No data"]
 def ventanas():
@@ -14,9 +18,26 @@ def ventanas():
         def cerrar():
             exit()
 
-        def ReporteSecuenciaIn():
-            #Boxtextt = TextBoxSeg.get("1.0", 'end-1c')
-            messagebox.showinfo(title="Error", message="Ingrese un valor")
+        def Run_code():
+            #CodeText = CodeTxt.get("1.0", 'end-1c')
+            #messagebox.showinfo(title="Error", message="Ingrese un valor")
+
+            f = open("../Analizador/entrada.txt", "r")
+            entrada = f.read()
+
+
+            #instrucciones = g.parse(CodeText)
+            instrucciones = g.parse(entrada)
+
+            ts = TablaDeSimbolos()
+            controlador= Controlador()
+            AST_ej = AST(instrucciones)
+
+
+            print("\nImprimeinedo arboles")
+            AST_ej.EjecutarInstruccion(controlador,ts)
+
+
 
         notebook = ttk.Notebook(ventana)
         notebook.pack(fill=BOTH, expand=1)
@@ -45,7 +66,7 @@ def ventanas():
         ConsoleTxt.grid(row=1, column=0)
         ConsoleTxt.place(x=300, y=600)
 
-        Button(pes1, text="💎RUN💎", command=ReporteSecuenciaIn).place(x=10, y=80)
+        Button(pes1, text="💎RUN💎", command=Run_code).place(x=10, y=80)
 
         # Terminar ------------------------------------------------------------------------------------
 
