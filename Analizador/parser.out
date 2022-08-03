@@ -7,6 +7,7 @@ Unused terminals:
     AS
     BARRA
     BREAK
+    CADENA
     CAPACITY
     CARACTER
     CD
@@ -27,7 +28,6 @@ Unused terminals:
     FOR
     FUNCION
     GBAJO
-    ID
     IF
     IGUAL
     IGUALDAD
@@ -51,15 +51,12 @@ Unused terminals:
     NEW
     NOT
     OR
-    PD
-    PI
     POW
     POWF
-    PRINTLN
+    PRINT
     PUBLICO
     PUNTO
     PUSH
-    PYC
     REFER
     REMOVE
     RESTA
@@ -83,7 +80,12 @@ Unused terminals:
 Grammar
 
 Rule 0     S' -> init
-Rule 1     init -> CADENA
+Rule 1     init -> instrucciones
+Rule 2     instrucciones -> instrucciones instruccion
+Rule 3     instrucciones -> instruccion
+Rule 4     instruccion -> imprimir
+Rule 5     imprimir -> PRINTLN PI expresiones PD PYC
+Rule 6     expresiones -> ID
 
 Terminals, with rules where they appear
 
@@ -92,7 +94,7 @@ AND                  :
 AS                   : 
 BARRA                : 
 BREAK                : 
-CADENA               : 1
+CADENA               : 
 CAPACITY             : 
 CARACTER             : 
 CD                   : 
@@ -113,7 +115,7 @@ FLOAT                :
 FOR                  : 
 FUNCION              : 
 GBAJO                : 
-ID                   : 
+ID                   : 6
 IF                   : 
 IGUAL                : 
 IGUALDAD             : 
@@ -137,15 +139,16 @@ MUT                  :
 NEW                  : 
 NOT                  : 
 OR                   : 
-PD                   : 
-PI                   : 
+PD                   : 5
+PI                   : 5
 POW                  : 
 POWF                 : 
-PRINTLN              : 
+PRINT                : 
+PRINTLN              : 5
 PUBLICO              : 
 PUNTO                : 
 PUSH                 : 
-PYC                  : 
+PYC                  : 5
 REFER                : 
 REMOVE               : 
 RESTA                : 
@@ -169,18 +172,29 @@ error                :
 
 Nonterminals, with rules where they appear
 
+expresiones          : 5
+imprimir             : 4
 init                 : 0
+instruccion          : 2 3
+instrucciones        : 1 2
 
 Parsing method: LALR
 
 state 0
 
     (0) S' -> . init
-    (1) init -> . CADENA
+    (1) init -> . instrucciones
+    (2) instrucciones -> . instrucciones instruccion
+    (3) instrucciones -> . instruccion
+    (4) instruccion -> . imprimir
+    (5) imprimir -> . PRINTLN PI expresiones PD PYC
 
-    CADENA          shift and go to state 2
+    PRINTLN         shift and go to state 5
 
     init                           shift and go to state 1
+    instrucciones                  shift and go to state 2
+    instruccion                    shift and go to state 3
+    imprimir                       shift and go to state 4
 
 state 1
 
@@ -190,7 +204,82 @@ state 1
 
 state 2
 
-    (1) init -> CADENA .
+    (1) init -> instrucciones .
+    (2) instrucciones -> instrucciones . instruccion
+    (4) instruccion -> . imprimir
+    (5) imprimir -> . PRINTLN PI expresiones PD PYC
 
-    $end            reduce using rule 1 (init -> CADENA .)
+    $end            reduce using rule 1 (init -> instrucciones .)
+    PRINTLN         shift and go to state 5
+
+    instruccion                    shift and go to state 6
+    imprimir                       shift and go to state 4
+
+state 3
+
+    (3) instrucciones -> instruccion .
+
+    PRINTLN         reduce using rule 3 (instrucciones -> instruccion .)
+    $end            reduce using rule 3 (instrucciones -> instruccion .)
+
+
+state 4
+
+    (4) instruccion -> imprimir .
+
+    PRINTLN         reduce using rule 4 (instruccion -> imprimir .)
+    $end            reduce using rule 4 (instruccion -> imprimir .)
+
+
+state 5
+
+    (5) imprimir -> PRINTLN . PI expresiones PD PYC
+
+    PI              shift and go to state 7
+
+
+state 6
+
+    (2) instrucciones -> instrucciones instruccion .
+
+    PRINTLN         reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+    $end            reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+
+
+state 7
+
+    (5) imprimir -> PRINTLN PI . expresiones PD PYC
+    (6) expresiones -> . ID
+
+    ID              shift and go to state 9
+
+    expresiones                    shift and go to state 8
+
+state 8
+
+    (5) imprimir -> PRINTLN PI expresiones . PD PYC
+
+    PD              shift and go to state 10
+
+
+state 9
+
+    (6) expresiones -> ID .
+
+    PD              reduce using rule 6 (expresiones -> ID .)
+
+
+state 10
+
+    (5) imprimir -> PRINTLN PI expresiones PD . PYC
+
+    PYC             shift and go to state 11
+
+
+state 11
+
+    (5) imprimir -> PRINTLN PI expresiones PD PYC .
+
+    PRINTLN         reduce using rule 5 (imprimir -> PRINTLN PI expresiones PD PYC .)
+    $end            reduce using rule 5 (imprimir -> PRINTLN PI expresiones PD PYC .)
 

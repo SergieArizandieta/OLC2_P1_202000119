@@ -12,6 +12,7 @@ reservadas = {
     'as': 'AS',
     # IMPRIMIR
     'println!': 'PRINTLN',
+    'print!': 'PRINT',
     # DECLARAR
     'let': 'LET',
     'mut': 'MUT',
@@ -232,21 +233,58 @@ import ply.lex as lex
 
 lexer = lex.lex()
 
+# Asociación de operadores y precedencia
+'''precedence = (
+    ('left','CONCAT'),
+    ('left','MAS','MENOS'),
+    ('left','POR','DIVIDIDO'),
+    ('right','UMENOS'),
+    )'''
+
 
 # Definición de la gramática
 def p_init(t):
-    'init            : CADENA'
+    'init            : instrucciones'
+    t[0] = t[1]
+
+
+def p_instrucciones_lista(t):
+    'instrucciones    : instrucciones instruccion'
+    t[1].append(t[2])
+    t[0] = t[1]
+
+
+def p_instrucciones_instruccion(t):
+    'instrucciones    : instruccion '
+    t[0] = [t[1]]
+
+
+def p_instruccion(t):
+    '''instruccion      : imprimir'''
+    t[0] = t[1]
+
+
+def p_instruccion_imprimir(t):
+    'imprimir     : PRINTLN PI expresiones PD PYC'
+    t[0] = t[3]
+    print("\nRe reocnocio imprimir con el token: ", t[3], "\n")
+
+
+def p_expresiones(t):
+    'expresiones     : ID'
     t[0] = t[1]
 
 
 def p_error(t):
-    # print(t)
-    # print("Error sintáctico en '%s'" % t.value)
-    pass
 
+    print("\n========================= Error sintáctico en '%s'" % t.value, " =========================")
+    if t:
+        print("Token: ", t,"\n")
+        parser.errok()
+    else:
+        print("Syntax error at EOF")
 
 import ply.yacc as yacc
-
 parser = yacc.yacc()
 
 

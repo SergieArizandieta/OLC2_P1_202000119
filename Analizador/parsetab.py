@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ABS AND AS BARRA BREAK CADENA CAPACITY CARACTER CD CI CLONE COMA CONTAINS CONTINUE DESIGUALDAD DIRSTRING DIVI DP ELSE ENTERO ERR FALSE FLOAT FOR FUNCION GBAJO ID IF IGUAL IGUALDAD IN INSERT LD LEN LET LI LOOP MAIN MATCH MAYOR MAYORIGUAL MENOR MENORIGUAL MOD MODULO MULTI MUT NEW NOT OR PD PI POW POWF PRINTLN PUBLICO PUNTO PUSH PYC REFER REMOVE RESTA RETURN SQRT STRUCT SUMA TIPOBOOL TIPOCHAR TIPOFLOAT TIPOINT TIPOSTRING TOOWNED TOSTRING TRUE VECT VECTOR WCAPACITY WHILEinit            : CADENA'
+_lr_signature = 'ABS AND AS BARRA BREAK CADENA CAPACITY CARACTER CD CI CLONE COMA CONTAINS CONTINUE DESIGUALDAD DIRSTRING DIVI DP ELSE ENTERO ERR FALSE FLOAT FOR FUNCION GBAJO ID IF IGUAL IGUALDAD IN INSERT LD LEN LET LI LOOP MAIN MATCH MAYOR MAYORIGUAL MENOR MENORIGUAL MOD MODULO MULTI MUT NEW NOT OR PD PI POW POWF PRINT PRINTLN PUBLICO PUNTO PUSH PYC REFER REMOVE RESTA RETURN SQRT STRUCT SUMA TIPOBOOL TIPOCHAR TIPOFLOAT TIPOINT TIPOSTRING TOOWNED TOSTRING TRUE VECT VECTOR WCAPACITY WHILEinit            : instruccionesinstrucciones    : instrucciones instruccioninstrucciones    : instruccion instruccion      : imprimirimprimir     : PRINTLN PI expresiones PD PYCexpresiones     : ID'
     
-_lr_action_items = {'CADENA':([0,],[2,]),'$end':([1,2,],[0,-1,]),}
+_lr_action_items = {'PRINTLN':([0,2,3,4,6,11,],[5,5,-3,-4,-2,-5,]),'$end':([1,2,3,4,6,11,],[0,-1,-3,-4,-2,-5,]),'PI':([5,],[7,]),'ID':([7,],[9,]),'PD':([8,9,],[10,-6,]),'PYC':([10,],[11,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'init':([0,],[1,]),}
+_lr_goto_items = {'init':([0,],[1,]),'instrucciones':([0,],[2,]),'instruccion':([0,2,],[3,6,]),'imprimir':([0,2,],[4,4,]),'expresiones':([7,],[8,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,5 +27,10 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> init","S'",1,None,None,None),
-  ('init -> CADENA','init',1,'p_init','Gramatica.py',238),
+  ('init -> instrucciones','init',1,'p_init','Gramatica.py',245),
+  ('instrucciones -> instrucciones instruccion','instrucciones',2,'p_instrucciones_lista','Gramatica.py',249),
+  ('instrucciones -> instruccion','instrucciones',1,'p_instrucciones_instruccion','Gramatica.py',254),
+  ('instruccion -> imprimir','instruccion',1,'p_instruccion','Gramatica.py',258),
+  ('imprimir -> PRINTLN PI expresiones PD PYC','imprimir',5,'p_instruccion_imprimir','Gramatica.py',262),
+  ('expresiones -> ID','expresiones',1,'p_expresiones','Gramatica.py',266),
 ]
