@@ -7,13 +7,11 @@ Unused terminals:
     AS
     BARRA
     BREAK
-    CADENA
     CAPACITY
     CARACTER
     CD
     CI
     CLONE
-    COMA
     CONTAINS
     CONTINUE
     DESIGUALDAD
@@ -81,11 +79,16 @@ Rule 1     init -> instrucciones
 Rule 2     instrucciones -> instrucciones instruccion
 Rule 3     instrucciones -> instruccion
 Rule 4     instruccion -> impresiones
-Rule 5     impresiones -> PRINTLN PI expresiones PD PYC
-Rule 6     impresiones -> PRINT PI expresiones PD PYC
-Rule 7     expresiones -> ID
-Rule 8     expresiones -> ENTERO
-Rule 9     expresiones -> FLOAT
+Rule 5     impresiones -> PRINTLN PI CADENA PD PYC
+Rule 6     impresiones -> PRINT PI CADENA PD PYC
+Rule 7     impresiones -> PRINTLN PI CADENA COMA impresion_valores PD PYC
+Rule 8     impresiones -> PRINT PI CADENA COMA impresion_valores PD PYC
+Rule 9     impresion_valores -> impresion_valores COMA expresiones
+Rule 10    impresion_valores -> expresiones
+Rule 11    expresiones -> ID
+Rule 12    expresiones -> ENTERO
+Rule 13    expresiones -> FLOAT
+Rule 14    expresiones -> CADENA
 
 Terminals, with rules where they appear
 
@@ -94,13 +97,13 @@ AND                  :
 AS                   : 
 BARRA                : 
 BREAK                : 
-CADENA               : 
+CADENA               : 5 6 7 8 14
 CAPACITY             : 
 CARACTER             : 
 CD                   : 
 CI                   : 
 CLONE                : 
-COMA                 : 
+COMA                 : 7 8 9
 CONTAINS             : 
 CONTINUE             : 
 DESIGUALDAD          : 
@@ -108,14 +111,14 @@ DIRSTRING            :
 DIVI                 : 
 DP                   : 
 ELSE                 : 
-ENTERO               : 8
+ENTERO               : 12
 ERR                  : 
 FALSE                : 
-FLOAT                : 9
+FLOAT                : 13
 FOR                  : 
 FUNCION              : 
 GBAJO                : 
-ID                   : 7
+ID                   : 11
 IF                   : 
 IGUAL                : 
 IGUALDAD             : 
@@ -139,16 +142,16 @@ MUT                  :
 NEW                  : 
 NOT                  : 
 OR                   : 
-PD                   : 5 6
-PI                   : 5 6
+PD                   : 5 6 7 8
+PI                   : 5 6 7 8
 POW                  : 
 POWF                 : 
-PRINT                : 6
-PRINTLN              : 5
+PRINT                : 6 8
+PRINTLN              : 5 7
 PUBLICO              : 
 PUNTO                : 
 PUSH                 : 
-PYC                  : 5 6
+PYC                  : 5 6 7 8
 REFER                : 
 REMOVE               : 
 RESTA                : 
@@ -172,7 +175,8 @@ error                :
 
 Nonterminals, with rules where they appear
 
-expresiones          : 5 6
+expresiones          : 9 10
+impresion_valores    : 7 8 9
 impresiones          : 4
 init                 : 0
 instruccion          : 2 3
@@ -187,8 +191,10 @@ state 0
     (2) instrucciones -> . instrucciones instruccion
     (3) instrucciones -> . instruccion
     (4) instruccion -> . impresiones
-    (5) impresiones -> . PRINTLN PI expresiones PD PYC
-    (6) impresiones -> . PRINT PI expresiones PD PYC
+    (5) impresiones -> . PRINTLN PI CADENA PD PYC
+    (6) impresiones -> . PRINT PI CADENA PD PYC
+    (7) impresiones -> . PRINTLN PI CADENA COMA impresion_valores PD PYC
+    (8) impresiones -> . PRINT PI CADENA COMA impresion_valores PD PYC
 
     PRINTLN         shift and go to state 5
     PRINT           shift and go to state 6
@@ -209,8 +215,10 @@ state 2
     (1) init -> instrucciones .
     (2) instrucciones -> instrucciones . instruccion
     (4) instruccion -> . impresiones
-    (5) impresiones -> . PRINTLN PI expresiones PD PYC
-    (6) impresiones -> . PRINT PI expresiones PD PYC
+    (5) impresiones -> . PRINTLN PI CADENA PD PYC
+    (6) impresiones -> . PRINT PI CADENA PD PYC
+    (7) impresiones -> . PRINTLN PI CADENA COMA impresion_valores PD PYC
+    (8) impresiones -> . PRINT PI CADENA COMA impresion_valores PD PYC
 
     $end            reduce using rule 1 (init -> instrucciones .)
     PRINTLN         shift and go to state 5
@@ -239,14 +247,16 @@ state 4
 
 state 5
 
-    (5) impresiones -> PRINTLN . PI expresiones PD PYC
+    (5) impresiones -> PRINTLN . PI CADENA PD PYC
+    (7) impresiones -> PRINTLN . PI CADENA COMA impresion_valores PD PYC
 
     PI              shift and go to state 8
 
 
 state 6
 
-    (6) impresiones -> PRINT . PI expresiones PD PYC
+    (6) impresiones -> PRINT . PI CADENA PD PYC
+    (8) impresiones -> PRINT . PI CADENA COMA impresion_valores PD PYC
 
     PI              shift and go to state 9
 
@@ -262,93 +272,215 @@ state 7
 
 state 8
 
-    (5) impresiones -> PRINTLN PI . expresiones PD PYC
-    (7) expresiones -> . ID
-    (8) expresiones -> . ENTERO
-    (9) expresiones -> . FLOAT
+    (5) impresiones -> PRINTLN PI . CADENA PD PYC
+    (7) impresiones -> PRINTLN PI . CADENA COMA impresion_valores PD PYC
 
-    ID              shift and go to state 11
-    ENTERO          shift and go to state 12
-    FLOAT           shift and go to state 13
+    CADENA          shift and go to state 10
 
-    expresiones                    shift and go to state 10
 
 state 9
 
-    (6) impresiones -> PRINT PI . expresiones PD PYC
-    (7) expresiones -> . ID
-    (8) expresiones -> . ENTERO
-    (9) expresiones -> . FLOAT
+    (6) impresiones -> PRINT PI . CADENA PD PYC
+    (8) impresiones -> PRINT PI . CADENA COMA impresion_valores PD PYC
 
-    ID              shift and go to state 11
-    ENTERO          shift and go to state 12
-    FLOAT           shift and go to state 13
+    CADENA          shift and go to state 11
 
-    expresiones                    shift and go to state 14
 
 state 10
 
-    (5) impresiones -> PRINTLN PI expresiones . PD PYC
+    (5) impresiones -> PRINTLN PI CADENA . PD PYC
+    (7) impresiones -> PRINTLN PI CADENA . COMA impresion_valores PD PYC
 
-    PD              shift and go to state 15
+    PD              shift and go to state 12
+    COMA            shift and go to state 13
 
 
 state 11
 
-    (7) expresiones -> ID .
+    (6) impresiones -> PRINT PI CADENA . PD PYC
+    (8) impresiones -> PRINT PI CADENA . COMA impresion_valores PD PYC
 
-    PD              reduce using rule 7 (expresiones -> ID .)
+    PD              shift and go to state 14
+    COMA            shift and go to state 15
 
 
 state 12
 
-    (8) expresiones -> ENTERO .
+    (5) impresiones -> PRINTLN PI CADENA PD . PYC
 
-    PD              reduce using rule 8 (expresiones -> ENTERO .)
+    PYC             shift and go to state 16
 
 
 state 13
 
-    (9) expresiones -> FLOAT .
+    (7) impresiones -> PRINTLN PI CADENA COMA . impresion_valores PD PYC
+    (9) impresion_valores -> . impresion_valores COMA expresiones
+    (10) impresion_valores -> . expresiones
+    (11) expresiones -> . ID
+    (12) expresiones -> . ENTERO
+    (13) expresiones -> . FLOAT
+    (14) expresiones -> . CADENA
 
-    PD              reduce using rule 9 (expresiones -> FLOAT .)
+    ID              shift and go to state 20
+    ENTERO          shift and go to state 21
+    FLOAT           shift and go to state 22
+    CADENA          shift and go to state 17
 
+    impresion_valores              shift and go to state 18
+    expresiones                    shift and go to state 19
 
 state 14
 
-    (6) impresiones -> PRINT PI expresiones . PD PYC
+    (6) impresiones -> PRINT PI CADENA PD . PYC
 
-    PD              shift and go to state 16
+    PYC             shift and go to state 23
 
 
 state 15
 
-    (5) impresiones -> PRINTLN PI expresiones PD . PYC
+    (8) impresiones -> PRINT PI CADENA COMA . impresion_valores PD PYC
+    (9) impresion_valores -> . impresion_valores COMA expresiones
+    (10) impresion_valores -> . expresiones
+    (11) expresiones -> . ID
+    (12) expresiones -> . ENTERO
+    (13) expresiones -> . FLOAT
+    (14) expresiones -> . CADENA
 
-    PYC             shift and go to state 17
+    ID              shift and go to state 20
+    ENTERO          shift and go to state 21
+    FLOAT           shift and go to state 22
+    CADENA          shift and go to state 17
 
+    impresion_valores              shift and go to state 24
+    expresiones                    shift and go to state 19
 
 state 16
 
-    (6) impresiones -> PRINT PI expresiones PD . PYC
+    (5) impresiones -> PRINTLN PI CADENA PD PYC .
 
-    PYC             shift and go to state 18
+    PRINTLN         reduce using rule 5 (impresiones -> PRINTLN PI CADENA PD PYC .)
+    PRINT           reduce using rule 5 (impresiones -> PRINTLN PI CADENA PD PYC .)
+    $end            reduce using rule 5 (impresiones -> PRINTLN PI CADENA PD PYC .)
 
 
 state 17
 
-    (5) impresiones -> PRINTLN PI expresiones PD PYC .
+    (14) expresiones -> CADENA .
 
-    PRINTLN         reduce using rule 5 (impresiones -> PRINTLN PI expresiones PD PYC .)
-    PRINT           reduce using rule 5 (impresiones -> PRINTLN PI expresiones PD PYC .)
-    $end            reduce using rule 5 (impresiones -> PRINTLN PI expresiones PD PYC .)
+    PD              reduce using rule 14 (expresiones -> CADENA .)
+    COMA            reduce using rule 14 (expresiones -> CADENA .)
 
 
 state 18
 
-    (6) impresiones -> PRINT PI expresiones PD PYC .
+    (7) impresiones -> PRINTLN PI CADENA COMA impresion_valores . PD PYC
+    (9) impresion_valores -> impresion_valores . COMA expresiones
 
-    PRINTLN         reduce using rule 6 (impresiones -> PRINT PI expresiones PD PYC .)
-    PRINT           reduce using rule 6 (impresiones -> PRINT PI expresiones PD PYC .)
-    $end            reduce using rule 6 (impresiones -> PRINT PI expresiones PD PYC .)
+    PD              shift and go to state 26
+    COMA            shift and go to state 25
+
+
+state 19
+
+    (10) impresion_valores -> expresiones .
+
+    PD              reduce using rule 10 (impresion_valores -> expresiones .)
+    COMA            reduce using rule 10 (impresion_valores -> expresiones .)
+
+
+state 20
+
+    (11) expresiones -> ID .
+
+    PD              reduce using rule 11 (expresiones -> ID .)
+    COMA            reduce using rule 11 (expresiones -> ID .)
+
+
+state 21
+
+    (12) expresiones -> ENTERO .
+
+    PD              reduce using rule 12 (expresiones -> ENTERO .)
+    COMA            reduce using rule 12 (expresiones -> ENTERO .)
+
+
+state 22
+
+    (13) expresiones -> FLOAT .
+
+    PD              reduce using rule 13 (expresiones -> FLOAT .)
+    COMA            reduce using rule 13 (expresiones -> FLOAT .)
+
+
+state 23
+
+    (6) impresiones -> PRINT PI CADENA PD PYC .
+
+    PRINTLN         reduce using rule 6 (impresiones -> PRINT PI CADENA PD PYC .)
+    PRINT           reduce using rule 6 (impresiones -> PRINT PI CADENA PD PYC .)
+    $end            reduce using rule 6 (impresiones -> PRINT PI CADENA PD PYC .)
+
+
+state 24
+
+    (8) impresiones -> PRINT PI CADENA COMA impresion_valores . PD PYC
+    (9) impresion_valores -> impresion_valores . COMA expresiones
+
+    PD              shift and go to state 27
+    COMA            shift and go to state 25
+
+
+state 25
+
+    (9) impresion_valores -> impresion_valores COMA . expresiones
+    (11) expresiones -> . ID
+    (12) expresiones -> . ENTERO
+    (13) expresiones -> . FLOAT
+    (14) expresiones -> . CADENA
+
+    ID              shift and go to state 20
+    ENTERO          shift and go to state 21
+    FLOAT           shift and go to state 22
+    CADENA          shift and go to state 17
+
+    expresiones                    shift and go to state 28
+
+state 26
+
+    (7) impresiones -> PRINTLN PI CADENA COMA impresion_valores PD . PYC
+
+    PYC             shift and go to state 29
+
+
+state 27
+
+    (8) impresiones -> PRINT PI CADENA COMA impresion_valores PD . PYC
+
+    PYC             shift and go to state 30
+
+
+state 28
+
+    (9) impresion_valores -> impresion_valores COMA expresiones .
+
+    PD              reduce using rule 9 (impresion_valores -> impresion_valores COMA expresiones .)
+    COMA            reduce using rule 9 (impresion_valores -> impresion_valores COMA expresiones .)
+
+
+state 29
+
+    (7) impresiones -> PRINTLN PI CADENA COMA impresion_valores PD PYC .
+
+    PRINTLN         reduce using rule 7 (impresiones -> PRINTLN PI CADENA COMA impresion_valores PD PYC .)
+    PRINT           reduce using rule 7 (impresiones -> PRINTLN PI CADENA COMA impresion_valores PD PYC .)
+    $end            reduce using rule 7 (impresiones -> PRINTLN PI CADENA COMA impresion_valores PD PYC .)
+
+
+state 30
+
+    (8) impresiones -> PRINT PI CADENA COMA impresion_valores PD PYC .
+
+    PRINTLN         reduce using rule 8 (impresiones -> PRINT PI CADENA COMA impresion_valores PD PYC .)
+    PRINT           reduce using rule 8 (impresiones -> PRINT PI CADENA COMA impresion_valores PD PYC .)
+    $end            reduce using rule 8 (impresiones -> PRINT PI CADENA COMA impresion_valores PD PYC .)
 

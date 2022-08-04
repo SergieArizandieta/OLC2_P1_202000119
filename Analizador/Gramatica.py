@@ -260,9 +260,11 @@ def p_instrucciones_lista(t):
         t[0] = [t[1]]
 
 
+
 def p_instruccion(t):
     '''instruccion      : impresiones'''
     t[0] = t[1]
+
 
 
 from AST.Expresion import Primitivo
@@ -270,30 +272,70 @@ from AST.Instruccion import Imprimir
 
 
 def p_instruccion_imprimir(t):
-    '''impresiones     : PRINTLN PI expresiones PD PYC
-                       | PRINT PI expresiones PD PYC'''
+    '''impresiones     : PRINTLN PI CADENA PD PYC
+                       | PRINT PI CADENA PD PYC
+                       | PRINTLN PI CADENA COMA impresion_valores PD PYC
+                       | PRINT PI CADENA COMA  impresion_valores PD PYC'''
 
-    if t[1] == 'println!':
-        t[0] = Imprimir.Imprimir(t[3], True)
-        print("\nRe reocnocio: println! con el token: ", t[3], "\n")
-    elif t[1] == 'print!':
-        t[0] = Imprimir.Imprimir(t[3], False)
-        print("\nRe reocnocio: print! con el token: ", t[3], "\n")
+
+
+    #print("Token reconocido en la linea ",linea , " columna: ",index , " ",t[1])
+
+    if len(t) == 6:
+
+        if t[1] == 'println!':
+            t[0] = Imprimir.Imprimir(Primitivo.Primitivo(t[3], 'CADENA'), True,[])
+            print("\nRe reocnocio: println! con el token: ", t[3], "\n")
+        elif t[1] == 'print!':
+            t[0] = Imprimir.Imprimir(Primitivo.Primitivo(t[3], 'CADENA'), False,[])
+            print("\nRe reocnocio: print! con el token: ", t[3], "\n")
+
     else:
-        print("========ERR================")
+
+        if t[1] == 'println!':
+            t[0] = Imprimir.Imprimir(t[3], True, t[5])
+            print("\nRe reocnocio: println! con el token: ", t[5], "\n")
+
+        elif t[1] == 'print!':
+            t[0] = Imprimir.Imprimir(t[3], False,t[5])
+            print("\nRe reocnocio: print! con el token: ", t[5], "\n")
+
+
+
+
+
+def p_imprimir_lista_valores(t):
+    '''impresion_valores     :  impresion_valores COMA expresiones
+                         | expresiones '''
+
+    if len(t) > 2:
+        t[1].append(t[3])
+        t[0] = t[1]
+
+    else:
+        t[0] = [t[1]]
+
 
 
 def p_expresiones(t):
     '''expresiones  : ID
                     | ENTERO
-                    | FLOAT'''
+                    | FLOAT
+                    | CADENA'''
 
+    #t.set_lexpos(0,t.lexpos(1))
+    #print(t.lexpos(0))
+    #print(t.lexpos(1))
 
     if len(t) == 2:
-        if esEntero(t[1]):
+        if isinstance(t[1],int):
             t[0] = Primitivo.Primitivo(t[1], 'ENTERO')
-        elif esFloat(t[1]):
+        elif isinstance(t[1],float):
             t[0] = Primitivo.Primitivo(t[1], 'DECIMAL')
+        elif isinstance(t[1],str):
+            t[0] = Primitivo.Primitivo(t[1], 'CADENA')
+
+
 
 
 def esEntero(num):
@@ -313,7 +355,11 @@ def esFloat(num):
 
 
 def p_error(t):
-    print("\n========================= Error sintáctico en '%s'" % t.value, " =========================")
+    try:
+        print("\n========================= Error sintáctico en '%s'" % t.value, " =========================")
+    except:
+        print("")
+
     if t:
         print("Token: ", t, "\n")
         parser.errok()

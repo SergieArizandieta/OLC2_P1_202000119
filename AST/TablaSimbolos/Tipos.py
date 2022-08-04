@@ -25,6 +25,7 @@ class Tipos():
             return tipo.DECIMAL
 
         elif self.nombre == 'CADENA':
+            print("Se dectecto una cadena")
             return tipo.CADENA
 
         elif self.nombre == 'BOOLEANO':

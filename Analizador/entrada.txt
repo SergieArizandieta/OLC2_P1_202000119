@@ -1,8 +1,5 @@
-println!(1);
-println!(2);
-println!(3);
-//Separacion
-print!(4.23);
-print!(5.4235);
-println!(6.3262346236);
-println!("{}",6.12345678901234567890);
+println!("Hola a todos");
+println!("Hola a todos");
+println!(" {} ", "a");
+println!(" {} {}", "a","a");
+println!(" nose cunto sera {} + {} = {}", 1.5,2.5,4);

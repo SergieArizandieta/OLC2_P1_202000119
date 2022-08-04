@@ -7,7 +7,7 @@ class Primitivo(Expresion):
     def __init__(self, valor, tipo):
         self.valor = valor
         self.tipo = Tipos(tipo)
-        print("Se declaro un primitivo: ", self.valor, " de tipo: ", self.tipo.tipo)
+        print("Se declaro  unprimitivo: ", self.valor, " de tipo: ", self.tipo.tipo)
 
     def ObtenerValor(self, controlador, ts):
         return self.valor
