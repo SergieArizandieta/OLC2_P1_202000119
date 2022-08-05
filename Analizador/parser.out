@@ -16,7 +16,6 @@ Unused terminals:
     CONTINUE
     DESIGUALDAD
     DIRSTRING
-    DIVI
     DP
     ELSE
     ERR
@@ -41,20 +40,15 @@ Unused terminals:
     MENOR
     MENORIGUAL
     MOD
-    MODULO
-    MULTI
     MUT
     NEW
     NOT
     OR
-    POW
-    POWF
     PUBLICO
     PUNTO
     PUSH
     REFER
     REMOVE
-    RESTA
     RETURN
     SQRT
     STRUCT
@@ -86,10 +80,16 @@ Rule 9     impresion_valores -> impresion_valores COMA expresiones
 Rule 10    impresion_valores -> expresiones
 Rule 11    expresiones -> <empty>
 Rule 12    expresiones -> expresiones SUMA expresiones
-Rule 13    expresiones -> ID
-Rule 14    expresiones -> ENTERO
-Rule 15    expresiones -> FLOAT
-Rule 16    expresiones -> CADENA
+Rule 13    expresiones -> expresiones RESTA expresiones
+Rule 14    expresiones -> expresiones MULTI expresiones
+Rule 15    expresiones -> expresiones DIVI expresiones
+Rule 16    expresiones -> expresiones MODULO expresiones
+Rule 17    expresiones -> POWF PI expresiones COMA expresiones PD
+Rule 18    expresiones -> POW PI expresiones COMA expresiones PD
+Rule 19    expresiones -> ID
+Rule 20    expresiones -> ENTERO
+Rule 21    expresiones -> FLOAT
+Rule 22    expresiones -> CADENA
 
 Terminals, with rules where they appear
 
@@ -98,28 +98,28 @@ AND                  :
 AS                   : 
 BARRA                : 
 BREAK                : 
-CADENA               : 5 6 7 8 16
+CADENA               : 5 6 7 8 22
 CAPACITY             : 
 CARACTER             : 
 CD                   : 
 CI                   : 
 CLONE                : 
-COMA                 : 7 8 9
+COMA                 : 7 8 9 17 18
 CONTAINS             : 
 CONTINUE             : 
 DESIGUALDAD          : 
 DIRSTRING            : 
-DIVI                 : 
+DIVI                 : 15
 DP                   : 
 ELSE                 : 
-ENTERO               : 14
+ENTERO               : 20
 ERR                  : 
 FALSE                : 
-FLOAT                : 15
+FLOAT                : 21
 FOR                  : 
 FUNCION              : 
 GBAJO                : 
-ID                   : 13
+ID                   : 19
 IF                   : 
 IGUAL                : 
 IGUALDAD             : 
@@ -137,16 +137,16 @@ MAYORIGUAL           :
 MENOR                : 
 MENORIGUAL           : 
 MOD                  : 
-MODULO               : 
-MULTI                : 
+MODULO               : 16
+MULTI                : 14
 MUT                  : 
 NEW                  : 
 NOT                  : 
 OR                   : 
-PD                   : 5 6 7 8
-PI                   : 5 6 7 8
-POW                  : 
-POWF                 : 
+PD                   : 5 6 7 8 17 18
+PI                   : 5 6 7 8 17 18
+POW                  : 18
+POWF                 : 17
 PRINT                : 6 8
 PRINTLN              : 5 7
 PUBLICO              : 
@@ -155,7 +155,7 @@ PUSH                 :
 PYC                  : 5 6 7 8
 REFER                : 
 REMOVE               : 
-RESTA                : 
+RESTA                : 13
 RETURN               : 
 SQRT                 : 
 STRUCT               : 
@@ -176,7 +176,7 @@ error                :
 
 Nonterminals, with rules where they appear
 
-expresiones          : 9 10 12 12
+expresiones          : 9 10 12 12 13 13 14 14 15 15 16 16 17 17 18 18
 impresion_valores    : 7 8 9
 impresiones          : 4
 init                 : 0
@@ -319,17 +319,29 @@ state 13
     (10) impresion_valores -> . expresiones
     (11) expresiones -> .
     (12) expresiones -> . expresiones SUMA expresiones
-    (13) expresiones -> . ID
-    (14) expresiones -> . ENTERO
-    (15) expresiones -> . FLOAT
-    (16) expresiones -> . CADENA
+    (13) expresiones -> . expresiones RESTA expresiones
+    (14) expresiones -> . expresiones MULTI expresiones
+    (15) expresiones -> . expresiones DIVI expresiones
+    (16) expresiones -> . expresiones MODULO expresiones
+    (17) expresiones -> . POWF PI expresiones COMA expresiones PD
+    (18) expresiones -> . POW PI expresiones COMA expresiones PD
+    (19) expresiones -> . ID
+    (20) expresiones -> . ENTERO
+    (21) expresiones -> . FLOAT
+    (22) expresiones -> . CADENA
 
     SUMA            reduce using rule 11 (expresiones -> .)
+    RESTA           reduce using rule 11 (expresiones -> .)
+    MULTI           reduce using rule 11 (expresiones -> .)
+    DIVI            reduce using rule 11 (expresiones -> .)
+    MODULO          reduce using rule 11 (expresiones -> .)
     PD              reduce using rule 11 (expresiones -> .)
     COMA            reduce using rule 11 (expresiones -> .)
-    ID              shift and go to state 20
-    ENTERO          shift and go to state 21
-    FLOAT           shift and go to state 22
+    POWF            shift and go to state 20
+    POW             shift and go to state 21
+    ID              shift and go to state 22
+    ENTERO          shift and go to state 23
+    FLOAT           shift and go to state 24
     CADENA          shift and go to state 17
 
     impresion_valores              shift and go to state 18
@@ -339,7 +351,7 @@ state 14
 
     (6) impresiones -> PRINT PI CADENA PD . PYC
 
-    PYC             shift and go to state 23
+    PYC             shift and go to state 25
 
 
 state 15
@@ -349,20 +361,32 @@ state 15
     (10) impresion_valores -> . expresiones
     (11) expresiones -> .
     (12) expresiones -> . expresiones SUMA expresiones
-    (13) expresiones -> . ID
-    (14) expresiones -> . ENTERO
-    (15) expresiones -> . FLOAT
-    (16) expresiones -> . CADENA
+    (13) expresiones -> . expresiones RESTA expresiones
+    (14) expresiones -> . expresiones MULTI expresiones
+    (15) expresiones -> . expresiones DIVI expresiones
+    (16) expresiones -> . expresiones MODULO expresiones
+    (17) expresiones -> . POWF PI expresiones COMA expresiones PD
+    (18) expresiones -> . POW PI expresiones COMA expresiones PD
+    (19) expresiones -> . ID
+    (20) expresiones -> . ENTERO
+    (21) expresiones -> . FLOAT
+    (22) expresiones -> . CADENA
 
     SUMA            reduce using rule 11 (expresiones -> .)
+    RESTA           reduce using rule 11 (expresiones -> .)
+    MULTI           reduce using rule 11 (expresiones -> .)
+    DIVI            reduce using rule 11 (expresiones -> .)
+    MODULO          reduce using rule 11 (expresiones -> .)
     PD              reduce using rule 11 (expresiones -> .)
     COMA            reduce using rule 11 (expresiones -> .)
-    ID              shift and go to state 20
-    ENTERO          shift and go to state 21
-    FLOAT           shift and go to state 22
+    POWF            shift and go to state 20
+    POW             shift and go to state 21
+    ID              shift and go to state 22
+    ENTERO          shift and go to state 23
+    FLOAT           shift and go to state 24
     CADENA          shift and go to state 17
 
-    impresion_valores              shift and go to state 24
+    impresion_valores              shift and go to state 26
     expresiones                    shift and go to state 19
 
 state 16
@@ -376,11 +400,15 @@ state 16
 
 state 17
 
-    (16) expresiones -> CADENA .
+    (22) expresiones -> CADENA .
 
-    SUMA            reduce using rule 16 (expresiones -> CADENA .)
-    PD              reduce using rule 16 (expresiones -> CADENA .)
-    COMA            reduce using rule 16 (expresiones -> CADENA .)
+    SUMA            reduce using rule 22 (expresiones -> CADENA .)
+    RESTA           reduce using rule 22 (expresiones -> CADENA .)
+    MULTI           reduce using rule 22 (expresiones -> CADENA .)
+    DIVI            reduce using rule 22 (expresiones -> CADENA .)
+    MODULO          reduce using rule 22 (expresiones -> CADENA .)
+    PD              reduce using rule 22 (expresiones -> CADENA .)
+    COMA            reduce using rule 22 (expresiones -> CADENA .)
 
 
 state 18
@@ -388,48 +416,82 @@ state 18
     (7) impresiones -> PRINTLN PI CADENA COMA impresion_valores . PD PYC
     (9) impresion_valores -> impresion_valores . COMA expresiones
 
-    PD              shift and go to state 26
-    COMA            shift and go to state 25
+    PD              shift and go to state 28
+    COMA            shift and go to state 27
 
 
 state 19
 
     (10) impresion_valores -> expresiones .
     (12) expresiones -> expresiones . SUMA expresiones
+    (13) expresiones -> expresiones . RESTA expresiones
+    (14) expresiones -> expresiones . MULTI expresiones
+    (15) expresiones -> expresiones . DIVI expresiones
+    (16) expresiones -> expresiones . MODULO expresiones
 
     PD              reduce using rule 10 (impresion_valores -> expresiones .)
     COMA            reduce using rule 10 (impresion_valores -> expresiones .)
-    SUMA            shift and go to state 27
+    SUMA            shift and go to state 29
+    RESTA           shift and go to state 30
+    MULTI           shift and go to state 31
+    DIVI            shift and go to state 32
+    MODULO          shift and go to state 33
 
 
 state 20
 
-    (13) expresiones -> ID .
+    (17) expresiones -> POWF . PI expresiones COMA expresiones PD
 
-    SUMA            reduce using rule 13 (expresiones -> ID .)
-    PD              reduce using rule 13 (expresiones -> ID .)
-    COMA            reduce using rule 13 (expresiones -> ID .)
+    PI              shift and go to state 34
 
 
 state 21
 
-    (14) expresiones -> ENTERO .
+    (18) expresiones -> POW . PI expresiones COMA expresiones PD
 
-    SUMA            reduce using rule 14 (expresiones -> ENTERO .)
-    PD              reduce using rule 14 (expresiones -> ENTERO .)
-    COMA            reduce using rule 14 (expresiones -> ENTERO .)
+    PI              shift and go to state 35
 
 
 state 22
 
-    (15) expresiones -> FLOAT .
+    (19) expresiones -> ID .
 
-    SUMA            reduce using rule 15 (expresiones -> FLOAT .)
-    PD              reduce using rule 15 (expresiones -> FLOAT .)
-    COMA            reduce using rule 15 (expresiones -> FLOAT .)
+    SUMA            reduce using rule 19 (expresiones -> ID .)
+    RESTA           reduce using rule 19 (expresiones -> ID .)
+    MULTI           reduce using rule 19 (expresiones -> ID .)
+    DIVI            reduce using rule 19 (expresiones -> ID .)
+    MODULO          reduce using rule 19 (expresiones -> ID .)
+    PD              reduce using rule 19 (expresiones -> ID .)
+    COMA            reduce using rule 19 (expresiones -> ID .)
 
 
 state 23
+
+    (20) expresiones -> ENTERO .
+
+    SUMA            reduce using rule 20 (expresiones -> ENTERO .)
+    RESTA           reduce using rule 20 (expresiones -> ENTERO .)
+    MULTI           reduce using rule 20 (expresiones -> ENTERO .)
+    DIVI            reduce using rule 20 (expresiones -> ENTERO .)
+    MODULO          reduce using rule 20 (expresiones -> ENTERO .)
+    PD              reduce using rule 20 (expresiones -> ENTERO .)
+    COMA            reduce using rule 20 (expresiones -> ENTERO .)
+
+
+state 24
+
+    (21) expresiones -> FLOAT .
+
+    SUMA            reduce using rule 21 (expresiones -> FLOAT .)
+    RESTA           reduce using rule 21 (expresiones -> FLOAT .)
+    MULTI           reduce using rule 21 (expresiones -> FLOAT .)
+    DIVI            reduce using rule 21 (expresiones -> FLOAT .)
+    MODULO          reduce using rule 21 (expresiones -> FLOAT .)
+    PD              reduce using rule 21 (expresiones -> FLOAT .)
+    COMA            reduce using rule 21 (expresiones -> FLOAT .)
+
+
+state 25
 
     (6) impresiones -> PRINT PI CADENA PD PYC .
 
@@ -438,80 +500,302 @@ state 23
     $end            reduce using rule 6 (impresiones -> PRINT PI CADENA PD PYC .)
 
 
-state 24
+state 26
 
     (8) impresiones -> PRINT PI CADENA COMA impresion_valores . PD PYC
     (9) impresion_valores -> impresion_valores . COMA expresiones
 
-    PD              shift and go to state 28
-    COMA            shift and go to state 25
-
-
-state 25
-
-    (9) impresion_valores -> impresion_valores COMA . expresiones
-    (11) expresiones -> .
-    (12) expresiones -> . expresiones SUMA expresiones
-    (13) expresiones -> . ID
-    (14) expresiones -> . ENTERO
-    (15) expresiones -> . FLOAT
-    (16) expresiones -> . CADENA
-
-    SUMA            reduce using rule 11 (expresiones -> .)
-    PD              reduce using rule 11 (expresiones -> .)
-    COMA            reduce using rule 11 (expresiones -> .)
-    ID              shift and go to state 20
-    ENTERO          shift and go to state 21
-    FLOAT           shift and go to state 22
-    CADENA          shift and go to state 17
-
-    expresiones                    shift and go to state 29
-
-state 26
-
-    (7) impresiones -> PRINTLN PI CADENA COMA impresion_valores PD . PYC
-
-    PYC             shift and go to state 30
+    PD              shift and go to state 36
+    COMA            shift and go to state 27
 
 
 state 27
 
-    (12) expresiones -> expresiones SUMA . expresiones
+    (9) impresion_valores -> impresion_valores COMA . expresiones
     (11) expresiones -> .
     (12) expresiones -> . expresiones SUMA expresiones
-    (13) expresiones -> . ID
-    (14) expresiones -> . ENTERO
-    (15) expresiones -> . FLOAT
-    (16) expresiones -> . CADENA
+    (13) expresiones -> . expresiones RESTA expresiones
+    (14) expresiones -> . expresiones MULTI expresiones
+    (15) expresiones -> . expresiones DIVI expresiones
+    (16) expresiones -> . expresiones MODULO expresiones
+    (17) expresiones -> . POWF PI expresiones COMA expresiones PD
+    (18) expresiones -> . POW PI expresiones COMA expresiones PD
+    (19) expresiones -> . ID
+    (20) expresiones -> . ENTERO
+    (21) expresiones -> . FLOAT
+    (22) expresiones -> . CADENA
 
     SUMA            reduce using rule 11 (expresiones -> .)
+    RESTA           reduce using rule 11 (expresiones -> .)
+    MULTI           reduce using rule 11 (expresiones -> .)
+    DIVI            reduce using rule 11 (expresiones -> .)
+    MODULO          reduce using rule 11 (expresiones -> .)
     PD              reduce using rule 11 (expresiones -> .)
     COMA            reduce using rule 11 (expresiones -> .)
-    ID              shift and go to state 20
-    ENTERO          shift and go to state 21
-    FLOAT           shift and go to state 22
+    POWF            shift and go to state 20
+    POW             shift and go to state 21
+    ID              shift and go to state 22
+    ENTERO          shift and go to state 23
+    FLOAT           shift and go to state 24
     CADENA          shift and go to state 17
 
-    expresiones                    shift and go to state 31
+    expresiones                    shift and go to state 37
 
 state 28
 
-    (8) impresiones -> PRINT PI CADENA COMA impresion_valores PD . PYC
+    (7) impresiones -> PRINTLN PI CADENA COMA impresion_valores PD . PYC
 
-    PYC             shift and go to state 32
+    PYC             shift and go to state 38
 
 
 state 29
 
+    (12) expresiones -> expresiones SUMA . expresiones
+    (11) expresiones -> .
+    (12) expresiones -> . expresiones SUMA expresiones
+    (13) expresiones -> . expresiones RESTA expresiones
+    (14) expresiones -> . expresiones MULTI expresiones
+    (15) expresiones -> . expresiones DIVI expresiones
+    (16) expresiones -> . expresiones MODULO expresiones
+    (17) expresiones -> . POWF PI expresiones COMA expresiones PD
+    (18) expresiones -> . POW PI expresiones COMA expresiones PD
+    (19) expresiones -> . ID
+    (20) expresiones -> . ENTERO
+    (21) expresiones -> . FLOAT
+    (22) expresiones -> . CADENA
+
+    SUMA            reduce using rule 11 (expresiones -> .)
+    RESTA           reduce using rule 11 (expresiones -> .)
+    MULTI           reduce using rule 11 (expresiones -> .)
+    DIVI            reduce using rule 11 (expresiones -> .)
+    MODULO          reduce using rule 11 (expresiones -> .)
+    PD              reduce using rule 11 (expresiones -> .)
+    COMA            reduce using rule 11 (expresiones -> .)
+    POWF            shift and go to state 20
+    POW             shift and go to state 21
+    ID              shift and go to state 22
+    ENTERO          shift and go to state 23
+    FLOAT           shift and go to state 24
+    CADENA          shift and go to state 17
+
+    expresiones                    shift and go to state 39
+
+state 30
+
+    (13) expresiones -> expresiones RESTA . expresiones
+    (11) expresiones -> .
+    (12) expresiones -> . expresiones SUMA expresiones
+    (13) expresiones -> . expresiones RESTA expresiones
+    (14) expresiones -> . expresiones MULTI expresiones
+    (15) expresiones -> . expresiones DIVI expresiones
+    (16) expresiones -> . expresiones MODULO expresiones
+    (17) expresiones -> . POWF PI expresiones COMA expresiones PD
+    (18) expresiones -> . POW PI expresiones COMA expresiones PD
+    (19) expresiones -> . ID
+    (20) expresiones -> . ENTERO
+    (21) expresiones -> . FLOAT
+    (22) expresiones -> . CADENA
+
+    SUMA            reduce using rule 11 (expresiones -> .)
+    RESTA           reduce using rule 11 (expresiones -> .)
+    MULTI           reduce using rule 11 (expresiones -> .)
+    DIVI            reduce using rule 11 (expresiones -> .)
+    MODULO          reduce using rule 11 (expresiones -> .)
+    PD              reduce using rule 11 (expresiones -> .)
+    COMA            reduce using rule 11 (expresiones -> .)
+    POWF            shift and go to state 20
+    POW             shift and go to state 21
+    ID              shift and go to state 22
+    ENTERO          shift and go to state 23
+    FLOAT           shift and go to state 24
+    CADENA          shift and go to state 17
+
+    expresiones                    shift and go to state 40
+
+state 31
+
+    (14) expresiones -> expresiones MULTI . expresiones
+    (11) expresiones -> .
+    (12) expresiones -> . expresiones SUMA expresiones
+    (13) expresiones -> . expresiones RESTA expresiones
+    (14) expresiones -> . expresiones MULTI expresiones
+    (15) expresiones -> . expresiones DIVI expresiones
+    (16) expresiones -> . expresiones MODULO expresiones
+    (17) expresiones -> . POWF PI expresiones COMA expresiones PD
+    (18) expresiones -> . POW PI expresiones COMA expresiones PD
+    (19) expresiones -> . ID
+    (20) expresiones -> . ENTERO
+    (21) expresiones -> . FLOAT
+    (22) expresiones -> . CADENA
+
+    SUMA            reduce using rule 11 (expresiones -> .)
+    RESTA           reduce using rule 11 (expresiones -> .)
+    MULTI           reduce using rule 11 (expresiones -> .)
+    DIVI            reduce using rule 11 (expresiones -> .)
+    MODULO          reduce using rule 11 (expresiones -> .)
+    PD              reduce using rule 11 (expresiones -> .)
+    COMA            reduce using rule 11 (expresiones -> .)
+    POWF            shift and go to state 20
+    POW             shift and go to state 21
+    ID              shift and go to state 22
+    ENTERO          shift and go to state 23
+    FLOAT           shift and go to state 24
+    CADENA          shift and go to state 17
+
+    expresiones                    shift and go to state 41
+
+state 32
+
+    (15) expresiones -> expresiones DIVI . expresiones
+    (11) expresiones -> .
+    (12) expresiones -> . expresiones SUMA expresiones
+    (13) expresiones -> . expresiones RESTA expresiones
+    (14) expresiones -> . expresiones MULTI expresiones
+    (15) expresiones -> . expresiones DIVI expresiones
+    (16) expresiones -> . expresiones MODULO expresiones
+    (17) expresiones -> . POWF PI expresiones COMA expresiones PD
+    (18) expresiones -> . POW PI expresiones COMA expresiones PD
+    (19) expresiones -> . ID
+    (20) expresiones -> . ENTERO
+    (21) expresiones -> . FLOAT
+    (22) expresiones -> . CADENA
+
+    SUMA            reduce using rule 11 (expresiones -> .)
+    RESTA           reduce using rule 11 (expresiones -> .)
+    MULTI           reduce using rule 11 (expresiones -> .)
+    DIVI            reduce using rule 11 (expresiones -> .)
+    MODULO          reduce using rule 11 (expresiones -> .)
+    PD              reduce using rule 11 (expresiones -> .)
+    COMA            reduce using rule 11 (expresiones -> .)
+    POWF            shift and go to state 20
+    POW             shift and go to state 21
+    ID              shift and go to state 22
+    ENTERO          shift and go to state 23
+    FLOAT           shift and go to state 24
+    CADENA          shift and go to state 17
+
+    expresiones                    shift and go to state 42
+
+state 33
+
+    (16) expresiones -> expresiones MODULO . expresiones
+    (11) expresiones -> .
+    (12) expresiones -> . expresiones SUMA expresiones
+    (13) expresiones -> . expresiones RESTA expresiones
+    (14) expresiones -> . expresiones MULTI expresiones
+    (15) expresiones -> . expresiones DIVI expresiones
+    (16) expresiones -> . expresiones MODULO expresiones
+    (17) expresiones -> . POWF PI expresiones COMA expresiones PD
+    (18) expresiones -> . POW PI expresiones COMA expresiones PD
+    (19) expresiones -> . ID
+    (20) expresiones -> . ENTERO
+    (21) expresiones -> . FLOAT
+    (22) expresiones -> . CADENA
+
+    SUMA            reduce using rule 11 (expresiones -> .)
+    RESTA           reduce using rule 11 (expresiones -> .)
+    MULTI           reduce using rule 11 (expresiones -> .)
+    DIVI            reduce using rule 11 (expresiones -> .)
+    MODULO          reduce using rule 11 (expresiones -> .)
+    PD              reduce using rule 11 (expresiones -> .)
+    COMA            reduce using rule 11 (expresiones -> .)
+    POWF            shift and go to state 20
+    POW             shift and go to state 21
+    ID              shift and go to state 22
+    ENTERO          shift and go to state 23
+    FLOAT           shift and go to state 24
+    CADENA          shift and go to state 17
+
+    expresiones                    shift and go to state 43
+
+state 34
+
+    (17) expresiones -> POWF PI . expresiones COMA expresiones PD
+    (11) expresiones -> .
+    (12) expresiones -> . expresiones SUMA expresiones
+    (13) expresiones -> . expresiones RESTA expresiones
+    (14) expresiones -> . expresiones MULTI expresiones
+    (15) expresiones -> . expresiones DIVI expresiones
+    (16) expresiones -> . expresiones MODULO expresiones
+    (17) expresiones -> . POWF PI expresiones COMA expresiones PD
+    (18) expresiones -> . POW PI expresiones COMA expresiones PD
+    (19) expresiones -> . ID
+    (20) expresiones -> . ENTERO
+    (21) expresiones -> . FLOAT
+    (22) expresiones -> . CADENA
+
+    COMA            reduce using rule 11 (expresiones -> .)
+    SUMA            reduce using rule 11 (expresiones -> .)
+    RESTA           reduce using rule 11 (expresiones -> .)
+    MULTI           reduce using rule 11 (expresiones -> .)
+    DIVI            reduce using rule 11 (expresiones -> .)
+    MODULO          reduce using rule 11 (expresiones -> .)
+    POWF            shift and go to state 20
+    POW             shift and go to state 21
+    ID              shift and go to state 22
+    ENTERO          shift and go to state 23
+    FLOAT           shift and go to state 24
+    CADENA          shift and go to state 17
+
+    expresiones                    shift and go to state 44
+
+state 35
+
+    (18) expresiones -> POW PI . expresiones COMA expresiones PD
+    (11) expresiones -> .
+    (12) expresiones -> . expresiones SUMA expresiones
+    (13) expresiones -> . expresiones RESTA expresiones
+    (14) expresiones -> . expresiones MULTI expresiones
+    (15) expresiones -> . expresiones DIVI expresiones
+    (16) expresiones -> . expresiones MODULO expresiones
+    (17) expresiones -> . POWF PI expresiones COMA expresiones PD
+    (18) expresiones -> . POW PI expresiones COMA expresiones PD
+    (19) expresiones -> . ID
+    (20) expresiones -> . ENTERO
+    (21) expresiones -> . FLOAT
+    (22) expresiones -> . CADENA
+
+    COMA            reduce using rule 11 (expresiones -> .)
+    SUMA            reduce using rule 11 (expresiones -> .)
+    RESTA           reduce using rule 11 (expresiones -> .)
+    MULTI           reduce using rule 11 (expresiones -> .)
+    DIVI            reduce using rule 11 (expresiones -> .)
+    MODULO          reduce using rule 11 (expresiones -> .)
+    POWF            shift and go to state 20
+    POW             shift and go to state 21
+    ID              shift and go to state 22
+    ENTERO          shift and go to state 23
+    FLOAT           shift and go to state 24
+    CADENA          shift and go to state 17
+
+    expresiones                    shift and go to state 45
+
+state 36
+
+    (8) impresiones -> PRINT PI CADENA COMA impresion_valores PD . PYC
+
+    PYC             shift and go to state 46
+
+
+state 37
+
     (9) impresion_valores -> impresion_valores COMA expresiones .
     (12) expresiones -> expresiones . SUMA expresiones
+    (13) expresiones -> expresiones . RESTA expresiones
+    (14) expresiones -> expresiones . MULTI expresiones
+    (15) expresiones -> expresiones . DIVI expresiones
+    (16) expresiones -> expresiones . MODULO expresiones
 
     PD              reduce using rule 9 (impresion_valores -> impresion_valores COMA expresiones .)
     COMA            reduce using rule 9 (impresion_valores -> impresion_valores COMA expresiones .)
-    SUMA            shift and go to state 27
+    SUMA            shift and go to state 29
+    RESTA           shift and go to state 30
+    MULTI           shift and go to state 31
+    DIVI            shift and go to state 32
+    MODULO          shift and go to state 33
 
 
-state 30
+state 38
 
     (7) impresiones -> PRINTLN PI CADENA COMA impresion_valores PD PYC .
 
@@ -520,23 +804,287 @@ state 30
     $end            reduce using rule 7 (impresiones -> PRINTLN PI CADENA COMA impresion_valores PD PYC .)
 
 
-state 31
+state 39
 
     (12) expresiones -> expresiones SUMA expresiones .
     (12) expresiones -> expresiones . SUMA expresiones
+    (13) expresiones -> expresiones . RESTA expresiones
+    (14) expresiones -> expresiones . MULTI expresiones
+    (15) expresiones -> expresiones . DIVI expresiones
+    (16) expresiones -> expresiones . MODULO expresiones
 
     SUMA            reduce using rule 12 (expresiones -> expresiones SUMA expresiones .)
+    RESTA           reduce using rule 12 (expresiones -> expresiones SUMA expresiones .)
     PD              reduce using rule 12 (expresiones -> expresiones SUMA expresiones .)
     COMA            reduce using rule 12 (expresiones -> expresiones SUMA expresiones .)
+    MULTI           shift and go to state 31
+    DIVI            shift and go to state 32
+    MODULO          shift and go to state 33
 
-  ! SUMA            [ shift and go to state 27 ]
+  ! MULTI           [ reduce using rule 12 (expresiones -> expresiones SUMA expresiones .) ]
+  ! DIVI            [ reduce using rule 12 (expresiones -> expresiones SUMA expresiones .) ]
+  ! MODULO          [ reduce using rule 12 (expresiones -> expresiones SUMA expresiones .) ]
+  ! SUMA            [ shift and go to state 29 ]
+  ! RESTA           [ shift and go to state 30 ]
 
 
-state 32
+state 40
+
+    (13) expresiones -> expresiones RESTA expresiones .
+    (12) expresiones -> expresiones . SUMA expresiones
+    (13) expresiones -> expresiones . RESTA expresiones
+    (14) expresiones -> expresiones . MULTI expresiones
+    (15) expresiones -> expresiones . DIVI expresiones
+    (16) expresiones -> expresiones . MODULO expresiones
+
+    SUMA            reduce using rule 13 (expresiones -> expresiones RESTA expresiones .)
+    RESTA           reduce using rule 13 (expresiones -> expresiones RESTA expresiones .)
+    PD              reduce using rule 13 (expresiones -> expresiones RESTA expresiones .)
+    COMA            reduce using rule 13 (expresiones -> expresiones RESTA expresiones .)
+    MULTI           shift and go to state 31
+    DIVI            shift and go to state 32
+    MODULO          shift and go to state 33
+
+  ! MULTI           [ reduce using rule 13 (expresiones -> expresiones RESTA expresiones .) ]
+  ! DIVI            [ reduce using rule 13 (expresiones -> expresiones RESTA expresiones .) ]
+  ! MODULO          [ reduce using rule 13 (expresiones -> expresiones RESTA expresiones .) ]
+  ! SUMA            [ shift and go to state 29 ]
+  ! RESTA           [ shift and go to state 30 ]
+
+
+state 41
+
+    (14) expresiones -> expresiones MULTI expresiones .
+    (12) expresiones -> expresiones . SUMA expresiones
+    (13) expresiones -> expresiones . RESTA expresiones
+    (14) expresiones -> expresiones . MULTI expresiones
+    (15) expresiones -> expresiones . DIVI expresiones
+    (16) expresiones -> expresiones . MODULO expresiones
+
+    SUMA            reduce using rule 14 (expresiones -> expresiones MULTI expresiones .)
+    RESTA           reduce using rule 14 (expresiones -> expresiones MULTI expresiones .)
+    MULTI           reduce using rule 14 (expresiones -> expresiones MULTI expresiones .)
+    DIVI            reduce using rule 14 (expresiones -> expresiones MULTI expresiones .)
+    PD              reduce using rule 14 (expresiones -> expresiones MULTI expresiones .)
+    COMA            reduce using rule 14 (expresiones -> expresiones MULTI expresiones .)
+    MODULO          shift and go to state 33
+
+  ! MODULO          [ reduce using rule 14 (expresiones -> expresiones MULTI expresiones .) ]
+  ! SUMA            [ shift and go to state 29 ]
+  ! RESTA           [ shift and go to state 30 ]
+  ! MULTI           [ shift and go to state 31 ]
+  ! DIVI            [ shift and go to state 32 ]
+
+
+state 42
+
+    (15) expresiones -> expresiones DIVI expresiones .
+    (12) expresiones -> expresiones . SUMA expresiones
+    (13) expresiones -> expresiones . RESTA expresiones
+    (14) expresiones -> expresiones . MULTI expresiones
+    (15) expresiones -> expresiones . DIVI expresiones
+    (16) expresiones -> expresiones . MODULO expresiones
+
+    SUMA            reduce using rule 15 (expresiones -> expresiones DIVI expresiones .)
+    RESTA           reduce using rule 15 (expresiones -> expresiones DIVI expresiones .)
+    MULTI           reduce using rule 15 (expresiones -> expresiones DIVI expresiones .)
+    DIVI            reduce using rule 15 (expresiones -> expresiones DIVI expresiones .)
+    PD              reduce using rule 15 (expresiones -> expresiones DIVI expresiones .)
+    COMA            reduce using rule 15 (expresiones -> expresiones DIVI expresiones .)
+    MODULO          shift and go to state 33
+
+  ! MODULO          [ reduce using rule 15 (expresiones -> expresiones DIVI expresiones .) ]
+  ! SUMA            [ shift and go to state 29 ]
+  ! RESTA           [ shift and go to state 30 ]
+  ! MULTI           [ shift and go to state 31 ]
+  ! DIVI            [ shift and go to state 32 ]
+
+
+state 43
+
+    (16) expresiones -> expresiones MODULO expresiones .
+    (12) expresiones -> expresiones . SUMA expresiones
+    (13) expresiones -> expresiones . RESTA expresiones
+    (14) expresiones -> expresiones . MULTI expresiones
+    (15) expresiones -> expresiones . DIVI expresiones
+    (16) expresiones -> expresiones . MODULO expresiones
+
+    SUMA            reduce using rule 16 (expresiones -> expresiones MODULO expresiones .)
+    RESTA           reduce using rule 16 (expresiones -> expresiones MODULO expresiones .)
+    MULTI           reduce using rule 16 (expresiones -> expresiones MODULO expresiones .)
+    DIVI            reduce using rule 16 (expresiones -> expresiones MODULO expresiones .)
+    MODULO          reduce using rule 16 (expresiones -> expresiones MODULO expresiones .)
+    PD              reduce using rule 16 (expresiones -> expresiones MODULO expresiones .)
+    COMA            reduce using rule 16 (expresiones -> expresiones MODULO expresiones .)
+
+  ! SUMA            [ shift and go to state 29 ]
+  ! RESTA           [ shift and go to state 30 ]
+  ! MULTI           [ shift and go to state 31 ]
+  ! DIVI            [ shift and go to state 32 ]
+  ! MODULO          [ shift and go to state 33 ]
+
+
+state 44
+
+    (17) expresiones -> POWF PI expresiones . COMA expresiones PD
+    (12) expresiones -> expresiones . SUMA expresiones
+    (13) expresiones -> expresiones . RESTA expresiones
+    (14) expresiones -> expresiones . MULTI expresiones
+    (15) expresiones -> expresiones . DIVI expresiones
+    (16) expresiones -> expresiones . MODULO expresiones
+
+    COMA            shift and go to state 47
+    SUMA            shift and go to state 29
+    RESTA           shift and go to state 30
+    MULTI           shift and go to state 31
+    DIVI            shift and go to state 32
+    MODULO          shift and go to state 33
+
+
+state 45
+
+    (18) expresiones -> POW PI expresiones . COMA expresiones PD
+    (12) expresiones -> expresiones . SUMA expresiones
+    (13) expresiones -> expresiones . RESTA expresiones
+    (14) expresiones -> expresiones . MULTI expresiones
+    (15) expresiones -> expresiones . DIVI expresiones
+    (16) expresiones -> expresiones . MODULO expresiones
+
+    COMA            shift and go to state 48
+    SUMA            shift and go to state 29
+    RESTA           shift and go to state 30
+    MULTI           shift and go to state 31
+    DIVI            shift and go to state 32
+    MODULO          shift and go to state 33
+
+
+state 46
 
     (8) impresiones -> PRINT PI CADENA COMA impresion_valores PD PYC .
 
     PRINTLN         reduce using rule 8 (impresiones -> PRINT PI CADENA COMA impresion_valores PD PYC .)
     PRINT           reduce using rule 8 (impresiones -> PRINT PI CADENA COMA impresion_valores PD PYC .)
     $end            reduce using rule 8 (impresiones -> PRINT PI CADENA COMA impresion_valores PD PYC .)
+
+
+state 47
+
+    (17) expresiones -> POWF PI expresiones COMA . expresiones PD
+    (11) expresiones -> .
+    (12) expresiones -> . expresiones SUMA expresiones
+    (13) expresiones -> . expresiones RESTA expresiones
+    (14) expresiones -> . expresiones MULTI expresiones
+    (15) expresiones -> . expresiones DIVI expresiones
+    (16) expresiones -> . expresiones MODULO expresiones
+    (17) expresiones -> . POWF PI expresiones COMA expresiones PD
+    (18) expresiones -> . POW PI expresiones COMA expresiones PD
+    (19) expresiones -> . ID
+    (20) expresiones -> . ENTERO
+    (21) expresiones -> . FLOAT
+    (22) expresiones -> . CADENA
+
+    PD              reduce using rule 11 (expresiones -> .)
+    SUMA            reduce using rule 11 (expresiones -> .)
+    RESTA           reduce using rule 11 (expresiones -> .)
+    MULTI           reduce using rule 11 (expresiones -> .)
+    DIVI            reduce using rule 11 (expresiones -> .)
+    MODULO          reduce using rule 11 (expresiones -> .)
+    POWF            shift and go to state 20
+    POW             shift and go to state 21
+    ID              shift and go to state 22
+    ENTERO          shift and go to state 23
+    FLOAT           shift and go to state 24
+    CADENA          shift and go to state 17
+
+    expresiones                    shift and go to state 49
+
+state 48
+
+    (18) expresiones -> POW PI expresiones COMA . expresiones PD
+    (11) expresiones -> .
+    (12) expresiones -> . expresiones SUMA expresiones
+    (13) expresiones -> . expresiones RESTA expresiones
+    (14) expresiones -> . expresiones MULTI expresiones
+    (15) expresiones -> . expresiones DIVI expresiones
+    (16) expresiones -> . expresiones MODULO expresiones
+    (17) expresiones -> . POWF PI expresiones COMA expresiones PD
+    (18) expresiones -> . POW PI expresiones COMA expresiones PD
+    (19) expresiones -> . ID
+    (20) expresiones -> . ENTERO
+    (21) expresiones -> . FLOAT
+    (22) expresiones -> . CADENA
+
+    PD              reduce using rule 11 (expresiones -> .)
+    SUMA            reduce using rule 11 (expresiones -> .)
+    RESTA           reduce using rule 11 (expresiones -> .)
+    MULTI           reduce using rule 11 (expresiones -> .)
+    DIVI            reduce using rule 11 (expresiones -> .)
+    MODULO          reduce using rule 11 (expresiones -> .)
+    POWF            shift and go to state 20
+    POW             shift and go to state 21
+    ID              shift and go to state 22
+    ENTERO          shift and go to state 23
+    FLOAT           shift and go to state 24
+    CADENA          shift and go to state 17
+
+    expresiones                    shift and go to state 50
+
+state 49
+
+    (17) expresiones -> POWF PI expresiones COMA expresiones . PD
+    (12) expresiones -> expresiones . SUMA expresiones
+    (13) expresiones -> expresiones . RESTA expresiones
+    (14) expresiones -> expresiones . MULTI expresiones
+    (15) expresiones -> expresiones . DIVI expresiones
+    (16) expresiones -> expresiones . MODULO expresiones
+
+    PD              shift and go to state 51
+    SUMA            shift and go to state 29
+    RESTA           shift and go to state 30
+    MULTI           shift and go to state 31
+    DIVI            shift and go to state 32
+    MODULO          shift and go to state 33
+
+
+state 50
+
+    (18) expresiones -> POW PI expresiones COMA expresiones . PD
+    (12) expresiones -> expresiones . SUMA expresiones
+    (13) expresiones -> expresiones . RESTA expresiones
+    (14) expresiones -> expresiones . MULTI expresiones
+    (15) expresiones -> expresiones . DIVI expresiones
+    (16) expresiones -> expresiones . MODULO expresiones
+
+    PD              shift and go to state 52
+    SUMA            shift and go to state 29
+    RESTA           shift and go to state 30
+    MULTI           shift and go to state 31
+    DIVI            shift and go to state 32
+    MODULO          shift and go to state 33
+
+
+state 51
+
+    (17) expresiones -> POWF PI expresiones COMA expresiones PD .
+
+    SUMA            reduce using rule 17 (expresiones -> POWF PI expresiones COMA expresiones PD .)
+    RESTA           reduce using rule 17 (expresiones -> POWF PI expresiones COMA expresiones PD .)
+    MULTI           reduce using rule 17 (expresiones -> POWF PI expresiones COMA expresiones PD .)
+    DIVI            reduce using rule 17 (expresiones -> POWF PI expresiones COMA expresiones PD .)
+    MODULO          reduce using rule 17 (expresiones -> POWF PI expresiones COMA expresiones PD .)
+    PD              reduce using rule 17 (expresiones -> POWF PI expresiones COMA expresiones PD .)
+    COMA            reduce using rule 17 (expresiones -> POWF PI expresiones COMA expresiones PD .)
+
+
+state 52
+
+    (18) expresiones -> POW PI expresiones COMA expresiones PD .
+
+    SUMA            reduce using rule 18 (expresiones -> POW PI expresiones COMA expresiones PD .)
+    RESTA           reduce using rule 18 (expresiones -> POW PI expresiones COMA expresiones PD .)
+    MULTI           reduce using rule 18 (expresiones -> POW PI expresiones COMA expresiones PD .)
+    DIVI            reduce using rule 18 (expresiones -> POW PI expresiones COMA expresiones PD .)
+    MODULO          reduce using rule 18 (expresiones -> POW PI expresiones COMA expresiones PD .)
+    PD              reduce using rule 18 (expresiones -> POW PI expresiones COMA expresiones PD .)
+    COMA            reduce using rule 18 (expresiones -> POW PI expresiones COMA expresiones PD .)
 

@@ -11,14 +11,64 @@ class Aritmetica(Operacion, Expresion):
         valor_exp1 = self.exp1.ObtenerValor(controlador, ts)
         valor_exp2 = self.exp2.ObtenerValor(controlador, ts)
 
-        tipo_exp1 = type(self.exp1.ObtenerValor(controlador, ts))
-        tipo_exp2 = type(self.exp2.ObtenerValor(controlador, ts))
-
         if self.operador == operador.SUMA:
-            if tipo_exp1 == tipo_exp2:
-                return valor_exp1 + valor_exp2
+
+            if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
+                return int(valor_exp1 + valor_exp2)
+            elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+                return float(valor_exp1 + valor_exp2)
             else:
-                return "Error no son iguales"
+                return "No son el mismo formato"
+
+        elif self.operador == operador.RESTA:
+
+            if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
+                return int(valor_exp1 - valor_exp2)
+            elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+                return float(valor_exp1 - valor_exp2)
+            else:
+                return "No son el mismo formato"
+
+        elif self.operador == operador.MULTIPLICACION:
+
+            if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
+                return int(valor_exp1 * valor_exp2)
+            elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+                return float(valor_exp1 * valor_exp2)
+            else:
+                return "No son el mismo formato"
+
+        elif self.operador == operador.DIVISION:
+
+            if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
+                return int(valor_exp1 / valor_exp2)
+            elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+                return float(valor_exp1 / valor_exp2)
+            else:
+                return "No son el mismo formato"
+
+        elif self.operador == operador.MOD:
+
+            if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
+                return int(valor_exp1 % valor_exp2)
+            elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+                return float(valor_exp1 % valor_exp2)
+            else:
+                return "No son el mismo formato"
+
+        elif self.operador == operador.POT:
+
+            if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
+                return int(valor_exp1 ** valor_exp2)
+            else:
+                return "No son el mismo formato"
+
+        elif self.operador == operador.POTF:
+
+            if isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+                return float(valor_exp1 ** valor_exp2)
+            else:
+                return "No son el mismo formato"
 
     def ObtenerTipo(self, controlador, ts):
         valor_exp1 = self.exp1.ObtenerValor(controlador, ts)
@@ -32,7 +82,11 @@ class Aritmetica(Operacion, Expresion):
             if self.validacion_tipos(valor_exp1, valor_exp2):
                 return tipo.DECIMAL
 
-    def validacion_tipos(self,valor_exp1, valor_exp2):
+        elif isinstance(valor_exp1, str):
+            if self.validacion_tipos(valor_exp1, valor_exp2):
+                return tipo.CADENA
+
+    def validacion_tipos(self, valor_exp1, valor_exp2):
         if type(valor_exp1) == type(valor_exp2):
             return True
 

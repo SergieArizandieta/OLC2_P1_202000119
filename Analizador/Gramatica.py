@@ -232,11 +232,14 @@ def t_error(t):
 import ply.lex as lex
 
 lexer = lex.lex()
-
+#procedencia
 # Asociación de operadores y precedencia
 precedence = (
     #('right','CONCAT'),
     ('left','SUMA','RESTA'),
+    ('left','MULTI','DIVI'),
+    ('left','MODULO'),
+    ('right','POWF','POW')
     )
 
 
@@ -317,6 +320,12 @@ def p_imprimir_lista_valores(t):
 def p_expresiones(t):
     '''expresiones  :
                     | expresiones SUMA expresiones
+                    | expresiones RESTA expresiones
+                    | expresiones MULTI expresiones
+                    | expresiones DIVI expresiones
+                    | expresiones MODULO expresiones
+                    | POWF PI expresiones COMA expresiones PD
+                    | POW PI expresiones COMA expresiones PD
                     | ID
                     | ENTERO
                     | FLOAT
@@ -335,8 +344,14 @@ def p_expresiones(t):
         elif isinstance(t[1],str):
             t[0] = Primitivo.Primitivo(t[1], 'CADENA')
     elif len(t)==4:
-        print("!!!!!=============== ", t[2])
         if t[2] == "+": t[0]= Aritmetica.Aritmetica(t[1],"+",t[3],False)
+        elif t[2] == "-": t[0]= Aritmetica.Aritmetica(t[1],"-",t[3],False)
+        elif t[2] == "*": t[0] = Aritmetica.Aritmetica(t[1], "*", t[3], False)
+        elif t[2] == "/": t[0] = Aritmetica.Aritmetica(t[1], "/", t[3], False)
+        elif t[2] == "%":t[0] = Aritmetica.Aritmetica(t[1], "%", t[3], False)
+    elif len(t) == 7:
+        if t[1] == "::pow": t[0] = Aritmetica.Aritmetica(t[3], "^", t[5], False)
+        elif t[1] == "::powf":t[0] = Aritmetica.Aritmetica(t[3], "^f", t[5], False)
 
 
 

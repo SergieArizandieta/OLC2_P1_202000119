@@ -20,6 +20,7 @@ class operador(Enum):
     OR=13,
     AND=14,
     NOT=15,
+    POTF = 16,
     Err= 100
 
 class Operacion(Expresion):
@@ -38,6 +39,7 @@ class Operacion(Expresion):
         pass
 
     def ObtenerOperador(self,signo_operador):
+        print("============= Signo valor ", signo_operador)
         if signo_operador == '+':
             return operador.SUMA
         elif signo_operador == '-':
@@ -47,7 +49,11 @@ class Operacion(Expresion):
         elif signo_operador == '/':
             return operador.DIVISION
         elif signo_operador == '^':
+            print("============= Se reconocio potencia normal")
             return operador.POT
+        elif signo_operador == '^f':
+            print("========== Se reconocio potencia norasdasdsadmal")
+            return operador.POTF
         elif signo_operador == '%':
             return operador.MOD
         elif signo_operador == 'UNARIO':
