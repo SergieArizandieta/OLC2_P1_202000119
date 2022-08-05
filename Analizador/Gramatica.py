@@ -234,12 +234,10 @@ import ply.lex as lex
 lexer = lex.lex()
 
 # Asociación de operadores y precedencia
-'''precedence = (
-    ('left','CONCAT'),
-    ('left','MAS','MENOS'),
-    ('left','POR','DIVIDIDO'),
-    ('right','UMENOS'),
-    )'''
+precedence = (
+    #('right','CONCAT'),
+    ('left','SUMA','RESTA'),
+    )
 
 
 # Definición de la gramática
@@ -266,10 +264,9 @@ def p_instruccion(t):
     t[0] = t[1]
 
 
-
 from AST.Expresion import Primitivo
 from AST.Instruccion import Imprimir
-
+from AST.Expresion.Operaciones import Aritmetica
 
 def p_instruccion_imprimir(t):
     '''impresiones     : PRINTLN PI CADENA PD PYC
@@ -318,7 +315,9 @@ def p_imprimir_lista_valores(t):
 
 
 def p_expresiones(t):
-    '''expresiones  : ID
+    '''expresiones  :
+                    | expresiones SUMA expresiones
+                    | ID
                     | ENTERO
                     | FLOAT
                     | CADENA'''
@@ -327,6 +326,7 @@ def p_expresiones(t):
     #print(t.lexpos(0))
     #print(t.lexpos(1))
 
+
     if len(t) == 2:
         if isinstance(t[1],int):
             t[0] = Primitivo.Primitivo(t[1], 'ENTERO')
@@ -334,6 +334,9 @@ def p_expresiones(t):
             t[0] = Primitivo.Primitivo(t[1], 'DECIMAL')
         elif isinstance(t[1],str):
             t[0] = Primitivo.Primitivo(t[1], 'CADENA')
+    elif len(t)==4:
+        print("!!!!!=============== ", t[2])
+        if t[2] == "+": t[0]= Aritmetica.Aritmetica(t[1],"+",t[3],False)
 
 
 

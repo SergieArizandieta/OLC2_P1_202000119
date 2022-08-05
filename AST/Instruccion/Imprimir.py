@@ -26,6 +26,9 @@ class Imprimir(Intruccion):
                         if i <= len(self.lista)-1:
                             texto_salida += str(self.lista[i].ObtenerValor(controlador,ts))
 
+                            #print("Obtener tipo: ", self.lista[i].ObtenerTipo(controlador, ts))
+
+
                 else:
                     # Error
                     pass
