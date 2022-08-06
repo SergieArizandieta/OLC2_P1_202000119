@@ -48,6 +48,24 @@ class Relacional(Operacion, Expresion ):
             else:
                 return "No son el mismo formato"
 
+        elif self.operador == operador.IGUALIGUAL:
+
+            if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
+                return valor_exp1 == valor_exp2
+            elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+                return valor_exp1 == valor_exp2
+            else:
+                return "No son el mismo formato"
+
+        elif self.operador == operador.DIFERENCIA:
+
+            if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
+                return valor_exp1 != valor_exp2
+            elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+                return valor_exp1 != valor_exp2
+            else:
+                return "No son el mismo formato"
+
 
 
     def ObtenerTipo(self, controlador, ts):

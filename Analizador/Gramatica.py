@@ -235,7 +235,7 @@ lexer = lex.lex()
 #procedencia
 # Asociación de operadores y precedencia
 precedence = (
-    ('left','MAYORIGUAL','MAYOR','MENORIGUAL','MENOR'),
+    ('left','MAYORIGUAL','MAYOR','MENORIGUAL','MENOR','IGUALDAD','DESIGUALDAD'),
     ('left','SUMA','RESTA'),
     ('left','MULTI','DIVI'),
     ('left','MODULO'),
@@ -330,6 +330,8 @@ def p_expresiones(t):
                     | expresiones MAYOR expresiones
                     | expresiones MENORIGUAL expresiones
                     | expresiones MENOR expresiones
+                    | expresiones IGUALDAD expresiones
+                    | expresiones DESIGUALDAD expresiones
                     | ID
                     | ENTERO
                     | FLOAT
@@ -358,6 +360,8 @@ def p_expresiones(t):
         elif t[2] == ">":t[0] = Relacional.Relacional(t[1], ">", t[3], False)
         elif t[2] == "<=":t[0] = Relacional.Relacional(t[1], "<=", t[3], False)
         elif t[2] == "<":t[0] = Relacional.Relacional(t[1], "<", t[3], False)
+        elif t[2] == "==":t[0] = Relacional.Relacional(t[1], "==", t[3], False)
+        elif t[2] == "!=":t[0] = Relacional.Relacional(t[1], "!=", t[3], False)
 
     elif len(t) == 7:
         if t[1] == "::pow": t[0] = Aritmetica.Aritmetica(t[3], "^", t[5], False)
