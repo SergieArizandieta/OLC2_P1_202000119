@@ -69,6 +69,7 @@ class Operacion(Expresion):
         elif signo_operador == '<=':
             return operador.MENORIGUAL
         elif signo_operador == '>=':
+            print("========== Se reconocio >=")
             return operador.MAYORIGUAL
         elif signo_operador == '||':
             return operador.OR

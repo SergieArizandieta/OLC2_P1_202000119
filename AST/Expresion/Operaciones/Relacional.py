@@ -15,11 +15,40 @@ class Relacional(Operacion, Expresion ):
         if self.operador == operador.MAYORIGUAL:
 
             if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
+                return valor_exp1 >= valor_exp2
+            elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+                return valor_exp1 >= valor_exp2
+            else:
+                return "No son el mismo formato"
+
+        elif self.operador == operador.MAYORQUE:
+
+            if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
                 return valor_exp1 > valor_exp2
             elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
                 return valor_exp1 > valor_exp2
             else:
                 return "No son el mismo formato"
+
+        elif self.operador == operador.MENORIGUAL:
+
+            if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
+                return valor_exp1 <= valor_exp2
+            elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+                return valor_exp1 <= valor_exp2
+            else:
+                return "No son el mismo formato"
+
+        elif self.operador == operador.MENORQUE:
+
+            if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
+                return valor_exp1 < valor_exp2
+            elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+                return valor_exp1 < valor_exp2
+            else:
+                return "No son el mismo formato"
+
+
 
     def ObtenerTipo(self, controlador, ts):
         valor_exp1 = self.exp1.ObtenerValor(controlador, ts)

@@ -235,7 +235,7 @@ lexer = lex.lex()
 #procedencia
 # Asociación de operadores y precedencia
 precedence = (
-    ('left','MAYORIGUAL'),
+    ('left','MAYORIGUAL','MAYOR','MENORIGUAL','MENOR'),
     ('left','SUMA','RESTA'),
     ('left','MULTI','DIVI'),
     ('left','MODULO'),
@@ -327,6 +327,9 @@ def p_expresiones(t):
                     | POWF PI expresiones COMA expresiones PD
                     | POW PI expresiones COMA expresiones PD
                     | expresiones MAYORIGUAL expresiones
+                    | expresiones MAYOR expresiones
+                    | expresiones MENORIGUAL expresiones
+                    | expresiones MENOR expresiones
                     | ID
                     | ENTERO
                     | FLOAT
@@ -351,7 +354,10 @@ def p_expresiones(t):
         elif t[2] == "*": t[0] = Aritmetica.Aritmetica(t[1], "*", t[3], False)
         elif t[2] == "/": t[0] = Aritmetica.Aritmetica(t[1], "/", t[3], False)
         elif t[2] == "%":t[0] = Aritmetica.Aritmetica(t[1], "%", t[3], False)
-        elif t[2] == ">=":t[0] = Relacional.Relacional(t[1], "%", t[3], False)
+        elif t[2] == ">=":t[0] = Relacional.Relacional(t[1], ">=", t[3], False)
+        elif t[2] == ">":t[0] = Relacional.Relacional(t[1], ">", t[3], False)
+        elif t[2] == "<=":t[0] = Relacional.Relacional(t[1], "<=", t[3], False)
+        elif t[2] == "<":t[0] = Relacional.Relacional(t[1], "<", t[3], False)
 
     elif len(t) == 7:
         if t[1] == "::pow": t[0] = Aritmetica.Aritmetica(t[3], "^", t[5], False)
