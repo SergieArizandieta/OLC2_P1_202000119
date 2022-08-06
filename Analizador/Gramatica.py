@@ -235,7 +235,7 @@ lexer = lex.lex()
 #procedencia
 # Asociación de operadores y precedencia
 precedence = (
-    #('right','CONCAT'),
+    ('left','MAYORIGUAL'),
     ('left','SUMA','RESTA'),
     ('left','MULTI','DIVI'),
     ('left','MODULO'),
@@ -269,7 +269,7 @@ def p_instruccion(t):
 
 from AST.Expresion import Primitivo
 from AST.Instruccion import Imprimir
-from AST.Expresion.Operaciones import Aritmetica
+from AST.Expresion.Operaciones import Aritmetica,Relacional
 
 def p_instruccion_imprimir(t):
     '''impresiones     : PRINTLN PI CADENA PD PYC
@@ -326,6 +326,7 @@ def p_expresiones(t):
                     | expresiones MODULO expresiones
                     | POWF PI expresiones COMA expresiones PD
                     | POW PI expresiones COMA expresiones PD
+                    | expresiones MAYORIGUAL expresiones
                     | ID
                     | ENTERO
                     | FLOAT
@@ -344,11 +345,14 @@ def p_expresiones(t):
         elif isinstance(t[1],str):
             t[0] = Primitivo.Primitivo(t[1], 'CADENA')
     elif len(t)==4:
+        print("!!!! caracter: ",t[2])
         if t[2] == "+": t[0]= Aritmetica.Aritmetica(t[1],"+",t[3],False)
         elif t[2] == "-": t[0]= Aritmetica.Aritmetica(t[1],"-",t[3],False)
         elif t[2] == "*": t[0] = Aritmetica.Aritmetica(t[1], "*", t[3], False)
         elif t[2] == "/": t[0] = Aritmetica.Aritmetica(t[1], "/", t[3], False)
         elif t[2] == "%":t[0] = Aritmetica.Aritmetica(t[1], "%", t[3], False)
+        elif t[2] == ">=":t[0] = Relacional.Relacional(t[1], "%", t[3], False)
+
     elif len(t) == 7:
         if t[1] == "::pow": t[0] = Aritmetica.Aritmetica(t[3], "^", t[5], False)
         elif t[1] == "::powf":t[0] = Aritmetica.Aritmetica(t[3], "^f", t[5], False)
