@@ -1,2 +1,13 @@
-let mut x : i64 = 1+6*9*1;
-println!("el valor de x= {}",x);
+//let mut x : i64 = 5;
+
+//let mut y : i64 = 1;
+
+//let mut z : i64 = x + y;
+
+//println!("el valor de x= {}",--1);
+
+let mut x : i64 = (10+39)*9;
+let mut y : i64 = 25;
+let z : i64  = x + y;
+println!("el valor de x= {} ",z);
+println!("el valor de x= {} ",(10+39)*9);

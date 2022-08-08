@@ -6,9 +6,9 @@ class AST(Intruccion):
         self.Lista_instrucciones = Lista_instrucciones
 
     def EjecutarInstruccion(self, controlador, ts):
-        #print("Iniciando ejecucion de instrucciones")
-            print("Iniciando ejecucion de instrucciones")
-        #try:
+        print("Iniciando ejecucion de instrucciones")
+        #    print("Iniciando ejecucion de instrucciones")
+        try:
             for intruccion in self.Lista_instrucciones:
                 print("Ejecutando: ", intruccion)
                 intruccion.EjecutarInstruccion(controlador, ts)
@@ -16,5 +16,5 @@ class AST(Intruccion):
             print("======Termino=======")
             print(controlador.consola)
 
-        #except:
-         #   print("Err")
+        except:
+            print("Err")

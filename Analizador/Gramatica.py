@@ -239,7 +239,8 @@ precedence = (
     ('left','SUMA','RESTA'),
     ('left','MULTI','DIVI'),
     ('left','MODULO'),
-    ('right','POWF','POW')
+    ('right','POWF','POW'),
+    ('right', 'NOT', 'UMENOS')
     )
 
 
@@ -354,7 +355,7 @@ def p_imprimir_lista_valores(t):
         t[0] = [t[1]]
 
 def p_expresiones(t):
-    '''expresiones  :
+    '''expresiones  : RESTA expresiones %prec UMENOS
                     | expresiones SUMA expresiones
                     | expresiones RESTA expresiones
                     | expresiones MULTI expresiones
@@ -368,6 +369,7 @@ def p_expresiones(t):
                     | expresiones MENOR expresiones
                     | expresiones IGUALDAD expresiones
                     | expresiones DESIGUALDAD expresiones
+                    | PI expresiones PD
                     | ID
                     | ENTERO
                     | FLOAT
@@ -377,19 +379,23 @@ def p_expresiones(t):
     #rint(t.lexpos(1))
     #print(t.lexspan(1))
 
+
+
     if len(t) == 2:
 
         if t.slice[1].type == 'ENTERO':
             t[0] = Primitivo.Primitivo(t[1], 'ENTERO')
-        elif t.slice[1].type == 'DECIMAL':
+        elif t.slice[1].type == 'FLOAT':
             t[0] = Primitivo.Primitivo(t[1], 'DECIMAL')
         elif t.slice[1].type == 'CADENA':
             t[0] = Primitivo.Primitivo(t[1], 'CADENA')
         elif t.slice[1].type == 'ID':
             t[0] = Identificador.Identificador(t[1])
+    elif len(t)==3:
+        if t[1] == "-": t[0] = Aritmetica.Aritmetica(t[2], "-", 0, True)
 
     elif len(t)==4:
-        print("!!!! caracter: ",t[2])
+        print("!!!! caracter: ",t[1])
         if t[2] == "+": t[0]= Aritmetica.Aritmetica(t[1],"+",t[3],False)
         elif t[2] == "-": t[0]= Aritmetica.Aritmetica(t[1],"-",t[3],False)
         elif t[2] == "*": t[0] = Aritmetica.Aritmetica(t[1], "*", t[3], False)
@@ -401,6 +407,8 @@ def p_expresiones(t):
         elif t[2] == "<":t[0] = Relacional.Relacional(t[1], "<", t[3], False)
         elif t[2] == "==":t[0] = Relacional.Relacional(t[1], "==", t[3], False)
         elif t[2] == "!=":t[0] = Relacional.Relacional(t[1], "!=", t[3], False)
+        elif t[1] == "(" and t[3]==")":t[0] = t[2]
+
 
     elif len(t) == 7:
         if t[1] == "::pow": t[0] = Aritmetica.Aritmetica(t[3], "^", t[5], False)
