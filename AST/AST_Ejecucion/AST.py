@@ -17,4 +17,4 @@ class AST(Intruccion):
             print(controlador.consola)
 
         #except:
-            #print("Err")
+         #   print("Err")

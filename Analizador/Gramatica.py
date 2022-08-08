@@ -263,8 +263,50 @@ def p_instrucciones_lista(t):
 
 
 def p_instruccion(t):
-    '''instruccion      : impresiones'''
+    '''instruccion      : impresiones
+                        | declaracion'''
     t[0] = t[1]
+
+
+from AST.Expresion import Primitivo,Identificador
+from AST.Instruccion import Imprimir,Declaracion
+from AST.Expresion.Operaciones import Aritmetica,Relacional
+
+
+def p_declaracion(t):
+    '''declaracion      : LET mutable ID tipado IGUAL expresiones PYC
+                        '''
+    print("!!!== Se declaro varibles: mut ", t[2], " de ID: ", t[3], " de tipo: ", t[4], " con le expresion: ",t[6])
+    t[0]= Declaracion.Declaracion( Identificador.Identificador(t[3]),t[6],t[4])
+
+
+def p_mutable(t):
+    '''mutable      : MUT
+                        | '''
+    if len(t) > 1:
+        t[0] = True
+
+    else:
+        t[0] = False
+
+def p_tipado(t):
+    '''tipado      : DP tipo_datos
+                        | '''
+    if len(t) > 1:
+        t[0] = t[2]
+    else:
+        t[0] = None
+
+def p_tipo_datos(t):
+    '''tipo_datos      : TIPOINT
+                      | TIPOFLOAT
+                      | TIPOCHAR
+                      | TIPOSTRING
+                      | DIRSTRING
+                      | TIPOBOOL '''
+
+    t[0] = t[1]
+
 
 
 from AST.Expresion import Primitivo
@@ -279,30 +321,26 @@ def p_instruccion_imprimir(t):
 
 
 
-    #print("Token reconocido en la linea ",linea , " columna: ",index , " ",t[1])
+    print("Se va imprimir: ", t[5])
 
     if len(t) == 6:
 
         if t[1] == 'println!':
             t[0] = Imprimir.Imprimir(Primitivo.Primitivo(t[3], 'CADENA'), True,[])
-            print("\nRe reocnocio: println! con el token: ", t[3], "\n")
+            #print("\nRe reocnocio: println! con el token: ", t[3], "\n")
         elif t[1] == 'print!':
             t[0] = Imprimir.Imprimir(Primitivo.Primitivo(t[3], 'CADENA'), False,[])
-            print("\nRe reocnocio: print! con el token: ", t[3], "\n")
+            #print("\nRe reocnocio: print! con el token: ", t[3], "\n")
 
     else:
 
         if t[1] == 'println!':
             t[0] = Imprimir.Imprimir(t[3], True, t[5])
-            print("\nRe reocnocio: println! con el token: ", t[5], "\n")
+            #print("\nRe reocnocio: println! con el token: ", t[5], "\n")
 
         elif t[1] == 'print!':
             t[0] = Imprimir.Imprimir(t[3], False,t[5])
-            print("\nRe reocnocio: print! con el token: ", t[5], "\n")
-
-
-
-
+            #print("\nRe reocnocio: print! con el token: ", t[5], "\n")
 
 def p_imprimir_lista_valores(t):
     '''impresion_valores     :  impresion_valores COMA expresiones
@@ -314,8 +352,6 @@ def p_imprimir_lista_valores(t):
 
     else:
         t[0] = [t[1]]
-
-
 
 def p_expresiones(t):
     '''expresiones  :
@@ -337,18 +373,21 @@ def p_expresiones(t):
                     | FLOAT
                     | CADENA'''
 
-    #t.set_lexpos(0,t.lexpos(1))
-    #print(t.lexpos(0))
-    #print(t.lexpos(1))
-
+    #print(t.lineno(1))
+    #rint(t.lexpos(1))
+    #print(t.lexspan(1))
 
     if len(t) == 2:
-        if isinstance(t[1],int):
+
+        if t.slice[1].type == 'ENTERO':
             t[0] = Primitivo.Primitivo(t[1], 'ENTERO')
-        elif isinstance(t[1],float):
+        elif t.slice[1].type == 'DECIMAL':
             t[0] = Primitivo.Primitivo(t[1], 'DECIMAL')
-        elif isinstance(t[1],str):
+        elif t.slice[1].type == 'CADENA':
             t[0] = Primitivo.Primitivo(t[1], 'CADENA')
+        elif t.slice[1].type == 'ID':
+            t[0] = Identificador.Identificador(t[1])
+
     elif len(t)==4:
         print("!!!! caracter: ",t[2])
         if t[2] == "+": t[0]= Aritmetica.Aritmetica(t[1],"+",t[3],False)
@@ -366,24 +405,6 @@ def p_expresiones(t):
     elif len(t) == 7:
         if t[1] == "::pow": t[0] = Aritmetica.Aritmetica(t[3], "^", t[5], False)
         elif t[1] == "::powf":t[0] = Aritmetica.Aritmetica(t[3], "^f", t[5], False)
-
-
-
-
-def esEntero(num):
-    try:
-        num = int(num)
-        return True
-    except:
-        return False
-
-
-def esFloat(num):
-    try:
-        num = float(num)
-        return True
-    except:
-        return False
 
 
 def p_error(t):

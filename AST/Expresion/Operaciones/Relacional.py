@@ -1,9 +1,9 @@
 from AST.Abstracto.Expresion import Expresion
-from AST.Expresion.Operaciones.Operacion import Operacion,operador
+from AST.Expresion.Operaciones.Operacion import Operacion, operador
 from AST.TablaSimbolos.Tipos import tipo as t
 
 
-class Relacional(Operacion, Expresion ):
+class Relacional(Operacion, Expresion):
 
     def __init__(self, exp1, signo, exp2, expU):
         super().__init__(exp1, signo, exp2, expU)
@@ -11,6 +11,9 @@ class Relacional(Operacion, Expresion ):
     def ObtenerValor(self, controlador, ts):
         valor_exp1 = self.exp1.ObtenerValor(controlador, ts)
         valor_exp2 = self.exp2.ObtenerValor(controlador, ts)
+
+        tipo_exp1 = self.exp1.ObtenerTipo(controlador, ts)
+        tipo_exp2 = self.exp2.ObtenerTipo(controlador, ts)
 
         if self.operador == operador.MAYORIGUAL:
 
@@ -65,8 +68,6 @@ class Relacional(Operacion, Expresion ):
                 return valor_exp1 != valor_exp2
             else:
                 return "No son el mismo formato"
-
-
 
     def ObtenerTipo(self, controlador, ts):
         valor_exp1 = self.exp1.ObtenerValor(controlador, ts)

@@ -29,7 +29,7 @@ def ventanas():
             #instrucciones = g.parse(CodeText)
             instrucciones = g.parse(entrada)
 
-            ts = TablaDeSimbolos()
+            ts = TablaDeSimbolos(None,"Main")
             controlador= Controlador()
             AST_ej = AST(instrucciones)
 
