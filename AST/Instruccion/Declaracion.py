@@ -21,13 +21,15 @@ class Declaracion(Intruccion):
             if self.tipo is not None:
                 if type(self.tipo) == type(TipoExpresion):
 
-                    newSimbolo = Simbolos(self.identificador.id, ValorExpresion, self.tipo, self.mut)
+                    newSimbolo = Simbolos()
+                    newSimbolo.SimboloPremitivo(self.identificador.id, ValorExpresion, self.tipo, self.mut)
                     ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
 
             else:
 
                 self.tipo = TipoExpresion
-                newSimbolo = Simbolos(self.identificador.id, ValorExpresion, self.tipo, self.mut)
+                newSimbolo = Simbolos()
+                newSimbolo.SimboloPremitivo(self.identificador.id, ValorExpresion, self.tipo, self.mut)
                 ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
 
         else:
@@ -35,28 +37,33 @@ class Declaracion(Intruccion):
             if self.tipo is not None:
 
                 if self.tipo == tipo.ENTERO:
-                    newSimbolo = Simbolos(self.identificador.id, 0, self.tipo, self.mut)
+                    newSimbolo = Simbolos()
+                    newSimbolo.SimboloPremitivo(self.identificador.id, 0, self.tipo, self.mut)
                     ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
 
                 elif self.tipo == tipo.DECIMAL:
-                    newSimbolo = Simbolos(self.identificador.id, 0.0, self.tipo, self.mut)
+                    newSimbolo = Simbolos()
+                    newSimbolo.SimboloPremitivo(self.identificador.id, 0.0, self.tipo, self.mut)
                     ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
 
                 elif self.tipo == tipo.CARACTER:
-                    newSimbolo = Simbolos(self.identificador.id, '', self.tipo, self.mut)
+                    newSimbolo = Simbolos()
+                    newSimbolo.SimboloPremitivo(self.identificador.id, '', self.tipo, self.mut)
                     ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
 
                 elif self.tipo == tipo.STRING or self.tipo == tipo.DIRSTRING:
-                    newSimbolo = Simbolos(self.identificador.id, "", self.tipo, self.mut)
+                    newSimbolo = Simbolos()
+                    newSimbolo.SimboloPremitivo(self.identificador.id, "", self.tipo, self.mut)
                     ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
 
                 elif self.tipo == tipo.BOOLEANO:
-                    newSimbolo = Simbolos(self.identificador.id, False, self.tipo, self.mut)
+                    newSimbolo = Simbolos()
+                    newSimbolo.SimboloPremitivo(self.identificador.id, False, self.tipo, self.mut)
                     ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
 
             else:
-
-                newSimbolo = Simbolos(self.identificador.id, None, tipo.UNDEFINED, self.mut)
+                newSimbolo = Simbolos()
+                newSimbolo.SimboloPremitivo(self.identificador.id, None, tipo.UNDEFINED, self.mut)
                 ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
 
        # print("=== SE DECLARO LA VARIABLES === ", self.identificador.id)

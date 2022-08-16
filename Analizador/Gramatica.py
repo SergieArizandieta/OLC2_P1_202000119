@@ -266,30 +266,84 @@ def p_instruccion(t):
     '''instruccion      : impresiones
                         | declaracion
                         | asignacion
-                        | funcion '''
+                        | funcion
+                        | llamada PYC'''
     t[0] = t[1]
 
 
 '''xxx'''
 from AST.Expresion import Identificador
-from AST.Instruccion import Declaracion, Asignacion,Funcion
+from AST.Instruccion import Declaracion, Asignacion,Funcion,Llamada
 from AST.TablaSimbolos.Tipos import tipo
 
+def p_llamada(t):
+    '''llamada  : ID PI PD
+                | ID PI lista_expres PD'''
 
+    if len(t) == 4:
+        print("=== llamda tipo 1")
+        t[0] = Llamada.Llamada(t[1],[])
+    else:
+        print("=== llamda tipo 2")
+        t[0] = Llamada.Llamada(t[1],t[3])
+
+def p_lista_expres(t):
+    '''lista_expres : lista_expres COMA  expresiones
+                    | expresiones '''
+
+    if len(t) > 2:
+        t[1].append(t[3])
+        t[0] = t[1]
+
+    else:
+        t[0] = [t[1]]
 
 def p_funciones(t):
     '''funcion  : FUNCION MAIN PI PD LI instrucciones LD
                 |  FUNCION ID PI PD tipo_funcion LI instrucciones LD
-                |  FUNCION ID parametros PD tipo_funcion LI instrucciones LD'''
+                |  FUNCION ID PI parametros PD tipo_funcion LI instrucciones LD'''
 
     if len(t) == 8:
-       t[0]=Funcion.Funcion(t[2],None,None,t[6])
-    if len(t) == 9:
-        t[0]=Funcion.Funcion(t[2],t[5],None,t[7])
+       t[0]=Funcion.Funcion(t[2],None,[],t[6])
+    elif len(t) == 9:
+        t[0]=Funcion.Funcion(t[2],t[5],[],t[7])
+    elif len(t) == 10:
+        print("t2 ",t[2])
+        print("t5 ", t[5])
+        print("t4 ", t[4])
+        print("t7 ", t[7])
+        t[0] = Funcion.Funcion(t[2], t[6], t[4], t[8])
 
 def p_parametros(t):
-    '''parametros : '''
-    t[0]= None
+    '''parametros : parametros COMA definiciones
+                  | definiciones'''
+
+    if len(t) > 2:
+        t[1].append(t[3])
+        t[0] = t[1]
+
+    else:
+        t[0] = [t[1]]
+
+def p_definiciones(t):
+    """ definiciones : referencias mutable ID VECTOR tipado_vector
+                    | referencias mutable ID tipado """
+
+    if len(t) == 5:    t[0] =  Declaracion.Declaracion(Identificador.Identificador(t[3]),None,t[4],t[1])
+
+
+def p_referencias(t):
+    '''referencias : REFER
+                    | '''
+
+    if len(t) > 1:
+        t[0] = True
+
+    else:
+        t[0] = False
+
+def p_tipado_vect(t):
+    '''tipado_vector : '''
 
 def p_accceso(t):
     '''acceso   : PUBLICO

@@ -1,4 +1,5 @@
 from AST.Abstracto.Expresion import Expresion
+from AST.TablaSimbolos.Simbolos import Simbolos
 from AST.TablaSimbolos.Tipos import tipo as t
 
 
@@ -8,10 +9,10 @@ class Identificador(Expresion):
         self.id = id
 
     def ObtenerValor(self, controlador, ts):
-        existe_id = ts.Obtener_Val_Simbolo(self.id)
+        existe_id:Simbolos = ts.ObtenerSimbolo(self.id)
         print("!!=== tratando de recuperar dato")
-        return existe_id
+        return existe_id.valor
 
     def ObtenerTipo(self, controlador, ts):
-        existe_id = ts.Obtener_Tipo_Simbolo(self.id)
-        return existe_id
+        existe_id:Simbolos = ts.ObtenerSimbolo(self.id)
+        return existe_id.tipo

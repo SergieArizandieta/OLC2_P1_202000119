@@ -1,6 +1,6 @@
 from AST.Abstracto.Instruccion import Intruccion
 from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos
-
+from AST.Instruccion.Llamada import Llamada
 
 class Funcion(Intruccion):
 
@@ -11,17 +11,23 @@ class Funcion(Intruccion):
         self.instrucciones = instrucciones
 
     def EjecutarInstruccion(self, controlador, ts):
-        print("================== Ejecucion main ================")
-        ts_local = TablaDeSimbolos(ts, self.identificador)
-
+        print("Intruccion de : ", self.identificador)
         for instruccion in self.instrucciones:
-            retorno = instruccion.EjecutarInstruccion(controlador, ts_local)
+            if isinstance(instruccion,Llamada):
+                retorno = instruccion.EjecutarInstruccion(controlador, ts.padre)
+            else:
+                print("Instuccion: ",instruccion)
+                retorno = instruccion.EjecutarInstruccion(controlador, ts)
+
             if retorno is not None:
                 return retorno
 
         return None
 
-    def agregarFuncion(self,ts):
-        print("================== Se guardo funcion ================")
+    def agregarFuncion(self, ts: TablaDeSimbolos):
+        print("================== Se guardo funcion ================ ", self.identificador)
         if not ts.Existe_id(self.identificador):
-            ts.Agregar_Simbolo(self.identificador,self)
+            ts.Agregar_Simbolo(self.identificador, self)
+
+        # print("Se supone que se guardo")
+        # ts.Print_Table()
