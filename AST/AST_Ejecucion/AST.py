@@ -11,11 +11,11 @@ class AST(Intruccion):
         #try:
 
 
-            '''for intruccion in self.Lista_instrucciones:
+            for intruccion in self.Lista_instrucciones:
                 print("======inicio ======= ",intruccion)
                 if isinstance(intruccion,Funcion.Funcion):
                     funcion = intruccion
-                    funcion.agregarFuncion(ts)'''
+                    funcion.agregarFuncion(ts)
 
             for intruccion in self.Lista_instrucciones:
                 if isinstance(intruccion,Funcion.Funcion):

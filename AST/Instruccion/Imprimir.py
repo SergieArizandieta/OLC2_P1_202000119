@@ -11,6 +11,7 @@ class Imprimir(Intruccion):
     def EjecutarInstruccion(self, controlador, ts):
 
 
+        global valor, tipo
         if len(self.lista) > 0:
             texto_salida = ""
             print(" Esta llena casdena: ", self.expresion )
@@ -39,12 +40,12 @@ class Imprimir(Intruccion):
 
             controlador.imprimir(texto_salida, self.tipo)
         else:
-            print(" Esta vacia ")
+
             valor = self.expresion.ObtenerValor(controlador,ts)
             tipo = self.expresion.ObtenerTipo(controlador,ts)
 
-            print("======!!!! ", tipo.tipo , " !!!!======")
-            if tipo.tipo == t.CADENA:
+            print("======!!!! ", tipo , " !!!!======")
+            if tipo == t.STRING or tipo == t.DIRSTRING:
                 print("Se confirmo")
                 controlador.imprimir(valor , self.tipo)
             else:

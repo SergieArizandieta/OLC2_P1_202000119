@@ -37,8 +37,6 @@ class Tipos():
         elif self.nombre == 'BOOLEANO':
             return tipo.BOOLEANO
 
-        elif self.nombre == 'CARACTER':
-            return tipo.CARACTER
 
         else:
             return tipo.ERROR

@@ -1,9 +1,7 @@
 
 fn main () {
-    let x = 10;
-    let y = 25;
-    let z = x + y;
-    println!("Suma main = {} ",z);
+    println!("Deberia llamrse a funcion");
+
 }
 
 fn another_function () {

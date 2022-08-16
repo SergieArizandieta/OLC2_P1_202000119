@@ -279,12 +279,12 @@ from AST.TablaSimbolos.Tipos import tipo
 
 def p_funciones(t):
     '''funcion  : FUNCION MAIN PI PD LI instrucciones LD
-                | acceso FUNCION ID PI PD tipo_funcion LI instrucciones LD
-                | acceso FUNCION ID parametros PD tipo_funcion LI instrucciones LD'''
+                |  FUNCION ID PI PD tipo_funcion LI instrucciones LD
+                |  FUNCION ID parametros PD tipo_funcion LI instrucciones LD'''
 
     if len(t) == 8:
        t[0]=Funcion.Funcion(t[2],None,None,t[6])
-    if len(t) == 10:
+    if len(t) == 9:
         t[0]=Funcion.Funcion(t[2],t[5],None,t[7])
 
 def p_parametros(t):
@@ -385,10 +385,10 @@ def p_instruccion_imprimir(t):
     if len(t) == 6:
 
         if t[1] == 'println!':
-            t[0] = Imprimir.Imprimir(Primitivo.Primitivo(t[3], 'CADENA'), True, [])
+            t[0] = Imprimir.Imprimir(Primitivo.Primitivo(t[3], 'STRING'), True, [])
             # print("\nRe reocnocio: println! con el token: ", t[3], "\n")
         elif t[1] == 'print!':
-            t[0] = Imprimir.Imprimir(Primitivo.Primitivo(t[3], 'CADENA'), False, [])
+            t[0] = Imprimir.Imprimir(Primitivo.Primitivo(t[3], 'STRING'), False, [])
             # print("\nRe reocnocio: print! con el token: ", t[3], "\n")
 
     else:
@@ -432,7 +432,7 @@ def p_expresiones(t):
                     | PI expresiones PD
                     | ID
                     | ENTERO
-                    | ENTERO tipo_string
+                    | CADENA tipo_string
                     | FLOAT
                     | CADENA
                     | TRUE
