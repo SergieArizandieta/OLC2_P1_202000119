@@ -232,16 +232,16 @@ def t_error(t):
 import ply.lex as lex
 
 lexer = lex.lex()
-#procedencia
+# procedencia
 # Asociación de operadores y precedencia
 precedence = (
-    ('left','MAYORIGUAL','MAYOR','MENORIGUAL','MENOR','IGUALDAD','DESIGUALDAD'),
-    ('left','SUMA','RESTA'),
-    ('left','MULTI','DIVI'),
-    ('left','MODULO'),
-    ('right','POWF','POW'),
+    ('left', 'MAYORIGUAL', 'MAYOR', 'MENORIGUAL', 'MENOR', 'IGUALDAD', 'DESIGUALDAD'),
+    ('left', 'SUMA', 'RESTA'),
+    ('left', 'MULTI', 'DIVI'),
+    ('left', 'MODULO'),
+    ('right', 'POWF', 'POW'),
     ('right', 'NOT', 'UMENOS')
-    )
+)
 
 
 # Definición de la gramática
@@ -262,23 +262,70 @@ def p_instrucciones_lista(t):
         t[0] = [t[1]]
 
 
-
 def p_instruccion(t):
     '''instruccion      : impresiones
-                        | declaracion'''
+                        | declaracion
+                        | asignacion
+                        | funcion '''
     t[0] = t[1]
 
 
-from AST.Expresion import Primitivo,Identificador
-from AST.Instruccion import Imprimir,Declaracion
-from AST.Expresion.Operaciones import Aritmetica,Relacional
+'''xxx'''
+from AST.Expresion import Identificador
+from AST.Instruccion import Declaracion, Asignacion,Funcion
+from AST.TablaSimbolos.Tipos import tipo
+
+
+
+def p_funciones(t):
+    '''funcion  : FUNCION MAIN PI PD LI instrucciones LD
+                | acceso FUNCION ID PI PD tipo_funcion LI instrucciones LD
+                | acceso FUNCION ID parametros PD tipo_funcion LI instrucciones LD'''
+
+    if len(t) == 8:
+       t[0]=Funcion.Funcion(t[2],None,None,t[6])
+    if len(t) == 10:
+        t[0]=Funcion.Funcion(t[2],t[5],None,t[7])
+
+def p_parametros(t):
+    '''parametros : '''
+    t[0]= None
+
+def p_accceso(t):
+    '''acceso   : PUBLICO
+                |'''
+    if len(t) > 1:
+        t[0] = True
+
+    else:
+        t[0] = False
+
+def p_tipo_funcion(t):
+    '''tipo_funcion : RESTA MAYOR tipo_datos
+                    | RESTA MAYOR VECTOR MENOR tipo_datos MAYOR
+                    |'''
+
+    if len(t) == 4:
+        t[0] = t[3]
+    elif len(t) == 1:
+        t[0] = None
 
 
 def p_declaracion(t):
-    '''declaracion      : LET mutable ID tipado IGUAL expresiones PYC
-                        '''
-    print("!!!== Se declaro varibles: mut ", t[2], " de ID: ", t[3], " de tipo: ", t[4], " con le expresion: ",t[6])
-    t[0]= Declaracion.Declaracion( Identificador.Identificador(t[3]),t[6],t[4])
+    '''declaracion  : LET mutable ID tipado PYC
+                        | LET mutable ID tipado IGUAL expresiones PYC'''
+
+    if len(t) == 6:
+        t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), None, t[4], t[2])
+
+    elif len(t) == 8:
+        t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), t[6], t[4], t[2])
+
+
+def p_asignacio(t):
+    '''asignacion      : ID IGUAL expresiones PYC '''
+
+    t[0] = Asignacion.Asignacion(t[1], t[3])
 
 
 def p_mutable(t):
@@ -290,6 +337,7 @@ def p_mutable(t):
     else:
         t[0] = False
 
+
 def p_tipado(t):
     '''tipado      : DP tipo_datos
                         | '''
@@ -298,21 +346,33 @@ def p_tipado(t):
     else:
         t[0] = None
 
+
 def p_tipo_datos(t):
-    '''tipo_datos      : TIPOINT
+    '''tipo_datos     : TIPOINT
                       | TIPOFLOAT
                       | TIPOCHAR
                       | TIPOSTRING
                       | DIRSTRING
                       | TIPOBOOL '''
 
-    t[0] = t[1]
-
+    if t[1] == "i64":
+        t[0] = tipo.ENTERO
+    elif t[1] == "f64":
+        t[0] = tipo.DECIMAL
+    elif t[1] == "char":
+        t[0] = tipo.CARACTER
+    elif t[1] == "String":
+        t[0] = tipo.STRING
+    elif t[1] == "&str":
+        t[0] = tipo.DIRSTRING
+    elif t[1] == "bool":
+        t[0] = tipo.BOOLEANO
 
 
 from AST.Expresion import Primitivo
 from AST.Instruccion import Imprimir
-from AST.Expresion.Operaciones import Aritmetica,Relacional
+from AST.Expresion.Operaciones import Aritmetica, Relacional
+
 
 def p_instruccion_imprimir(t):
     '''impresiones     : PRINTLN PI CADENA PD PYC
@@ -320,28 +380,27 @@ def p_instruccion_imprimir(t):
                        | PRINTLN PI CADENA COMA impresion_valores PD PYC
                        | PRINT PI CADENA COMA  impresion_valores PD PYC'''
 
-
-
     print("Se va imprimir: ", t[5])
 
     if len(t) == 6:
 
         if t[1] == 'println!':
-            t[0] = Imprimir.Imprimir(Primitivo.Primitivo(t[3], 'CADENA'), True,[])
-            #print("\nRe reocnocio: println! con el token: ", t[3], "\n")
+            t[0] = Imprimir.Imprimir(Primitivo.Primitivo(t[3], 'CADENA'), True, [])
+            # print("\nRe reocnocio: println! con el token: ", t[3], "\n")
         elif t[1] == 'print!':
-            t[0] = Imprimir.Imprimir(Primitivo.Primitivo(t[3], 'CADENA'), False,[])
-            #print("\nRe reocnocio: print! con el token: ", t[3], "\n")
+            t[0] = Imprimir.Imprimir(Primitivo.Primitivo(t[3], 'CADENA'), False, [])
+            # print("\nRe reocnocio: print! con el token: ", t[3], "\n")
 
     else:
 
         if t[1] == 'println!':
             t[0] = Imprimir.Imprimir(t[3], True, t[5])
-            #print("\nRe reocnocio: println! con el token: ", t[5], "\n")
+            # print("\nRe reocnocio: println! con el token: ", t[5], "\n")
 
         elif t[1] == 'print!':
-            t[0] = Imprimir.Imprimir(t[3], False,t[5])
-            #print("\nRe reocnocio: print! con el token: ", t[5], "\n")
+            t[0] = Imprimir.Imprimir(t[3], False, t[5])
+            # print("\nRe reocnocio: print! con el token: ", t[5], "\n")
+
 
 def p_imprimir_lista_valores(t):
     '''impresion_valores     :  impresion_valores COMA expresiones
@@ -353,6 +412,7 @@ def p_imprimir_lista_valores(t):
 
     else:
         t[0] = [t[1]]
+
 
 def p_expresiones(t):
     '''expresiones  : RESTA expresiones %prec UMENOS
@@ -372,47 +432,75 @@ def p_expresiones(t):
                     | PI expresiones PD
                     | ID
                     | ENTERO
+                    | ENTERO tipo_string
                     | FLOAT
-                    | CADENA'''
+                    | CADENA
+                    | TRUE
+                    | FALSE'''
 
-    #print(t.lineno(1))
-    #rint(t.lexpos(1))
-    #print(t.lexspan(1))
-
-
+    # print(t.lineno(1))
+    # rint(t.lexpos(1))
+    # print(t.lexspan(1))
 
     if len(t) == 2:
-
         if t.slice[1].type == 'ENTERO':
             t[0] = Primitivo.Primitivo(t[1], 'ENTERO')
         elif t.slice[1].type == 'FLOAT':
             t[0] = Primitivo.Primitivo(t[1], 'DECIMAL')
         elif t.slice[1].type == 'CADENA':
-            t[0] = Primitivo.Primitivo(t[1], 'CADENA')
+            t[0] = Primitivo.Primitivo(t[1], 'DIRSTRING')
+        elif t.slice[1].type == 'TRUE':
+            t[0] = Primitivo.Primitivo(True, 'BOOLEANO')
+        elif t.slice[1].type == 'FALSE':
+            t[0] = Primitivo.Primitivo(False, 'BOOLEANO')
         elif t.slice[1].type == 'ID':
             t[0] = Identificador.Identificador(t[1])
-    elif len(t)==3:
-        if t[1] == "-": t[0] = Aritmetica.Aritmetica(t[2], "-", 0, True)
 
-    elif len(t)==4:
-        print("!!!! caracter: ",t[1])
-        if t[2] == "+": t[0]= Aritmetica.Aritmetica(t[1],"+",t[3],False)
-        elif t[2] == "-": t[0]= Aritmetica.Aritmetica(t[1],"-",t[3],False)
-        elif t[2] == "*": t[0] = Aritmetica.Aritmetica(t[1], "*", t[3], False)
-        elif t[2] == "/": t[0] = Aritmetica.Aritmetica(t[1], "/", t[3], False)
-        elif t[2] == "%":t[0] = Aritmetica.Aritmetica(t[1], "%", t[3], False)
-        elif t[2] == ">=":t[0] = Relacional.Relacional(t[1], ">=", t[3], False)
-        elif t[2] == ">":t[0] = Relacional.Relacional(t[1], ">", t[3], False)
-        elif t[2] == "<=":t[0] = Relacional.Relacional(t[1], "<=", t[3], False)
-        elif t[2] == "<":t[0] = Relacional.Relacional(t[1], "<", t[3], False)
-        elif t[2] == "==":t[0] = Relacional.Relacional(t[1], "==", t[3], False)
-        elif t[2] == "!=":t[0] = Relacional.Relacional(t[1], "!=", t[3], False)
-        elif t[1] == "(" and t[3]==")":t[0] = t[2]
+    elif len(t) == 3:
+        if t[1] == "-":
+            t[0] = Aritmetica.Aritmetica(t[2], "-", 0, True)
+        elif t.slice[1].type == 'CADENA':
+            t[0] = Primitivo.Primitivo(t[1], 'STRING')
+
+    elif len(t) == 4:
+        if t[2] == "+":
+            t[0] = Aritmetica.Aritmetica(t[1], "+", t[3], False)
+        elif t[2] == "-":
+            t[0] = Aritmetica.Aritmetica(t[1], "-", t[3], False)
+        elif t[2] == "*":
+            t[0] = Aritmetica.Aritmetica(t[1], "*", t[3], False)
+        elif t[2] == "/":
+            t[0] = Aritmetica.Aritmetica(t[1], "/", t[3], False)
+        elif t[2] == "%":
+            t[0] = Aritmetica.Aritmetica(t[1], "%", t[3], False)
+        elif t[2] == ">=":
+            t[0] = Relacional.Relacional(t[1], ">=", t[3], False)
+        elif t[2] == ">":
+            t[0] = Relacional.Relacional(t[1], ">", t[3], False)
+        elif t[2] == "<=":
+            t[0] = Relacional.Relacional(t[1], "<=", t[3], False)
+        elif t[2] == "<":
+            t[0] = Relacional.Relacional(t[1], "<", t[3], False)
+        elif t[2] == "==":
+            t[0] = Relacional.Relacional(t[1], "==", t[3], False)
+        elif t[2] == "!=":
+            t[0] = Relacional.Relacional(t[1], "!=", t[3], False)
+        elif t[1] == "(" and t[3] == ")":
+            t[0] = t[2]
 
 
     elif len(t) == 7:
-        if t[1] == "::pow": t[0] = Aritmetica.Aritmetica(t[3], "^", t[5], False)
-        elif t[1] == "::powf":t[0] = Aritmetica.Aritmetica(t[3], "^f", t[5], False)
+        if t[1] == "::pow":
+            t[0] = Aritmetica.Aritmetica(t[3], "^", t[5], False)
+        elif t[1] == "::powf":
+            t[0] = Aritmetica.Aritmetica(t[3], "^f", t[5], False)
+
+
+def p_tipo_string(t):
+    '''tipo_string      :  TOOWNED
+                        | TOSTRING'''
+
+    t[0] = Primitivo.Primitivo(t[1], 'STRING')
 
 
 def p_error(t):

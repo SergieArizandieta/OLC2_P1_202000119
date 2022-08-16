@@ -77,7 +77,6 @@ class Aritmetica(Operacion, Expresion):
             if self.operador == operador.RESTA:
                 valor_exp1 = self.exp1.ObtenerValor(controlador, ts)
 
-                print("!!!===UNARIOOOOOOOOOOOOOOOOOOOOOOO")
                 if isinstance(valor_exp1, int):
                     return int(valor_exp1 * -1)
                 elif isinstance(valor_exp1, float):
@@ -91,6 +90,9 @@ class Aritmetica(Operacion, Expresion):
             valor_exp1 = self.exp1.ObtenerValor(controlador, ts)
             valor_exp2 = self.exp2.ObtenerValor(controlador, ts)
 
+            tipo_exp1 = self.exp1.ObtenerTipo(controlador, ts)
+            tipo_exp2 = self.exp2.ObtenerTipo(controlador, ts)
+
             if isinstance(valor_exp1, int):
                 if self.validacion_tipos(valor_exp1, valor_exp2):
                     return tipo.ENTERO
@@ -100,8 +102,8 @@ class Aritmetica(Operacion, Expresion):
                     return tipo.DECIMAL
 
             elif isinstance(valor_exp1, str):
-                if self.validacion_tipos(valor_exp1, valor_exp2):
-                    return tipo.CADENA
+                if tipo_exp1 == tipo.STRING and tipo_exp2 == tipo.DIRSTRING:
+                    return tipo.STRING
 
         else:
 

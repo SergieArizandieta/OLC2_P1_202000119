@@ -13,4 +13,5 @@ class Primitivo(Expresion):
         return self.valor
 
     def ObtenerTipo(self, controlador, ts):
-        return self.tipo
+        return self.tipo.tipo
+

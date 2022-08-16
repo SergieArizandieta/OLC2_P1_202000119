@@ -14,20 +14,32 @@ class TablaDeSimbolos():
             padre.siguiente = self
 
     def Agregar_Simbolo(self, id, simbolo: Simbolos):
-        print("Agregando: ",id," con simbolo: ",simbolo)
-        if self.Obtener_Val_Simbolo(id) is None:
+        print("Agregando: ", id, " con simbolo: ", simbolo)
+        if not self.Existe_id(id):
             self.tabla[id] = simbolo
         else:
-            print("Ya existe")
+            print("Ya existe la variable")
+
+    def Existe_id(self, id):
+        ts = self
+        while ts is not None:
+            existe = ts.tabla.get(id)
+
+            if existe is not None:
+                return True
+
+            ts = ts.padre
+
+        return False
 
     def Obtener_Val_Simbolo(self, id):
 
         ts = self
 
-        while ts != None:
+        while ts is not None:
             existe = ts.tabla.get(id)
 
-            if existe != None:
+            if existe is not None:
                 return existe.valor
 
             ts = ts.padre
@@ -37,26 +49,26 @@ class TablaDeSimbolos():
     def Obtener_Tipo_Simbolo(self, id):
         ts = self
 
-        while ts != None:
+        while ts is not None:
             existe = ts.tabla.get(id)
 
-            if existe != None:
+            if existe is not None:
                 return existe.tipo
 
             ts = ts.padre
 
         return None
 
-    def Actualizar_Simbolo(self, simbolo: Simbolos):
-
+    def Actualizar_Simbolo(self,id, tipo,valor):
         ts = self
-
         while ts is not None:
             existe = ts.tabla.get(id)
 
             if existe is not None:
 
-                if existe.tipo == simbolo.tipo and existe.mut:
-                    ts.tabla[id] = simbolo
+                if existe.tipo == tipo and existe.mut:
+                    ts.tabla[id].valor = valor
+                    break
+
 
             ts = ts.padre

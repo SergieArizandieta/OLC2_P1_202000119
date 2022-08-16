@@ -1,13 +1,11 @@
-//let mut x : i64 = 5;
 
-//let mut y : i64 = 1;
+fn main () {
+    let x = 10;
+    let y = 25;
+    let z = x + y;
+    println!("Suma main = {} ",z);
+}
 
-//let mut z : i64 = x + y;
-
-//println!("el valor de x= {}",--1);
-
-let mut x : i64 = (10+39)*9;
-let mut y : i64 = 25;
-let z : i64  = x + y;
-println!("el valor de x= {} ",z);
-println!("el valor de x= {} ",(10+39)*9);
+fn another_function () {
+    println!("Another function.");
+}
