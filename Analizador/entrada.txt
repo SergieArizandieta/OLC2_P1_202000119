@@ -1,7 +1,5 @@
 fn main () {
-    another_function(5);
+	let mut x = 64;
+	println!("The value of x is: {}",x);
 }
 
-fn another_function ( x : i64) {
-    println!("The value of x is: {}",x);
-}

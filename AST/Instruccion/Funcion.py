@@ -1,5 +1,5 @@
 from AST.Abstracto.Instruccion import Intruccion
-from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos
+from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos,Simbolos
 from AST.Instruccion.Llamada import Llamada
 
 class Funcion(Intruccion):
