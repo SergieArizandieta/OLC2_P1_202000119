@@ -69,7 +69,8 @@ class Llamada(Intruccion, Expresion):
 
                 if aux_tipo == aux_exp_tipo:
                     simbolo = Simbolos()
-                    simbolo.SimboloPremitivo(aux_id, aux_exp_valor, aux_id, False)
+                    simbolo.SimboloPremitivo(aux_id, aux_exp_valor, aux_tipo, False)
+                    print("= Simbolo id: ", aux_id, " valor: ",aux_exp_valor, " tipo ",aux_tipo)
                     ts_loca.Agregar_Simbolo(aux_id, simbolo)
                 else:
                     return False

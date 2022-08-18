@@ -2,7 +2,6 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    ABS
     AND
     AS
     BARRA
@@ -10,7 +9,6 @@ Unused terminals:
     CAPACITY
     CD
     CI
-    CLONE
     CONTAINS
     CONTINUE
     ELSE
@@ -30,7 +28,6 @@ Unused terminals:
     PUSH
     REMOVE
     RETURN
-    SQRT
     STRUCT
     VECT
     WCAPACITY
@@ -102,28 +99,31 @@ Rule 60    expresiones -> expresiones DESIGUALDAD expresiones
 Rule 61    expresiones -> PI expresiones PD
 Rule 62    expresiones -> ID
 Rule 63    expresiones -> ENTERO
-Rule 64    expresiones -> CADENA PUNTO tipo_string
+Rule 64    expresiones -> expresiones PUNTO nativas
 Rule 65    expresiones -> FLOAT
 Rule 66    expresiones -> CADENA
 Rule 67    expresiones -> TRUE
 Rule 68    expresiones -> FALSE
 Rule 69    expresiones -> CARACTER
-Rule 70    tipo_string -> TOOWNED
-Rule 71    tipo_string -> TOSTRING
+Rule 70    nativas -> ABS
+Rule 71    nativas -> SQRT
+Rule 72    nativas -> TOSTRING
+Rule 73    nativas -> TOOWNED
+Rule 74    nativas -> CLONE
 
 Terminals, with rules where they appear
 
-ABS                  : 
+ABS                  : 70
 AND                  : 
 AS                   : 
 BARRA                : 
 BREAK                : 
-CADENA               : 41 42 43 44 64 66
+CADENA               : 41 42 43 44 66
 CAPACITY             : 
 CARACTER             : 69
 CD                   : 
 CI                   : 
-CLONE                : 
+CLONE                : 74
 COMA                 : 11 16 43 44 45 53 54
 CONTAINS             : 
 CONTINUE             : 
@@ -177,7 +177,7 @@ REFER                : 20
 REMOVE               : 
 RESTA                : 25 26 47 49
 RETURN               : 
-SQRT                 : 
+SQRT                 : 71
 STRUCT               : 
 SUMA                 : 48
 TIPOBOOL             : 40
@@ -185,8 +185,8 @@ TIPOCHAR             : 37
 TIPOFLOAT            : 36
 TIPOINT              : 35
 TIPOSTRING           : 38
-TOOWNED              : 70
-TOSTRING             : 71
+TOOWNED              : 73
+TOSTRING             : 72
 TRUE                 : 67
 VECT                 : 
 VECTOR               : 18 26
@@ -200,7 +200,7 @@ acceso               :
 asignacion           : 6
 declaracion          : 5
 definiciones         : 16 17
-expresiones          : 11 12 29 30 45 46 47 48 48 49 49 50 50 51 51 52 52 53 53 54 54 55 55 56 56 57 57 58 58 59 59 60 60 61
+expresiones          : 11 12 29 30 45 46 47 48 48 49 49 50 50 51 51 52 52 53 53 54 54 55 55 56 56 57 57 58 58 59 59 60 60 61 64
 funcion              : 7
 impresion_valores    : 43 44 45
 impresiones          : 4
@@ -210,13 +210,13 @@ instrucciones        : 1 2 13 14 15
 lista_expres         : 10 11
 llamada              : 8
 mutable              : 18 19 28 29
+nativas              : 64
 parametros           : 15 16
 referencias          : 18 19
 tipado               : 19 28 29
 tipado_vector        : 18
 tipo_datos           : 25 26 33
 tipo_funcion         : 14 15
-tipo_string          : 64
 
 Parsing method: LALR
 
@@ -498,7 +498,7 @@ state 20
     (61) expresiones -> . PI expresiones PD
     (62) expresiones -> . ID
     (63) expresiones -> . ENTERO
-    (64) expresiones -> . CADENA PUNTO tipo_string
+    (64) expresiones -> . expresiones PUNTO nativas
     (65) expresiones -> . FLOAT
     (66) expresiones -> . CADENA
     (67) expresiones -> . TRUE
@@ -511,8 +511,8 @@ state 20
     PI              shift and go to state 31
     ID              shift and go to state 27
     ENTERO          shift and go to state 33
-    CADENA          shift and go to state 34
-    FLOAT           shift and go to state 35
+    FLOAT           shift and go to state 34
+    CADENA          shift and go to state 35
     TRUE            shift and go to state 36
     FALSE           shift and go to state 37
     CARACTER        shift and go to state 38
@@ -542,7 +542,7 @@ state 21
     (61) expresiones -> . PI expresiones PD
     (62) expresiones -> . ID
     (63) expresiones -> . ENTERO
-    (64) expresiones -> . CADENA PUNTO tipo_string
+    (64) expresiones -> . expresiones PUNTO nativas
     (65) expresiones -> . FLOAT
     (66) expresiones -> . CADENA
     (67) expresiones -> . TRUE
@@ -556,8 +556,8 @@ state 21
     PI              shift and go to state 31
     ID              shift and go to state 27
     ENTERO          shift and go to state 33
-    CADENA          shift and go to state 34
-    FLOAT           shift and go to state 35
+    FLOAT           shift and go to state 34
+    CADENA          shift and go to state 35
     TRUE            shift and go to state 36
     FALSE           shift and go to state 37
     CARACTER        shift and go to state 38
@@ -627,6 +627,7 @@ state 27
     MENOR           reduce using rule 62 (expresiones -> ID .)
     IGUALDAD        reduce using rule 62 (expresiones -> ID .)
     DESIGUALDAD     reduce using rule 62 (expresiones -> ID .)
+    PUNTO           reduce using rule 62 (expresiones -> ID .)
     PD              reduce using rule 62 (expresiones -> ID .)
     COMA            reduce using rule 62 (expresiones -> ID .)
 
@@ -645,6 +646,7 @@ state 28
     (58) expresiones -> expresiones . MENOR expresiones
     (59) expresiones -> expresiones . IGUALDAD expresiones
     (60) expresiones -> expresiones . DESIGUALDAD expresiones
+    (64) expresiones -> expresiones . PUNTO nativas
 
     PYC             shift and go to state 50
     SUMA            shift and go to state 51
@@ -658,6 +660,7 @@ state 28
     MENOR           shift and go to state 59
     IGUALDAD        shift and go to state 60
     DESIGUALDAD     shift and go to state 61
+    PUNTO           shift and go to state 62
 
 
 state 29
@@ -680,7 +683,7 @@ state 29
     (61) expresiones -> . PI expresiones PD
     (62) expresiones -> . ID
     (63) expresiones -> . ENTERO
-    (64) expresiones -> . CADENA PUNTO tipo_string
+    (64) expresiones -> . expresiones PUNTO nativas
     (65) expresiones -> . FLOAT
     (66) expresiones -> . CADENA
     (67) expresiones -> . TRUE
@@ -693,19 +696,19 @@ state 29
     PI              shift and go to state 31
     ID              shift and go to state 27
     ENTERO          shift and go to state 33
-    CADENA          shift and go to state 34
-    FLOAT           shift and go to state 35
+    FLOAT           shift and go to state 34
+    CADENA          shift and go to state 35
     TRUE            shift and go to state 36
     FALSE           shift and go to state 37
     CARACTER        shift and go to state 38
 
-    expresiones                    shift and go to state 62
+    expresiones                    shift and go to state 63
 
 state 30
 
     (53) expresiones -> POWF . PI expresiones COMA expresiones PD
 
-    PI              shift and go to state 63
+    PI              shift and go to state 64
 
 
 state 31
@@ -728,7 +731,7 @@ state 31
     (61) expresiones -> . PI expresiones PD
     (62) expresiones -> . ID
     (63) expresiones -> . ENTERO
-    (64) expresiones -> . CADENA PUNTO tipo_string
+    (64) expresiones -> . expresiones PUNTO nativas
     (65) expresiones -> . FLOAT
     (66) expresiones -> . CADENA
     (67) expresiones -> . TRUE
@@ -741,19 +744,19 @@ state 31
     PI              shift and go to state 31
     ID              shift and go to state 27
     ENTERO          shift and go to state 33
-    CADENA          shift and go to state 34
-    FLOAT           shift and go to state 35
+    FLOAT           shift and go to state 34
+    CADENA          shift and go to state 35
     TRUE            shift and go to state 36
     FALSE           shift and go to state 37
     CARACTER        shift and go to state 38
 
-    expresiones                    shift and go to state 64
+    expresiones                    shift and go to state 65
 
 state 32
 
     (54) expresiones -> POW . PI expresiones COMA expresiones PD
 
-    PI              shift and go to state 65
+    PI              shift and go to state 66
 
 
 state 33
@@ -772,33 +775,12 @@ state 33
     MENOR           reduce using rule 63 (expresiones -> ENTERO .)
     IGUALDAD        reduce using rule 63 (expresiones -> ENTERO .)
     DESIGUALDAD     reduce using rule 63 (expresiones -> ENTERO .)
+    PUNTO           reduce using rule 63 (expresiones -> ENTERO .)
     PD              reduce using rule 63 (expresiones -> ENTERO .)
     COMA            reduce using rule 63 (expresiones -> ENTERO .)
 
 
 state 34
-
-    (64) expresiones -> CADENA . PUNTO tipo_string
-    (66) expresiones -> CADENA .
-
-    PUNTO           shift and go to state 66
-    PYC             reduce using rule 66 (expresiones -> CADENA .)
-    SUMA            reduce using rule 66 (expresiones -> CADENA .)
-    RESTA           reduce using rule 66 (expresiones -> CADENA .)
-    MULTI           reduce using rule 66 (expresiones -> CADENA .)
-    DIVI            reduce using rule 66 (expresiones -> CADENA .)
-    MODULO          reduce using rule 66 (expresiones -> CADENA .)
-    MAYORIGUAL      reduce using rule 66 (expresiones -> CADENA .)
-    MAYOR           reduce using rule 66 (expresiones -> CADENA .)
-    MENORIGUAL      reduce using rule 66 (expresiones -> CADENA .)
-    MENOR           reduce using rule 66 (expresiones -> CADENA .)
-    IGUALDAD        reduce using rule 66 (expresiones -> CADENA .)
-    DESIGUALDAD     reduce using rule 66 (expresiones -> CADENA .)
-    PD              reduce using rule 66 (expresiones -> CADENA .)
-    COMA            reduce using rule 66 (expresiones -> CADENA .)
-
-
-state 35
 
     (65) expresiones -> FLOAT .
 
@@ -814,8 +796,30 @@ state 35
     MENOR           reduce using rule 65 (expresiones -> FLOAT .)
     IGUALDAD        reduce using rule 65 (expresiones -> FLOAT .)
     DESIGUALDAD     reduce using rule 65 (expresiones -> FLOAT .)
+    PUNTO           reduce using rule 65 (expresiones -> FLOAT .)
     PD              reduce using rule 65 (expresiones -> FLOAT .)
     COMA            reduce using rule 65 (expresiones -> FLOAT .)
+
+
+state 35
+
+    (66) expresiones -> CADENA .
+
+    PYC             reduce using rule 66 (expresiones -> CADENA .)
+    SUMA            reduce using rule 66 (expresiones -> CADENA .)
+    RESTA           reduce using rule 66 (expresiones -> CADENA .)
+    MULTI           reduce using rule 66 (expresiones -> CADENA .)
+    DIVI            reduce using rule 66 (expresiones -> CADENA .)
+    MODULO          reduce using rule 66 (expresiones -> CADENA .)
+    MAYORIGUAL      reduce using rule 66 (expresiones -> CADENA .)
+    MAYOR           reduce using rule 66 (expresiones -> CADENA .)
+    MENORIGUAL      reduce using rule 66 (expresiones -> CADENA .)
+    MENOR           reduce using rule 66 (expresiones -> CADENA .)
+    IGUALDAD        reduce using rule 66 (expresiones -> CADENA .)
+    DESIGUALDAD     reduce using rule 66 (expresiones -> CADENA .)
+    PUNTO           reduce using rule 66 (expresiones -> CADENA .)
+    PD              reduce using rule 66 (expresiones -> CADENA .)
+    COMA            reduce using rule 66 (expresiones -> CADENA .)
 
 
 state 36
@@ -834,6 +838,7 @@ state 36
     MENOR           reduce using rule 67 (expresiones -> TRUE .)
     IGUALDAD        reduce using rule 67 (expresiones -> TRUE .)
     DESIGUALDAD     reduce using rule 67 (expresiones -> TRUE .)
+    PUNTO           reduce using rule 67 (expresiones -> TRUE .)
     PD              reduce using rule 67 (expresiones -> TRUE .)
     COMA            reduce using rule 67 (expresiones -> TRUE .)
 
@@ -854,6 +859,7 @@ state 37
     MENOR           reduce using rule 68 (expresiones -> FALSE .)
     IGUALDAD        reduce using rule 68 (expresiones -> FALSE .)
     DESIGUALDAD     reduce using rule 68 (expresiones -> FALSE .)
+    PUNTO           reduce using rule 68 (expresiones -> FALSE .)
     PD              reduce using rule 68 (expresiones -> FALSE .)
     COMA            reduce using rule 68 (expresiones -> FALSE .)
 
@@ -874,6 +880,7 @@ state 38
     MENOR           reduce using rule 69 (expresiones -> CARACTER .)
     IGUALDAD        reduce using rule 69 (expresiones -> CARACTER .)
     DESIGUALDAD     reduce using rule 69 (expresiones -> CARACTER .)
+    PUNTO           reduce using rule 69 (expresiones -> CARACTER .)
     PD              reduce using rule 69 (expresiones -> CARACTER .)
     COMA            reduce using rule 69 (expresiones -> CARACTER .)
 
@@ -908,6 +915,7 @@ state 41
     (58) expresiones -> expresiones . MENOR expresiones
     (59) expresiones -> expresiones . IGUALDAD expresiones
     (60) expresiones -> expresiones . DESIGUALDAD expresiones
+    (64) expresiones -> expresiones . PUNTO nativas
 
     PD              reduce using rule 12 (lista_expres -> expresiones .)
     COMA            reduce using rule 12 (lista_expres -> expresiones .)
@@ -922,6 +930,7 @@ state 41
     MENOR           shift and go to state 59
     IGUALDAD        shift and go to state 60
     DESIGUALDAD     shift and go to state 61
+    PUNTO           shift and go to state 62
 
 
 state 42
@@ -980,7 +989,7 @@ state 45
     (61) expresiones -> . PI expresiones PD
     (62) expresiones -> . ID
     (63) expresiones -> . ENTERO
-    (64) expresiones -> . CADENA PUNTO tipo_string
+    (64) expresiones -> . expresiones PUNTO nativas
     (65) expresiones -> . FLOAT
     (66) expresiones -> . CADENA
     (67) expresiones -> . TRUE
@@ -993,8 +1002,8 @@ state 45
     PI              shift and go to state 31
     ID              shift and go to state 27
     ENTERO          shift and go to state 33
-    CADENA          shift and go to state 34
-    FLOAT           shift and go to state 35
+    FLOAT           shift and go to state 34
+    CADENA          shift and go to state 35
     TRUE            shift and go to state 36
     FALSE           shift and go to state 37
     CARACTER        shift and go to state 38
@@ -1031,7 +1040,7 @@ state 47
     (61) expresiones -> . PI expresiones PD
     (62) expresiones -> . ID
     (63) expresiones -> . ENTERO
-    (64) expresiones -> . CADENA PUNTO tipo_string
+    (64) expresiones -> . expresiones PUNTO nativas
     (65) expresiones -> . FLOAT
     (66) expresiones -> . CADENA
     (67) expresiones -> . TRUE
@@ -1044,8 +1053,8 @@ state 47
     PI              shift and go to state 31
     ID              shift and go to state 27
     ENTERO          shift and go to state 33
-    CADENA          shift and go to state 34
-    FLOAT           shift and go to state 35
+    FLOAT           shift and go to state 34
+    CADENA          shift and go to state 35
     TRUE            shift and go to state 36
     FALSE           shift and go to state 37
     CARACTER        shift and go to state 38
@@ -1114,7 +1123,7 @@ state 51
     (61) expresiones -> . PI expresiones PD
     (62) expresiones -> . ID
     (63) expresiones -> . ENTERO
-    (64) expresiones -> . CADENA PUNTO tipo_string
+    (64) expresiones -> . expresiones PUNTO nativas
     (65) expresiones -> . FLOAT
     (66) expresiones -> . CADENA
     (67) expresiones -> . TRUE
@@ -1127,8 +1136,8 @@ state 51
     PI              shift and go to state 31
     ID              shift and go to state 27
     ENTERO          shift and go to state 33
-    CADENA          shift and go to state 34
-    FLOAT           shift and go to state 35
+    FLOAT           shift and go to state 34
+    CADENA          shift and go to state 35
     TRUE            shift and go to state 36
     FALSE           shift and go to state 37
     CARACTER        shift and go to state 38
@@ -1155,7 +1164,7 @@ state 52
     (61) expresiones -> . PI expresiones PD
     (62) expresiones -> . ID
     (63) expresiones -> . ENTERO
-    (64) expresiones -> . CADENA PUNTO tipo_string
+    (64) expresiones -> . expresiones PUNTO nativas
     (65) expresiones -> . FLOAT
     (66) expresiones -> . CADENA
     (67) expresiones -> . TRUE
@@ -1168,8 +1177,8 @@ state 52
     PI              shift and go to state 31
     ID              shift and go to state 27
     ENTERO          shift and go to state 33
-    CADENA          shift and go to state 34
-    FLOAT           shift and go to state 35
+    FLOAT           shift and go to state 34
+    CADENA          shift and go to state 35
     TRUE            shift and go to state 36
     FALSE           shift and go to state 37
     CARACTER        shift and go to state 38
@@ -1196,7 +1205,7 @@ state 53
     (61) expresiones -> . PI expresiones PD
     (62) expresiones -> . ID
     (63) expresiones -> . ENTERO
-    (64) expresiones -> . CADENA PUNTO tipo_string
+    (64) expresiones -> . expresiones PUNTO nativas
     (65) expresiones -> . FLOAT
     (66) expresiones -> . CADENA
     (67) expresiones -> . TRUE
@@ -1209,8 +1218,8 @@ state 53
     PI              shift and go to state 31
     ID              shift and go to state 27
     ENTERO          shift and go to state 33
-    CADENA          shift and go to state 34
-    FLOAT           shift and go to state 35
+    FLOAT           shift and go to state 34
+    CADENA          shift and go to state 35
     TRUE            shift and go to state 36
     FALSE           shift and go to state 37
     CARACTER        shift and go to state 38
@@ -1237,7 +1246,7 @@ state 54
     (61) expresiones -> . PI expresiones PD
     (62) expresiones -> . ID
     (63) expresiones -> . ENTERO
-    (64) expresiones -> . CADENA PUNTO tipo_string
+    (64) expresiones -> . expresiones PUNTO nativas
     (65) expresiones -> . FLOAT
     (66) expresiones -> . CADENA
     (67) expresiones -> . TRUE
@@ -1250,8 +1259,8 @@ state 54
     PI              shift and go to state 31
     ID              shift and go to state 27
     ENTERO          shift and go to state 33
-    CADENA          shift and go to state 34
-    FLOAT           shift and go to state 35
+    FLOAT           shift and go to state 34
+    CADENA          shift and go to state 35
     TRUE            shift and go to state 36
     FALSE           shift and go to state 37
     CARACTER        shift and go to state 38
@@ -1278,7 +1287,7 @@ state 55
     (61) expresiones -> . PI expresiones PD
     (62) expresiones -> . ID
     (63) expresiones -> . ENTERO
-    (64) expresiones -> . CADENA PUNTO tipo_string
+    (64) expresiones -> . expresiones PUNTO nativas
     (65) expresiones -> . FLOAT
     (66) expresiones -> . CADENA
     (67) expresiones -> . TRUE
@@ -1291,8 +1300,8 @@ state 55
     PI              shift and go to state 31
     ID              shift and go to state 27
     ENTERO          shift and go to state 33
-    CADENA          shift and go to state 34
-    FLOAT           shift and go to state 35
+    FLOAT           shift and go to state 34
+    CADENA          shift and go to state 35
     TRUE            shift and go to state 36
     FALSE           shift and go to state 37
     CARACTER        shift and go to state 38
@@ -1319,7 +1328,7 @@ state 56
     (61) expresiones -> . PI expresiones PD
     (62) expresiones -> . ID
     (63) expresiones -> . ENTERO
-    (64) expresiones -> . CADENA PUNTO tipo_string
+    (64) expresiones -> . expresiones PUNTO nativas
     (65) expresiones -> . FLOAT
     (66) expresiones -> . CADENA
     (67) expresiones -> . TRUE
@@ -1332,8 +1341,8 @@ state 56
     PI              shift and go to state 31
     ID              shift and go to state 27
     ENTERO          shift and go to state 33
-    CADENA          shift and go to state 34
-    FLOAT           shift and go to state 35
+    FLOAT           shift and go to state 34
+    CADENA          shift and go to state 35
     TRUE            shift and go to state 36
     FALSE           shift and go to state 37
     CARACTER        shift and go to state 38
@@ -1360,7 +1369,7 @@ state 57
     (61) expresiones -> . PI expresiones PD
     (62) expresiones -> . ID
     (63) expresiones -> . ENTERO
-    (64) expresiones -> . CADENA PUNTO tipo_string
+    (64) expresiones -> . expresiones PUNTO nativas
     (65) expresiones -> . FLOAT
     (66) expresiones -> . CADENA
     (67) expresiones -> . TRUE
@@ -1373,8 +1382,8 @@ state 57
     PI              shift and go to state 31
     ID              shift and go to state 27
     ENTERO          shift and go to state 33
-    CADENA          shift and go to state 34
-    FLOAT           shift and go to state 35
+    FLOAT           shift and go to state 34
+    CADENA          shift and go to state 35
     TRUE            shift and go to state 36
     FALSE           shift and go to state 37
     CARACTER        shift and go to state 38
@@ -1401,7 +1410,7 @@ state 58
     (61) expresiones -> . PI expresiones PD
     (62) expresiones -> . ID
     (63) expresiones -> . ENTERO
-    (64) expresiones -> . CADENA PUNTO tipo_string
+    (64) expresiones -> . expresiones PUNTO nativas
     (65) expresiones -> . FLOAT
     (66) expresiones -> . CADENA
     (67) expresiones -> . TRUE
@@ -1414,8 +1423,8 @@ state 58
     PI              shift and go to state 31
     ID              shift and go to state 27
     ENTERO          shift and go to state 33
-    CADENA          shift and go to state 34
-    FLOAT           shift and go to state 35
+    FLOAT           shift and go to state 34
+    CADENA          shift and go to state 35
     TRUE            shift and go to state 36
     FALSE           shift and go to state 37
     CARACTER        shift and go to state 38
@@ -1442,7 +1451,7 @@ state 59
     (61) expresiones -> . PI expresiones PD
     (62) expresiones -> . ID
     (63) expresiones -> . ENTERO
-    (64) expresiones -> . CADENA PUNTO tipo_string
+    (64) expresiones -> . expresiones PUNTO nativas
     (65) expresiones -> . FLOAT
     (66) expresiones -> . CADENA
     (67) expresiones -> . TRUE
@@ -1455,8 +1464,8 @@ state 59
     PI              shift and go to state 31
     ID              shift and go to state 27
     ENTERO          shift and go to state 33
-    CADENA          shift and go to state 34
-    FLOAT           shift and go to state 35
+    FLOAT           shift and go to state 34
+    CADENA          shift and go to state 35
     TRUE            shift and go to state 36
     FALSE           shift and go to state 37
     CARACTER        shift and go to state 38
@@ -1483,7 +1492,7 @@ state 60
     (61) expresiones -> . PI expresiones PD
     (62) expresiones -> . ID
     (63) expresiones -> . ENTERO
-    (64) expresiones -> . CADENA PUNTO tipo_string
+    (64) expresiones -> . expresiones PUNTO nativas
     (65) expresiones -> . FLOAT
     (66) expresiones -> . CADENA
     (67) expresiones -> . TRUE
@@ -1496,8 +1505,8 @@ state 60
     PI              shift and go to state 31
     ID              shift and go to state 27
     ENTERO          shift and go to state 33
-    CADENA          shift and go to state 34
-    FLOAT           shift and go to state 35
+    FLOAT           shift and go to state 34
+    CADENA          shift and go to state 35
     TRUE            shift and go to state 36
     FALSE           shift and go to state 37
     CARACTER        shift and go to state 38
@@ -1524,7 +1533,7 @@ state 61
     (61) expresiones -> . PI expresiones PD
     (62) expresiones -> . ID
     (63) expresiones -> . ENTERO
-    (64) expresiones -> . CADENA PUNTO tipo_string
+    (64) expresiones -> . expresiones PUNTO nativas
     (65) expresiones -> . FLOAT
     (66) expresiones -> . CADENA
     (67) expresiones -> . TRUE
@@ -1537,8 +1546,8 @@ state 61
     PI              shift and go to state 31
     ID              shift and go to state 27
     ENTERO          shift and go to state 33
-    CADENA          shift and go to state 34
-    FLOAT           shift and go to state 35
+    FLOAT           shift and go to state 34
+    CADENA          shift and go to state 35
     TRUE            shift and go to state 36
     FALSE           shift and go to state 37
     CARACTER        shift and go to state 38
@@ -1546,6 +1555,23 @@ state 61
     expresiones                    shift and go to state 99
 
 state 62
+
+    (64) expresiones -> expresiones PUNTO . nativas
+    (70) nativas -> . ABS
+    (71) nativas -> . SQRT
+    (72) nativas -> . TOSTRING
+    (73) nativas -> . TOOWNED
+    (74) nativas -> . CLONE
+
+    ABS             shift and go to state 101
+    SQRT            shift and go to state 102
+    TOSTRING        shift and go to state 103
+    TOOWNED         shift and go to state 104
+    CLONE           shift and go to state 105
+
+    nativas                        shift and go to state 100
+
+state 63
 
     (47) expresiones -> RESTA expresiones .
     (48) expresiones -> expresiones . SUMA expresiones
@@ -1559,6 +1585,7 @@ state 62
     (58) expresiones -> expresiones . MENOR expresiones
     (59) expresiones -> expresiones . IGUALDAD expresiones
     (60) expresiones -> expresiones . DESIGUALDAD expresiones
+    (64) expresiones -> expresiones . PUNTO nativas
 
     PYC             reduce using rule 47 (expresiones -> RESTA expresiones .)
     SUMA            reduce using rule 47 (expresiones -> RESTA expresiones .)
@@ -1572,6 +1599,7 @@ state 62
     MENOR           reduce using rule 47 (expresiones -> RESTA expresiones .)
     IGUALDAD        reduce using rule 47 (expresiones -> RESTA expresiones .)
     DESIGUALDAD     reduce using rule 47 (expresiones -> RESTA expresiones .)
+    PUNTO           reduce using rule 47 (expresiones -> RESTA expresiones .)
     PD              reduce using rule 47 (expresiones -> RESTA expresiones .)
     COMA            reduce using rule 47 (expresiones -> RESTA expresiones .)
 
@@ -1586,9 +1614,10 @@ state 62
   ! MENOR           [ shift and go to state 59 ]
   ! IGUALDAD        [ shift and go to state 60 ]
   ! DESIGUALDAD     [ shift and go to state 61 ]
+  ! PUNTO           [ shift and go to state 62 ]
 
 
-state 63
+state 64
 
     (53) expresiones -> POWF PI . expresiones COMA expresiones PD
     (47) expresiones -> . RESTA expresiones
@@ -1608,7 +1637,7 @@ state 63
     (61) expresiones -> . PI expresiones PD
     (62) expresiones -> . ID
     (63) expresiones -> . ENTERO
-    (64) expresiones -> . CADENA PUNTO tipo_string
+    (64) expresiones -> . expresiones PUNTO nativas
     (65) expresiones -> . FLOAT
     (66) expresiones -> . CADENA
     (67) expresiones -> . TRUE
@@ -1621,15 +1650,15 @@ state 63
     PI              shift and go to state 31
     ID              shift and go to state 27
     ENTERO          shift and go to state 33
-    CADENA          shift and go to state 34
-    FLOAT           shift and go to state 35
+    FLOAT           shift and go to state 34
+    CADENA          shift and go to state 35
     TRUE            shift and go to state 36
     FALSE           shift and go to state 37
     CARACTER        shift and go to state 38
 
-    expresiones                    shift and go to state 100
+    expresiones                    shift and go to state 106
 
-state 64
+state 65
 
     (61) expresiones -> PI expresiones . PD
     (48) expresiones -> expresiones . SUMA expresiones
@@ -1643,8 +1672,9 @@ state 64
     (58) expresiones -> expresiones . MENOR expresiones
     (59) expresiones -> expresiones . IGUALDAD expresiones
     (60) expresiones -> expresiones . DESIGUALDAD expresiones
+    (64) expresiones -> expresiones . PUNTO nativas
 
-    PD              shift and go to state 101
+    PD              shift and go to state 107
     SUMA            shift and go to state 51
     RESTA           shift and go to state 52
     MULTI           shift and go to state 53
@@ -1656,9 +1686,10 @@ state 64
     MENOR           shift and go to state 59
     IGUALDAD        shift and go to state 60
     DESIGUALDAD     shift and go to state 61
+    PUNTO           shift and go to state 62
 
 
-state 65
+state 66
 
     (54) expresiones -> POW PI . expresiones COMA expresiones PD
     (47) expresiones -> . RESTA expresiones
@@ -1678,7 +1709,7 @@ state 65
     (61) expresiones -> . PI expresiones PD
     (62) expresiones -> . ID
     (63) expresiones -> . ENTERO
-    (64) expresiones -> . CADENA PUNTO tipo_string
+    (64) expresiones -> . expresiones PUNTO nativas
     (65) expresiones -> . FLOAT
     (66) expresiones -> . CADENA
     (67) expresiones -> . TRUE
@@ -1691,24 +1722,13 @@ state 65
     PI              shift and go to state 31
     ID              shift and go to state 27
     ENTERO          shift and go to state 33
-    CADENA          shift and go to state 34
-    FLOAT           shift and go to state 35
+    FLOAT           shift and go to state 34
+    CADENA          shift and go to state 35
     TRUE            shift and go to state 36
     FALSE           shift and go to state 37
     CARACTER        shift and go to state 38
 
-    expresiones                    shift and go to state 102
-
-state 66
-
-    (64) expresiones -> CADENA PUNTO . tipo_string
-    (70) tipo_string -> . TOOWNED
-    (71) tipo_string -> . TOSTRING
-
-    TOOWNED         shift and go to state 104
-    TOSTRING        shift and go to state 105
-
-    tipo_string                    shift and go to state 103
+    expresiones                    shift and go to state 108
 
 state 67
 
@@ -1737,7 +1757,7 @@ state 68
     (61) expresiones -> . PI expresiones PD
     (62) expresiones -> . ID
     (63) expresiones -> . ENTERO
-    (64) expresiones -> . CADENA PUNTO tipo_string
+    (64) expresiones -> . expresiones PUNTO nativas
     (65) expresiones -> . FLOAT
     (66) expresiones -> . CADENA
     (67) expresiones -> . TRUE
@@ -1750,19 +1770,19 @@ state 68
     PI              shift and go to state 31
     ID              shift and go to state 27
     ENTERO          shift and go to state 33
-    CADENA          shift and go to state 34
-    FLOAT           shift and go to state 35
+    FLOAT           shift and go to state 34
+    CADENA          shift and go to state 35
     TRUE            shift and go to state 36
     FALSE           shift and go to state 37
     CARACTER        shift and go to state 38
 
-    expresiones                    shift and go to state 106
+    expresiones                    shift and go to state 109
 
 state 69
 
     (13) funcion -> FUNCION MAIN PI PD . LI instrucciones LD
 
-    LI              shift and go to state 107
+    LI              shift and go to state 110
 
 
 state 70
@@ -1772,18 +1792,18 @@ state 70
     (26) tipo_funcion -> . RESTA MAYOR VECTOR MENOR tipo_datos MAYOR
     (27) tipo_funcion -> .
 
-    RESTA           shift and go to state 109
+    RESTA           shift and go to state 112
     LI              reduce using rule 27 (tipo_funcion -> .)
 
-    tipo_funcion                   shift and go to state 108
+    tipo_funcion                   shift and go to state 111
 
 state 71
 
     (15) funcion -> FUNCION ID PI parametros . PD tipo_funcion LI instrucciones LD
     (16) parametros -> parametros . COMA definiciones
 
-    PD              shift and go to state 110
-    COMA            shift and go to state 111
+    PD              shift and go to state 113
+    COMA            shift and go to state 114
 
 
 state 72
@@ -1804,7 +1824,7 @@ state 73
     MUT             shift and go to state 19
     ID              reduce using rule 32 (mutable -> .)
 
-    mutable                        shift and go to state 112
+    mutable                        shift and go to state 115
 
 state 74
 
@@ -1832,8 +1852,8 @@ state 76
     (43) impresiones -> PRINTLN PI CADENA COMA impresion_valores . PD PYC
     (45) impresion_valores -> impresion_valores . COMA expresiones
 
-    PD              shift and go to state 114
-    COMA            shift and go to state 113
+    PD              shift and go to state 117
+    COMA            shift and go to state 116
 
 
 state 77
@@ -1850,6 +1870,7 @@ state 77
     (58) expresiones -> expresiones . MENOR expresiones
     (59) expresiones -> expresiones . IGUALDAD expresiones
     (60) expresiones -> expresiones . DESIGUALDAD expresiones
+    (64) expresiones -> expresiones . PUNTO nativas
 
     PD              reduce using rule 46 (impresion_valores -> expresiones .)
     COMA            reduce using rule 46 (impresion_valores -> expresiones .)
@@ -1864,6 +1885,7 @@ state 77
     MENOR           shift and go to state 59
     IGUALDAD        shift and go to state 60
     DESIGUALDAD     shift and go to state 61
+    PUNTO           shift and go to state 62
 
 
 state 78
@@ -1884,8 +1906,8 @@ state 79
     (44) impresiones -> PRINT PI CADENA COMA impresion_valores . PD PYC
     (45) impresion_valores -> impresion_valores . COMA expresiones
 
-    PD              shift and go to state 115
-    COMA            shift and go to state 113
+    PD              shift and go to state 118
+    COMA            shift and go to state 116
 
 
 state 80
@@ -1921,7 +1943,7 @@ state 81
     (61) expresiones -> . PI expresiones PD
     (62) expresiones -> . ID
     (63) expresiones -> . ENTERO
-    (64) expresiones -> . CADENA PUNTO tipo_string
+    (64) expresiones -> . expresiones PUNTO nativas
     (65) expresiones -> . FLOAT
     (66) expresiones -> . CADENA
     (67) expresiones -> . TRUE
@@ -1934,13 +1956,13 @@ state 81
     PI              shift and go to state 31
     ID              shift and go to state 27
     ENTERO          shift and go to state 33
-    CADENA          shift and go to state 34
-    FLOAT           shift and go to state 35
+    FLOAT           shift and go to state 34
+    CADENA          shift and go to state 35
     TRUE            shift and go to state 36
     FALSE           shift and go to state 37
     CARACTER        shift and go to state 38
 
-    expresiones                    shift and go to state 116
+    expresiones                    shift and go to state 119
 
 state 82
 
@@ -2038,6 +2060,7 @@ state 89
     (58) expresiones -> expresiones . MENOR expresiones
     (59) expresiones -> expresiones . IGUALDAD expresiones
     (60) expresiones -> expresiones . DESIGUALDAD expresiones
+    (64) expresiones -> expresiones . PUNTO nativas
 
     PYC             reduce using rule 48 (expresiones -> expresiones SUMA expresiones .)
     SUMA            reduce using rule 48 (expresiones -> expresiones SUMA expresiones .)
@@ -2048,6 +2071,7 @@ state 89
     MENOR           reduce using rule 48 (expresiones -> expresiones SUMA expresiones .)
     IGUALDAD        reduce using rule 48 (expresiones -> expresiones SUMA expresiones .)
     DESIGUALDAD     reduce using rule 48 (expresiones -> expresiones SUMA expresiones .)
+    PUNTO           reduce using rule 48 (expresiones -> expresiones SUMA expresiones .)
     PD              reduce using rule 48 (expresiones -> expresiones SUMA expresiones .)
     COMA            reduce using rule 48 (expresiones -> expresiones SUMA expresiones .)
     MULTI           shift and go to state 53
@@ -2065,6 +2089,7 @@ state 89
   ! MENOR           [ shift and go to state 59 ]
   ! IGUALDAD        [ shift and go to state 60 ]
   ! DESIGUALDAD     [ shift and go to state 61 ]
+  ! PUNTO           [ shift and go to state 62 ]
 
 
 state 90
@@ -2081,6 +2106,7 @@ state 90
     (58) expresiones -> expresiones . MENOR expresiones
     (59) expresiones -> expresiones . IGUALDAD expresiones
     (60) expresiones -> expresiones . DESIGUALDAD expresiones
+    (64) expresiones -> expresiones . PUNTO nativas
 
     PYC             reduce using rule 49 (expresiones -> expresiones RESTA expresiones .)
     SUMA            reduce using rule 49 (expresiones -> expresiones RESTA expresiones .)
@@ -2091,6 +2117,7 @@ state 90
     MENOR           reduce using rule 49 (expresiones -> expresiones RESTA expresiones .)
     IGUALDAD        reduce using rule 49 (expresiones -> expresiones RESTA expresiones .)
     DESIGUALDAD     reduce using rule 49 (expresiones -> expresiones RESTA expresiones .)
+    PUNTO           reduce using rule 49 (expresiones -> expresiones RESTA expresiones .)
     PD              reduce using rule 49 (expresiones -> expresiones RESTA expresiones .)
     COMA            reduce using rule 49 (expresiones -> expresiones RESTA expresiones .)
     MULTI           shift and go to state 53
@@ -2108,6 +2135,7 @@ state 90
   ! MENOR           [ shift and go to state 59 ]
   ! IGUALDAD        [ shift and go to state 60 ]
   ! DESIGUALDAD     [ shift and go to state 61 ]
+  ! PUNTO           [ shift and go to state 62 ]
 
 
 state 91
@@ -2124,6 +2152,7 @@ state 91
     (58) expresiones -> expresiones . MENOR expresiones
     (59) expresiones -> expresiones . IGUALDAD expresiones
     (60) expresiones -> expresiones . DESIGUALDAD expresiones
+    (64) expresiones -> expresiones . PUNTO nativas
 
     PYC             reduce using rule 50 (expresiones -> expresiones MULTI expresiones .)
     SUMA            reduce using rule 50 (expresiones -> expresiones MULTI expresiones .)
@@ -2136,6 +2165,7 @@ state 91
     MENOR           reduce using rule 50 (expresiones -> expresiones MULTI expresiones .)
     IGUALDAD        reduce using rule 50 (expresiones -> expresiones MULTI expresiones .)
     DESIGUALDAD     reduce using rule 50 (expresiones -> expresiones MULTI expresiones .)
+    PUNTO           reduce using rule 50 (expresiones -> expresiones MULTI expresiones .)
     PD              reduce using rule 50 (expresiones -> expresiones MULTI expresiones .)
     COMA            reduce using rule 50 (expresiones -> expresiones MULTI expresiones .)
     MODULO          shift and go to state 55
@@ -2151,6 +2181,7 @@ state 91
   ! MENOR           [ shift and go to state 59 ]
   ! IGUALDAD        [ shift and go to state 60 ]
   ! DESIGUALDAD     [ shift and go to state 61 ]
+  ! PUNTO           [ shift and go to state 62 ]
 
 
 state 92
@@ -2167,6 +2198,7 @@ state 92
     (58) expresiones -> expresiones . MENOR expresiones
     (59) expresiones -> expresiones . IGUALDAD expresiones
     (60) expresiones -> expresiones . DESIGUALDAD expresiones
+    (64) expresiones -> expresiones . PUNTO nativas
 
     PYC             reduce using rule 51 (expresiones -> expresiones DIVI expresiones .)
     SUMA            reduce using rule 51 (expresiones -> expresiones DIVI expresiones .)
@@ -2179,6 +2211,7 @@ state 92
     MENOR           reduce using rule 51 (expresiones -> expresiones DIVI expresiones .)
     IGUALDAD        reduce using rule 51 (expresiones -> expresiones DIVI expresiones .)
     DESIGUALDAD     reduce using rule 51 (expresiones -> expresiones DIVI expresiones .)
+    PUNTO           reduce using rule 51 (expresiones -> expresiones DIVI expresiones .)
     PD              reduce using rule 51 (expresiones -> expresiones DIVI expresiones .)
     COMA            reduce using rule 51 (expresiones -> expresiones DIVI expresiones .)
     MODULO          shift and go to state 55
@@ -2194,6 +2227,7 @@ state 92
   ! MENOR           [ shift and go to state 59 ]
   ! IGUALDAD        [ shift and go to state 60 ]
   ! DESIGUALDAD     [ shift and go to state 61 ]
+  ! PUNTO           [ shift and go to state 62 ]
 
 
 state 93
@@ -2210,6 +2244,7 @@ state 93
     (58) expresiones -> expresiones . MENOR expresiones
     (59) expresiones -> expresiones . IGUALDAD expresiones
     (60) expresiones -> expresiones . DESIGUALDAD expresiones
+    (64) expresiones -> expresiones . PUNTO nativas
 
     PYC             reduce using rule 52 (expresiones -> expresiones MODULO expresiones .)
     SUMA            reduce using rule 52 (expresiones -> expresiones MODULO expresiones .)
@@ -2223,6 +2258,7 @@ state 93
     MENOR           reduce using rule 52 (expresiones -> expresiones MODULO expresiones .)
     IGUALDAD        reduce using rule 52 (expresiones -> expresiones MODULO expresiones .)
     DESIGUALDAD     reduce using rule 52 (expresiones -> expresiones MODULO expresiones .)
+    PUNTO           reduce using rule 52 (expresiones -> expresiones MODULO expresiones .)
     PD              reduce using rule 52 (expresiones -> expresiones MODULO expresiones .)
     COMA            reduce using rule 52 (expresiones -> expresiones MODULO expresiones .)
 
@@ -2237,6 +2273,7 @@ state 93
   ! MENOR           [ shift and go to state 59 ]
   ! IGUALDAD        [ shift and go to state 60 ]
   ! DESIGUALDAD     [ shift and go to state 61 ]
+  ! PUNTO           [ shift and go to state 62 ]
 
 
 state 94
@@ -2253,6 +2290,7 @@ state 94
     (58) expresiones -> expresiones . MENOR expresiones
     (59) expresiones -> expresiones . IGUALDAD expresiones
     (60) expresiones -> expresiones . DESIGUALDAD expresiones
+    (64) expresiones -> expresiones . PUNTO nativas
 
     PYC             reduce using rule 55 (expresiones -> expresiones MAYORIGUAL expresiones .)
     MAYORIGUAL      reduce using rule 55 (expresiones -> expresiones MAYORIGUAL expresiones .)
@@ -2261,6 +2299,7 @@ state 94
     MENOR           reduce using rule 55 (expresiones -> expresiones MAYORIGUAL expresiones .)
     IGUALDAD        reduce using rule 55 (expresiones -> expresiones MAYORIGUAL expresiones .)
     DESIGUALDAD     reduce using rule 55 (expresiones -> expresiones MAYORIGUAL expresiones .)
+    PUNTO           reduce using rule 55 (expresiones -> expresiones MAYORIGUAL expresiones .)
     PD              reduce using rule 55 (expresiones -> expresiones MAYORIGUAL expresiones .)
     COMA            reduce using rule 55 (expresiones -> expresiones MAYORIGUAL expresiones .)
     SUMA            shift and go to state 51
@@ -2280,6 +2319,7 @@ state 94
   ! MENOR           [ shift and go to state 59 ]
   ! IGUALDAD        [ shift and go to state 60 ]
   ! DESIGUALDAD     [ shift and go to state 61 ]
+  ! PUNTO           [ shift and go to state 62 ]
 
 
 state 95
@@ -2296,6 +2336,7 @@ state 95
     (58) expresiones -> expresiones . MENOR expresiones
     (59) expresiones -> expresiones . IGUALDAD expresiones
     (60) expresiones -> expresiones . DESIGUALDAD expresiones
+    (64) expresiones -> expresiones . PUNTO nativas
 
     PYC             reduce using rule 56 (expresiones -> expresiones MAYOR expresiones .)
     MAYORIGUAL      reduce using rule 56 (expresiones -> expresiones MAYOR expresiones .)
@@ -2304,6 +2345,7 @@ state 95
     MENOR           reduce using rule 56 (expresiones -> expresiones MAYOR expresiones .)
     IGUALDAD        reduce using rule 56 (expresiones -> expresiones MAYOR expresiones .)
     DESIGUALDAD     reduce using rule 56 (expresiones -> expresiones MAYOR expresiones .)
+    PUNTO           reduce using rule 56 (expresiones -> expresiones MAYOR expresiones .)
     PD              reduce using rule 56 (expresiones -> expresiones MAYOR expresiones .)
     COMA            reduce using rule 56 (expresiones -> expresiones MAYOR expresiones .)
     SUMA            shift and go to state 51
@@ -2323,6 +2365,7 @@ state 95
   ! MENOR           [ shift and go to state 59 ]
   ! IGUALDAD        [ shift and go to state 60 ]
   ! DESIGUALDAD     [ shift and go to state 61 ]
+  ! PUNTO           [ shift and go to state 62 ]
 
 
 state 96
@@ -2339,6 +2382,7 @@ state 96
     (58) expresiones -> expresiones . MENOR expresiones
     (59) expresiones -> expresiones . IGUALDAD expresiones
     (60) expresiones -> expresiones . DESIGUALDAD expresiones
+    (64) expresiones -> expresiones . PUNTO nativas
 
     PYC             reduce using rule 57 (expresiones -> expresiones MENORIGUAL expresiones .)
     MAYORIGUAL      reduce using rule 57 (expresiones -> expresiones MENORIGUAL expresiones .)
@@ -2347,6 +2391,7 @@ state 96
     MENOR           reduce using rule 57 (expresiones -> expresiones MENORIGUAL expresiones .)
     IGUALDAD        reduce using rule 57 (expresiones -> expresiones MENORIGUAL expresiones .)
     DESIGUALDAD     reduce using rule 57 (expresiones -> expresiones MENORIGUAL expresiones .)
+    PUNTO           reduce using rule 57 (expresiones -> expresiones MENORIGUAL expresiones .)
     PD              reduce using rule 57 (expresiones -> expresiones MENORIGUAL expresiones .)
     COMA            reduce using rule 57 (expresiones -> expresiones MENORIGUAL expresiones .)
     SUMA            shift and go to state 51
@@ -2366,6 +2411,7 @@ state 96
   ! MENOR           [ shift and go to state 59 ]
   ! IGUALDAD        [ shift and go to state 60 ]
   ! DESIGUALDAD     [ shift and go to state 61 ]
+  ! PUNTO           [ shift and go to state 62 ]
 
 
 state 97
@@ -2382,6 +2428,7 @@ state 97
     (58) expresiones -> expresiones . MENOR expresiones
     (59) expresiones -> expresiones . IGUALDAD expresiones
     (60) expresiones -> expresiones . DESIGUALDAD expresiones
+    (64) expresiones -> expresiones . PUNTO nativas
 
     PYC             reduce using rule 58 (expresiones -> expresiones MENOR expresiones .)
     MAYORIGUAL      reduce using rule 58 (expresiones -> expresiones MENOR expresiones .)
@@ -2390,6 +2437,7 @@ state 97
     MENOR           reduce using rule 58 (expresiones -> expresiones MENOR expresiones .)
     IGUALDAD        reduce using rule 58 (expresiones -> expresiones MENOR expresiones .)
     DESIGUALDAD     reduce using rule 58 (expresiones -> expresiones MENOR expresiones .)
+    PUNTO           reduce using rule 58 (expresiones -> expresiones MENOR expresiones .)
     PD              reduce using rule 58 (expresiones -> expresiones MENOR expresiones .)
     COMA            reduce using rule 58 (expresiones -> expresiones MENOR expresiones .)
     SUMA            shift and go to state 51
@@ -2409,6 +2457,7 @@ state 97
   ! MENOR           [ shift and go to state 59 ]
   ! IGUALDAD        [ shift and go to state 60 ]
   ! DESIGUALDAD     [ shift and go to state 61 ]
+  ! PUNTO           [ shift and go to state 62 ]
 
 
 state 98
@@ -2425,6 +2474,7 @@ state 98
     (58) expresiones -> expresiones . MENOR expresiones
     (59) expresiones -> expresiones . IGUALDAD expresiones
     (60) expresiones -> expresiones . DESIGUALDAD expresiones
+    (64) expresiones -> expresiones . PUNTO nativas
 
     PYC             reduce using rule 59 (expresiones -> expresiones IGUALDAD expresiones .)
     MAYORIGUAL      reduce using rule 59 (expresiones -> expresiones IGUALDAD expresiones .)
@@ -2433,6 +2483,7 @@ state 98
     MENOR           reduce using rule 59 (expresiones -> expresiones IGUALDAD expresiones .)
     IGUALDAD        reduce using rule 59 (expresiones -> expresiones IGUALDAD expresiones .)
     DESIGUALDAD     reduce using rule 59 (expresiones -> expresiones IGUALDAD expresiones .)
+    PUNTO           reduce using rule 59 (expresiones -> expresiones IGUALDAD expresiones .)
     PD              reduce using rule 59 (expresiones -> expresiones IGUALDAD expresiones .)
     COMA            reduce using rule 59 (expresiones -> expresiones IGUALDAD expresiones .)
     SUMA            shift and go to state 51
@@ -2452,6 +2503,7 @@ state 98
   ! MENOR           [ shift and go to state 59 ]
   ! IGUALDAD        [ shift and go to state 60 ]
   ! DESIGUALDAD     [ shift and go to state 61 ]
+  ! PUNTO           [ shift and go to state 62 ]
 
 
 state 99
@@ -2468,6 +2520,7 @@ state 99
     (58) expresiones -> expresiones . MENOR expresiones
     (59) expresiones -> expresiones . IGUALDAD expresiones
     (60) expresiones -> expresiones . DESIGUALDAD expresiones
+    (64) expresiones -> expresiones . PUNTO nativas
 
     PYC             reduce using rule 60 (expresiones -> expresiones DESIGUALDAD expresiones .)
     MAYORIGUAL      reduce using rule 60 (expresiones -> expresiones DESIGUALDAD expresiones .)
@@ -2476,6 +2529,7 @@ state 99
     MENOR           reduce using rule 60 (expresiones -> expresiones DESIGUALDAD expresiones .)
     IGUALDAD        reduce using rule 60 (expresiones -> expresiones DESIGUALDAD expresiones .)
     DESIGUALDAD     reduce using rule 60 (expresiones -> expresiones DESIGUALDAD expresiones .)
+    PUNTO           reduce using rule 60 (expresiones -> expresiones DESIGUALDAD expresiones .)
     PD              reduce using rule 60 (expresiones -> expresiones DESIGUALDAD expresiones .)
     COMA            reduce using rule 60 (expresiones -> expresiones DESIGUALDAD expresiones .)
     SUMA            shift and go to state 51
@@ -2495,9 +2549,136 @@ state 99
   ! MENOR           [ shift and go to state 59 ]
   ! IGUALDAD        [ shift and go to state 60 ]
   ! DESIGUALDAD     [ shift and go to state 61 ]
+  ! PUNTO           [ shift and go to state 62 ]
 
 
 state 100
+
+    (64) expresiones -> expresiones PUNTO nativas .
+
+    PYC             reduce using rule 64 (expresiones -> expresiones PUNTO nativas .)
+    SUMA            reduce using rule 64 (expresiones -> expresiones PUNTO nativas .)
+    RESTA           reduce using rule 64 (expresiones -> expresiones PUNTO nativas .)
+    MULTI           reduce using rule 64 (expresiones -> expresiones PUNTO nativas .)
+    DIVI            reduce using rule 64 (expresiones -> expresiones PUNTO nativas .)
+    MODULO          reduce using rule 64 (expresiones -> expresiones PUNTO nativas .)
+    MAYORIGUAL      reduce using rule 64 (expresiones -> expresiones PUNTO nativas .)
+    MAYOR           reduce using rule 64 (expresiones -> expresiones PUNTO nativas .)
+    MENORIGUAL      reduce using rule 64 (expresiones -> expresiones PUNTO nativas .)
+    MENOR           reduce using rule 64 (expresiones -> expresiones PUNTO nativas .)
+    IGUALDAD        reduce using rule 64 (expresiones -> expresiones PUNTO nativas .)
+    DESIGUALDAD     reduce using rule 64 (expresiones -> expresiones PUNTO nativas .)
+    PUNTO           reduce using rule 64 (expresiones -> expresiones PUNTO nativas .)
+    PD              reduce using rule 64 (expresiones -> expresiones PUNTO nativas .)
+    COMA            reduce using rule 64 (expresiones -> expresiones PUNTO nativas .)
+
+
+state 101
+
+    (70) nativas -> ABS .
+
+    PYC             reduce using rule 70 (nativas -> ABS .)
+    SUMA            reduce using rule 70 (nativas -> ABS .)
+    RESTA           reduce using rule 70 (nativas -> ABS .)
+    MULTI           reduce using rule 70 (nativas -> ABS .)
+    DIVI            reduce using rule 70 (nativas -> ABS .)
+    MODULO          reduce using rule 70 (nativas -> ABS .)
+    MAYORIGUAL      reduce using rule 70 (nativas -> ABS .)
+    MAYOR           reduce using rule 70 (nativas -> ABS .)
+    MENORIGUAL      reduce using rule 70 (nativas -> ABS .)
+    MENOR           reduce using rule 70 (nativas -> ABS .)
+    IGUALDAD        reduce using rule 70 (nativas -> ABS .)
+    DESIGUALDAD     reduce using rule 70 (nativas -> ABS .)
+    PUNTO           reduce using rule 70 (nativas -> ABS .)
+    PD              reduce using rule 70 (nativas -> ABS .)
+    COMA            reduce using rule 70 (nativas -> ABS .)
+
+
+state 102
+
+    (71) nativas -> SQRT .
+
+    PYC             reduce using rule 71 (nativas -> SQRT .)
+    SUMA            reduce using rule 71 (nativas -> SQRT .)
+    RESTA           reduce using rule 71 (nativas -> SQRT .)
+    MULTI           reduce using rule 71 (nativas -> SQRT .)
+    DIVI            reduce using rule 71 (nativas -> SQRT .)
+    MODULO          reduce using rule 71 (nativas -> SQRT .)
+    MAYORIGUAL      reduce using rule 71 (nativas -> SQRT .)
+    MAYOR           reduce using rule 71 (nativas -> SQRT .)
+    MENORIGUAL      reduce using rule 71 (nativas -> SQRT .)
+    MENOR           reduce using rule 71 (nativas -> SQRT .)
+    IGUALDAD        reduce using rule 71 (nativas -> SQRT .)
+    DESIGUALDAD     reduce using rule 71 (nativas -> SQRT .)
+    PUNTO           reduce using rule 71 (nativas -> SQRT .)
+    PD              reduce using rule 71 (nativas -> SQRT .)
+    COMA            reduce using rule 71 (nativas -> SQRT .)
+
+
+state 103
+
+    (72) nativas -> TOSTRING .
+
+    PYC             reduce using rule 72 (nativas -> TOSTRING .)
+    SUMA            reduce using rule 72 (nativas -> TOSTRING .)
+    RESTA           reduce using rule 72 (nativas -> TOSTRING .)
+    MULTI           reduce using rule 72 (nativas -> TOSTRING .)
+    DIVI            reduce using rule 72 (nativas -> TOSTRING .)
+    MODULO          reduce using rule 72 (nativas -> TOSTRING .)
+    MAYORIGUAL      reduce using rule 72 (nativas -> TOSTRING .)
+    MAYOR           reduce using rule 72 (nativas -> TOSTRING .)
+    MENORIGUAL      reduce using rule 72 (nativas -> TOSTRING .)
+    MENOR           reduce using rule 72 (nativas -> TOSTRING .)
+    IGUALDAD        reduce using rule 72 (nativas -> TOSTRING .)
+    DESIGUALDAD     reduce using rule 72 (nativas -> TOSTRING .)
+    PUNTO           reduce using rule 72 (nativas -> TOSTRING .)
+    PD              reduce using rule 72 (nativas -> TOSTRING .)
+    COMA            reduce using rule 72 (nativas -> TOSTRING .)
+
+
+state 104
+
+    (73) nativas -> TOOWNED .
+
+    PYC             reduce using rule 73 (nativas -> TOOWNED .)
+    SUMA            reduce using rule 73 (nativas -> TOOWNED .)
+    RESTA           reduce using rule 73 (nativas -> TOOWNED .)
+    MULTI           reduce using rule 73 (nativas -> TOOWNED .)
+    DIVI            reduce using rule 73 (nativas -> TOOWNED .)
+    MODULO          reduce using rule 73 (nativas -> TOOWNED .)
+    MAYORIGUAL      reduce using rule 73 (nativas -> TOOWNED .)
+    MAYOR           reduce using rule 73 (nativas -> TOOWNED .)
+    MENORIGUAL      reduce using rule 73 (nativas -> TOOWNED .)
+    MENOR           reduce using rule 73 (nativas -> TOOWNED .)
+    IGUALDAD        reduce using rule 73 (nativas -> TOOWNED .)
+    DESIGUALDAD     reduce using rule 73 (nativas -> TOOWNED .)
+    PUNTO           reduce using rule 73 (nativas -> TOOWNED .)
+    PD              reduce using rule 73 (nativas -> TOOWNED .)
+    COMA            reduce using rule 73 (nativas -> TOOWNED .)
+
+
+state 105
+
+    (74) nativas -> CLONE .
+
+    PYC             reduce using rule 74 (nativas -> CLONE .)
+    SUMA            reduce using rule 74 (nativas -> CLONE .)
+    RESTA           reduce using rule 74 (nativas -> CLONE .)
+    MULTI           reduce using rule 74 (nativas -> CLONE .)
+    DIVI            reduce using rule 74 (nativas -> CLONE .)
+    MODULO          reduce using rule 74 (nativas -> CLONE .)
+    MAYORIGUAL      reduce using rule 74 (nativas -> CLONE .)
+    MAYOR           reduce using rule 74 (nativas -> CLONE .)
+    MENORIGUAL      reduce using rule 74 (nativas -> CLONE .)
+    MENOR           reduce using rule 74 (nativas -> CLONE .)
+    IGUALDAD        reduce using rule 74 (nativas -> CLONE .)
+    DESIGUALDAD     reduce using rule 74 (nativas -> CLONE .)
+    PUNTO           reduce using rule 74 (nativas -> CLONE .)
+    PD              reduce using rule 74 (nativas -> CLONE .)
+    COMA            reduce using rule 74 (nativas -> CLONE .)
+
+
+state 106
 
     (53) expresiones -> POWF PI expresiones . COMA expresiones PD
     (48) expresiones -> expresiones . SUMA expresiones
@@ -2511,8 +2692,9 @@ state 100
     (58) expresiones -> expresiones . MENOR expresiones
     (59) expresiones -> expresiones . IGUALDAD expresiones
     (60) expresiones -> expresiones . DESIGUALDAD expresiones
+    (64) expresiones -> expresiones . PUNTO nativas
 
-    COMA            shift and go to state 117
+    COMA            shift and go to state 120
     SUMA            shift and go to state 51
     RESTA           shift and go to state 52
     MULTI           shift and go to state 53
@@ -2524,9 +2706,10 @@ state 100
     MENOR           shift and go to state 59
     IGUALDAD        shift and go to state 60
     DESIGUALDAD     shift and go to state 61
+    PUNTO           shift and go to state 62
 
 
-state 101
+state 107
 
     (61) expresiones -> PI expresiones PD .
 
@@ -2542,11 +2725,12 @@ state 101
     MENOR           reduce using rule 61 (expresiones -> PI expresiones PD .)
     IGUALDAD        reduce using rule 61 (expresiones -> PI expresiones PD .)
     DESIGUALDAD     reduce using rule 61 (expresiones -> PI expresiones PD .)
+    PUNTO           reduce using rule 61 (expresiones -> PI expresiones PD .)
     PD              reduce using rule 61 (expresiones -> PI expresiones PD .)
     COMA            reduce using rule 61 (expresiones -> PI expresiones PD .)
 
 
-state 102
+state 108
 
     (54) expresiones -> POW PI expresiones . COMA expresiones PD
     (48) expresiones -> expresiones . SUMA expresiones
@@ -2560,8 +2744,9 @@ state 102
     (58) expresiones -> expresiones . MENOR expresiones
     (59) expresiones -> expresiones . IGUALDAD expresiones
     (60) expresiones -> expresiones . DESIGUALDAD expresiones
+    (64) expresiones -> expresiones . PUNTO nativas
 
-    COMA            shift and go to state 118
+    COMA            shift and go to state 121
     SUMA            shift and go to state 51
     RESTA           shift and go to state 52
     MULTI           shift and go to state 53
@@ -2573,69 +2758,10 @@ state 102
     MENOR           shift and go to state 59
     IGUALDAD        shift and go to state 60
     DESIGUALDAD     shift and go to state 61
+    PUNTO           shift and go to state 62
 
 
-state 103
-
-    (64) expresiones -> CADENA PUNTO tipo_string .
-
-    PYC             reduce using rule 64 (expresiones -> CADENA PUNTO tipo_string .)
-    SUMA            reduce using rule 64 (expresiones -> CADENA PUNTO tipo_string .)
-    RESTA           reduce using rule 64 (expresiones -> CADENA PUNTO tipo_string .)
-    MULTI           reduce using rule 64 (expresiones -> CADENA PUNTO tipo_string .)
-    DIVI            reduce using rule 64 (expresiones -> CADENA PUNTO tipo_string .)
-    MODULO          reduce using rule 64 (expresiones -> CADENA PUNTO tipo_string .)
-    MAYORIGUAL      reduce using rule 64 (expresiones -> CADENA PUNTO tipo_string .)
-    MAYOR           reduce using rule 64 (expresiones -> CADENA PUNTO tipo_string .)
-    MENORIGUAL      reduce using rule 64 (expresiones -> CADENA PUNTO tipo_string .)
-    MENOR           reduce using rule 64 (expresiones -> CADENA PUNTO tipo_string .)
-    IGUALDAD        reduce using rule 64 (expresiones -> CADENA PUNTO tipo_string .)
-    DESIGUALDAD     reduce using rule 64 (expresiones -> CADENA PUNTO tipo_string .)
-    PD              reduce using rule 64 (expresiones -> CADENA PUNTO tipo_string .)
-    COMA            reduce using rule 64 (expresiones -> CADENA PUNTO tipo_string .)
-
-
-state 104
-
-    (70) tipo_string -> TOOWNED .
-
-    PYC             reduce using rule 70 (tipo_string -> TOOWNED .)
-    SUMA            reduce using rule 70 (tipo_string -> TOOWNED .)
-    RESTA           reduce using rule 70 (tipo_string -> TOOWNED .)
-    MULTI           reduce using rule 70 (tipo_string -> TOOWNED .)
-    DIVI            reduce using rule 70 (tipo_string -> TOOWNED .)
-    MODULO          reduce using rule 70 (tipo_string -> TOOWNED .)
-    MAYORIGUAL      reduce using rule 70 (tipo_string -> TOOWNED .)
-    MAYOR           reduce using rule 70 (tipo_string -> TOOWNED .)
-    MENORIGUAL      reduce using rule 70 (tipo_string -> TOOWNED .)
-    MENOR           reduce using rule 70 (tipo_string -> TOOWNED .)
-    IGUALDAD        reduce using rule 70 (tipo_string -> TOOWNED .)
-    DESIGUALDAD     reduce using rule 70 (tipo_string -> TOOWNED .)
-    PD              reduce using rule 70 (tipo_string -> TOOWNED .)
-    COMA            reduce using rule 70 (tipo_string -> TOOWNED .)
-
-
-state 105
-
-    (71) tipo_string -> TOSTRING .
-
-    PYC             reduce using rule 71 (tipo_string -> TOSTRING .)
-    SUMA            reduce using rule 71 (tipo_string -> TOSTRING .)
-    RESTA           reduce using rule 71 (tipo_string -> TOSTRING .)
-    MULTI           reduce using rule 71 (tipo_string -> TOSTRING .)
-    DIVI            reduce using rule 71 (tipo_string -> TOSTRING .)
-    MODULO          reduce using rule 71 (tipo_string -> TOSTRING .)
-    MAYORIGUAL      reduce using rule 71 (tipo_string -> TOSTRING .)
-    MAYOR           reduce using rule 71 (tipo_string -> TOSTRING .)
-    MENORIGUAL      reduce using rule 71 (tipo_string -> TOSTRING .)
-    MENOR           reduce using rule 71 (tipo_string -> TOSTRING .)
-    IGUALDAD        reduce using rule 71 (tipo_string -> TOSTRING .)
-    DESIGUALDAD     reduce using rule 71 (tipo_string -> TOSTRING .)
-    PD              reduce using rule 71 (tipo_string -> TOSTRING .)
-    COMA            reduce using rule 71 (tipo_string -> TOSTRING .)
-
-
-state 106
+state 109
 
     (11) lista_expres -> lista_expres COMA expresiones .
     (48) expresiones -> expresiones . SUMA expresiones
@@ -2649,6 +2775,7 @@ state 106
     (58) expresiones -> expresiones . MENOR expresiones
     (59) expresiones -> expresiones . IGUALDAD expresiones
     (60) expresiones -> expresiones . DESIGUALDAD expresiones
+    (64) expresiones -> expresiones . PUNTO nativas
 
     PD              reduce using rule 11 (lista_expres -> lista_expres COMA expresiones .)
     COMA            reduce using rule 11 (lista_expres -> lista_expres COMA expresiones .)
@@ -2663,9 +2790,10 @@ state 106
     MENOR           shift and go to state 59
     IGUALDAD        shift and go to state 60
     DESIGUALDAD     shift and go to state 61
+    PUNTO           shift and go to state 62
 
 
-state 107
+state 110
 
     (13) funcion -> FUNCION MAIN PI PD LI . instrucciones LD
     (2) instrucciones -> . instrucciones instruccion
@@ -2694,7 +2822,7 @@ state 107
     ID              shift and go to state 12
     FUNCION         shift and go to state 13
 
-    instrucciones                  shift and go to state 119
+    instrucciones                  shift and go to state 122
     instruccion                    shift and go to state 3
     impresiones                    shift and go to state 4
     declaracion                    shift and go to state 5
@@ -2702,34 +2830,34 @@ state 107
     funcion                        shift and go to state 7
     llamada                        shift and go to state 8
 
-state 108
+state 111
 
     (14) funcion -> FUNCION ID PI PD tipo_funcion . LI instrucciones LD
 
-    LI              shift and go to state 120
+    LI              shift and go to state 123
 
 
-state 109
+state 112
 
     (25) tipo_funcion -> RESTA . MAYOR tipo_datos
     (26) tipo_funcion -> RESTA . MAYOR VECTOR MENOR tipo_datos MAYOR
 
-    MAYOR           shift and go to state 121
+    MAYOR           shift and go to state 124
 
 
-state 110
+state 113
 
     (15) funcion -> FUNCION ID PI parametros PD . tipo_funcion LI instrucciones LD
     (25) tipo_funcion -> . RESTA MAYOR tipo_datos
     (26) tipo_funcion -> . RESTA MAYOR VECTOR MENOR tipo_datos MAYOR
     (27) tipo_funcion -> .
 
-    RESTA           shift and go to state 109
+    RESTA           shift and go to state 112
     LI              reduce using rule 27 (tipo_funcion -> .)
 
-    tipo_funcion                   shift and go to state 122
+    tipo_funcion                   shift and go to state 125
 
-state 111
+state 114
 
     (16) parametros -> parametros COMA . definiciones
     (18) definiciones -> . referencias mutable ID VECTOR tipado_vector
@@ -2741,18 +2869,18 @@ state 111
     MUT             reduce using rule 21 (referencias -> .)
     ID              reduce using rule 21 (referencias -> .)
 
-    definiciones                   shift and go to state 123
+    definiciones                   shift and go to state 126
     referencias                    shift and go to state 73
 
-state 112
+state 115
 
     (18) definiciones -> referencias mutable . ID VECTOR tipado_vector
     (19) definiciones -> referencias mutable . ID tipado
 
-    ID              shift and go to state 124
+    ID              shift and go to state 127
 
 
-state 113
+state 116
 
     (45) impresion_valores -> impresion_valores COMA . expresiones
     (47) expresiones -> . RESTA expresiones
@@ -2772,7 +2900,7 @@ state 113
     (61) expresiones -> . PI expresiones PD
     (62) expresiones -> . ID
     (63) expresiones -> . ENTERO
-    (64) expresiones -> . CADENA PUNTO tipo_string
+    (64) expresiones -> . expresiones PUNTO nativas
     (65) expresiones -> . FLOAT
     (66) expresiones -> . CADENA
     (67) expresiones -> . TRUE
@@ -2785,29 +2913,29 @@ state 113
     PI              shift and go to state 31
     ID              shift and go to state 27
     ENTERO          shift and go to state 33
-    CADENA          shift and go to state 34
-    FLOAT           shift and go to state 35
+    FLOAT           shift and go to state 34
+    CADENA          shift and go to state 35
     TRUE            shift and go to state 36
     FALSE           shift and go to state 37
     CARACTER        shift and go to state 38
 
-    expresiones                    shift and go to state 125
+    expresiones                    shift and go to state 128
 
-state 114
+state 117
 
     (43) impresiones -> PRINTLN PI CADENA COMA impresion_valores PD . PYC
 
-    PYC             shift and go to state 126
+    PYC             shift and go to state 129
 
 
-state 115
+state 118
 
     (44) impresiones -> PRINT PI CADENA COMA impresion_valores PD . PYC
 
-    PYC             shift and go to state 127
+    PYC             shift and go to state 130
 
 
-state 116
+state 119
 
     (29) declaracion -> LET mutable ID tipado IGUAL expresiones . PYC
     (48) expresiones -> expresiones . SUMA expresiones
@@ -2821,8 +2949,9 @@ state 116
     (58) expresiones -> expresiones . MENOR expresiones
     (59) expresiones -> expresiones . IGUALDAD expresiones
     (60) expresiones -> expresiones . DESIGUALDAD expresiones
+    (64) expresiones -> expresiones . PUNTO nativas
 
-    PYC             shift and go to state 128
+    PYC             shift and go to state 131
     SUMA            shift and go to state 51
     RESTA           shift and go to state 52
     MULTI           shift and go to state 53
@@ -2834,9 +2963,10 @@ state 116
     MENOR           shift and go to state 59
     IGUALDAD        shift and go to state 60
     DESIGUALDAD     shift and go to state 61
+    PUNTO           shift and go to state 62
 
 
-state 117
+state 120
 
     (53) expresiones -> POWF PI expresiones COMA . expresiones PD
     (47) expresiones -> . RESTA expresiones
@@ -2856,7 +2986,7 @@ state 117
     (61) expresiones -> . PI expresiones PD
     (62) expresiones -> . ID
     (63) expresiones -> . ENTERO
-    (64) expresiones -> . CADENA PUNTO tipo_string
+    (64) expresiones -> . expresiones PUNTO nativas
     (65) expresiones -> . FLOAT
     (66) expresiones -> . CADENA
     (67) expresiones -> . TRUE
@@ -2869,15 +2999,15 @@ state 117
     PI              shift and go to state 31
     ID              shift and go to state 27
     ENTERO          shift and go to state 33
-    CADENA          shift and go to state 34
-    FLOAT           shift and go to state 35
+    FLOAT           shift and go to state 34
+    CADENA          shift and go to state 35
     TRUE            shift and go to state 36
     FALSE           shift and go to state 37
     CARACTER        shift and go to state 38
 
-    expresiones                    shift and go to state 129
+    expresiones                    shift and go to state 132
 
-state 118
+state 121
 
     (54) expresiones -> POW PI expresiones COMA . expresiones PD
     (47) expresiones -> . RESTA expresiones
@@ -2897,7 +3027,7 @@ state 118
     (61) expresiones -> . PI expresiones PD
     (62) expresiones -> . ID
     (63) expresiones -> . ENTERO
-    (64) expresiones -> . CADENA PUNTO tipo_string
+    (64) expresiones -> . expresiones PUNTO nativas
     (65) expresiones -> . FLOAT
     (66) expresiones -> . CADENA
     (67) expresiones -> . TRUE
@@ -2910,15 +3040,15 @@ state 118
     PI              shift and go to state 31
     ID              shift and go to state 27
     ENTERO          shift and go to state 33
-    CADENA          shift and go to state 34
-    FLOAT           shift and go to state 35
+    FLOAT           shift and go to state 34
+    CADENA          shift and go to state 35
     TRUE            shift and go to state 36
     FALSE           shift and go to state 37
     CARACTER        shift and go to state 38
 
-    expresiones                    shift and go to state 130
+    expresiones                    shift and go to state 133
 
-state 119
+state 122
 
     (13) funcion -> FUNCION MAIN PI PD LI instrucciones . LD
     (2) instrucciones -> instrucciones . instruccion
@@ -2940,7 +3070,7 @@ state 119
     (9) llamada -> . ID PI PD
     (10) llamada -> . ID PI lista_expres PD
 
-    LD              shift and go to state 131
+    LD              shift and go to state 134
     PRINTLN         shift and go to state 9
     PRINT           shift and go to state 10
     LET             shift and go to state 11
@@ -2954,7 +3084,7 @@ state 119
     funcion                        shift and go to state 7
     llamada                        shift and go to state 8
 
-state 120
+state 123
 
     (14) funcion -> FUNCION ID PI PD tipo_funcion LI . instrucciones LD
     (2) instrucciones -> . instrucciones instruccion
@@ -2983,7 +3113,7 @@ state 120
     ID              shift and go to state 12
     FUNCION         shift and go to state 13
 
-    instrucciones                  shift and go to state 132
+    instrucciones                  shift and go to state 135
     instruccion                    shift and go to state 3
     impresiones                    shift and go to state 4
     declaracion                    shift and go to state 5
@@ -2991,7 +3121,7 @@ state 120
     funcion                        shift and go to state 7
     llamada                        shift and go to state 8
 
-state 121
+state 124
 
     (25) tipo_funcion -> RESTA MAYOR . tipo_datos
     (26) tipo_funcion -> RESTA MAYOR . VECTOR MENOR tipo_datos MAYOR
@@ -3002,7 +3132,7 @@ state 121
     (39) tipo_datos -> . DIRSTRING
     (40) tipo_datos -> . TIPOBOOL
 
-    VECTOR          shift and go to state 134
+    VECTOR          shift and go to state 137
     TIPOINT         shift and go to state 83
     TIPOFLOAT       shift and go to state 84
     TIPOCHAR        shift and go to state 85
@@ -3010,16 +3140,16 @@ state 121
     DIRSTRING       shift and go to state 87
     TIPOBOOL        shift and go to state 88
 
-    tipo_datos                     shift and go to state 133
+    tipo_datos                     shift and go to state 136
 
-state 122
+state 125
 
     (15) funcion -> FUNCION ID PI parametros PD tipo_funcion . LI instrucciones LD
 
-    LI              shift and go to state 135
+    LI              shift and go to state 138
 
 
-state 123
+state 126
 
     (16) parametros -> parametros COMA definiciones .
 
@@ -3027,21 +3157,21 @@ state 123
     COMA            reduce using rule 16 (parametros -> parametros COMA definiciones .)
 
 
-state 124
+state 127
 
     (18) definiciones -> referencias mutable ID . VECTOR tipado_vector
     (19) definiciones -> referencias mutable ID . tipado
     (33) tipado -> . DP tipo_datos
     (34) tipado -> .
 
-    VECTOR          shift and go to state 136
+    VECTOR          shift and go to state 139
     DP              shift and go to state 49
     PD              reduce using rule 34 (tipado -> .)
     COMA            reduce using rule 34 (tipado -> .)
 
-    tipado                         shift and go to state 137
+    tipado                         shift and go to state 140
 
-state 125
+state 128
 
     (45) impresion_valores -> impresion_valores COMA expresiones .
     (48) expresiones -> expresiones . SUMA expresiones
@@ -3055,6 +3185,7 @@ state 125
     (58) expresiones -> expresiones . MENOR expresiones
     (59) expresiones -> expresiones . IGUALDAD expresiones
     (60) expresiones -> expresiones . DESIGUALDAD expresiones
+    (64) expresiones -> expresiones . PUNTO nativas
 
     PD              reduce using rule 45 (impresion_valores -> impresion_valores COMA expresiones .)
     COMA            reduce using rule 45 (impresion_valores -> impresion_valores COMA expresiones .)
@@ -3069,9 +3200,10 @@ state 125
     MENOR           shift and go to state 59
     IGUALDAD        shift and go to state 60
     DESIGUALDAD     shift and go to state 61
+    PUNTO           shift and go to state 62
 
 
-state 126
+state 129
 
     (43) impresiones -> PRINTLN PI CADENA COMA impresion_valores PD PYC .
 
@@ -3084,7 +3216,7 @@ state 126
     LD              reduce using rule 43 (impresiones -> PRINTLN PI CADENA COMA impresion_valores PD PYC .)
 
 
-state 127
+state 130
 
     (44) impresiones -> PRINT PI CADENA COMA impresion_valores PD PYC .
 
@@ -3097,7 +3229,7 @@ state 127
     LD              reduce using rule 44 (impresiones -> PRINT PI CADENA COMA impresion_valores PD PYC .)
 
 
-state 128
+state 131
 
     (29) declaracion -> LET mutable ID tipado IGUAL expresiones PYC .
 
@@ -3110,7 +3242,7 @@ state 128
     LD              reduce using rule 29 (declaracion -> LET mutable ID tipado IGUAL expresiones PYC .)
 
 
-state 129
+state 132
 
     (53) expresiones -> POWF PI expresiones COMA expresiones . PD
     (48) expresiones -> expresiones . SUMA expresiones
@@ -3124,8 +3256,9 @@ state 129
     (58) expresiones -> expresiones . MENOR expresiones
     (59) expresiones -> expresiones . IGUALDAD expresiones
     (60) expresiones -> expresiones . DESIGUALDAD expresiones
+    (64) expresiones -> expresiones . PUNTO nativas
 
-    PD              shift and go to state 138
+    PD              shift and go to state 141
     SUMA            shift and go to state 51
     RESTA           shift and go to state 52
     MULTI           shift and go to state 53
@@ -3137,9 +3270,10 @@ state 129
     MENOR           shift and go to state 59
     IGUALDAD        shift and go to state 60
     DESIGUALDAD     shift and go to state 61
+    PUNTO           shift and go to state 62
 
 
-state 130
+state 133
 
     (54) expresiones -> POW PI expresiones COMA expresiones . PD
     (48) expresiones -> expresiones . SUMA expresiones
@@ -3153,8 +3287,9 @@ state 130
     (58) expresiones -> expresiones . MENOR expresiones
     (59) expresiones -> expresiones . IGUALDAD expresiones
     (60) expresiones -> expresiones . DESIGUALDAD expresiones
+    (64) expresiones -> expresiones . PUNTO nativas
 
-    PD              shift and go to state 139
+    PD              shift and go to state 142
     SUMA            shift and go to state 51
     RESTA           shift and go to state 52
     MULTI           shift and go to state 53
@@ -3166,9 +3301,10 @@ state 130
     MENOR           shift and go to state 59
     IGUALDAD        shift and go to state 60
     DESIGUALDAD     shift and go to state 61
+    PUNTO           shift and go to state 62
 
 
-state 131
+state 134
 
     (13) funcion -> FUNCION MAIN PI PD LI instrucciones LD .
 
@@ -3181,7 +3317,7 @@ state 131
     LD              reduce using rule 13 (funcion -> FUNCION MAIN PI PD LI instrucciones LD .)
 
 
-state 132
+state 135
 
     (14) funcion -> FUNCION ID PI PD tipo_funcion LI instrucciones . LD
     (2) instrucciones -> instrucciones . instruccion
@@ -3203,7 +3339,7 @@ state 132
     (9) llamada -> . ID PI PD
     (10) llamada -> . ID PI lista_expres PD
 
-    LD              shift and go to state 140
+    LD              shift and go to state 143
     PRINTLN         shift and go to state 9
     PRINT           shift and go to state 10
     LET             shift and go to state 11
@@ -3217,21 +3353,21 @@ state 132
     funcion                        shift and go to state 7
     llamada                        shift and go to state 8
 
-state 133
+state 136
 
     (25) tipo_funcion -> RESTA MAYOR tipo_datos .
 
     LI              reduce using rule 25 (tipo_funcion -> RESTA MAYOR tipo_datos .)
 
 
-state 134
+state 137
 
     (26) tipo_funcion -> RESTA MAYOR VECTOR . MENOR tipo_datos MAYOR
 
-    MENOR           shift and go to state 141
+    MENOR           shift and go to state 144
 
 
-state 135
+state 138
 
     (15) funcion -> FUNCION ID PI parametros PD tipo_funcion LI . instrucciones LD
     (2) instrucciones -> . instrucciones instruccion
@@ -3260,7 +3396,7 @@ state 135
     ID              shift and go to state 12
     FUNCION         shift and go to state 13
 
-    instrucciones                  shift and go to state 142
+    instrucciones                  shift and go to state 145
     instruccion                    shift and go to state 3
     impresiones                    shift and go to state 4
     declaracion                    shift and go to state 5
@@ -3268,7 +3404,7 @@ state 135
     funcion                        shift and go to state 7
     llamada                        shift and go to state 8
 
-state 136
+state 139
 
     (18) definiciones -> referencias mutable ID VECTOR . tipado_vector
     (22) tipado_vector -> .
@@ -3276,9 +3412,9 @@ state 136
     PD              reduce using rule 22 (tipado_vector -> .)
     COMA            reduce using rule 22 (tipado_vector -> .)
 
-    tipado_vector                  shift and go to state 143
+    tipado_vector                  shift and go to state 146
 
-state 137
+state 140
 
     (19) definiciones -> referencias mutable ID tipado .
 
@@ -3286,7 +3422,7 @@ state 137
     COMA            reduce using rule 19 (definiciones -> referencias mutable ID tipado .)
 
 
-state 138
+state 141
 
     (53) expresiones -> POWF PI expresiones COMA expresiones PD .
 
@@ -3302,11 +3438,12 @@ state 138
     MENOR           reduce using rule 53 (expresiones -> POWF PI expresiones COMA expresiones PD .)
     IGUALDAD        reduce using rule 53 (expresiones -> POWF PI expresiones COMA expresiones PD .)
     DESIGUALDAD     reduce using rule 53 (expresiones -> POWF PI expresiones COMA expresiones PD .)
+    PUNTO           reduce using rule 53 (expresiones -> POWF PI expresiones COMA expresiones PD .)
     PD              reduce using rule 53 (expresiones -> POWF PI expresiones COMA expresiones PD .)
     COMA            reduce using rule 53 (expresiones -> POWF PI expresiones COMA expresiones PD .)
 
 
-state 139
+state 142
 
     (54) expresiones -> POW PI expresiones COMA expresiones PD .
 
@@ -3322,11 +3459,12 @@ state 139
     MENOR           reduce using rule 54 (expresiones -> POW PI expresiones COMA expresiones PD .)
     IGUALDAD        reduce using rule 54 (expresiones -> POW PI expresiones COMA expresiones PD .)
     DESIGUALDAD     reduce using rule 54 (expresiones -> POW PI expresiones COMA expresiones PD .)
+    PUNTO           reduce using rule 54 (expresiones -> POW PI expresiones COMA expresiones PD .)
     PD              reduce using rule 54 (expresiones -> POW PI expresiones COMA expresiones PD .)
     COMA            reduce using rule 54 (expresiones -> POW PI expresiones COMA expresiones PD .)
 
 
-state 140
+state 143
 
     (14) funcion -> FUNCION ID PI PD tipo_funcion LI instrucciones LD .
 
@@ -3339,7 +3477,7 @@ state 140
     LD              reduce using rule 14 (funcion -> FUNCION ID PI PD tipo_funcion LI instrucciones LD .)
 
 
-state 141
+state 144
 
     (26) tipo_funcion -> RESTA MAYOR VECTOR MENOR . tipo_datos MAYOR
     (35) tipo_datos -> . TIPOINT
@@ -3356,9 +3494,9 @@ state 141
     DIRSTRING       shift and go to state 87
     TIPOBOOL        shift and go to state 88
 
-    tipo_datos                     shift and go to state 144
+    tipo_datos                     shift and go to state 147
 
-state 142
+state 145
 
     (15) funcion -> FUNCION ID PI parametros PD tipo_funcion LI instrucciones . LD
     (2) instrucciones -> instrucciones . instruccion
@@ -3380,7 +3518,7 @@ state 142
     (9) llamada -> . ID PI PD
     (10) llamada -> . ID PI lista_expres PD
 
-    LD              shift and go to state 145
+    LD              shift and go to state 148
     PRINTLN         shift and go to state 9
     PRINT           shift and go to state 10
     LET             shift and go to state 11
@@ -3394,7 +3532,7 @@ state 142
     funcion                        shift and go to state 7
     llamada                        shift and go to state 8
 
-state 143
+state 146
 
     (18) definiciones -> referencias mutable ID VECTOR tipado_vector .
 
@@ -3402,14 +3540,14 @@ state 143
     COMA            reduce using rule 18 (definiciones -> referencias mutable ID VECTOR tipado_vector .)
 
 
-state 144
+state 147
 
     (26) tipo_funcion -> RESTA MAYOR VECTOR MENOR tipo_datos . MAYOR
 
-    MAYOR           shift and go to state 146
+    MAYOR           shift and go to state 149
 
 
-state 145
+state 148
 
     (15) funcion -> FUNCION ID PI parametros PD tipo_funcion LI instrucciones LD .
 
@@ -3422,7 +3560,7 @@ state 145
     LD              reduce using rule 15 (funcion -> FUNCION ID PI parametros PD tipo_funcion LI instrucciones LD .)
 
 
-state 146
+state 149
 
     (26) tipo_funcion -> RESTA MAYOR VECTOR MENOR tipo_datos MAYOR .
 

@@ -13,12 +13,17 @@ class Aritmetica(Operacion, Expresion):
             valor_exp1 = self.exp1.ObtenerValor(controlador, ts)
             valor_exp2 = self.exp2.ObtenerValor(controlador, ts)
 
+            tipo_exp1 = self.exp1.ObtenerTipo(controlador, ts)
+            tipo_exp2 = self.exp2.ObtenerTipo(controlador, ts)
+
             if self.operador == operador.SUMA:
 
                 if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
                     return int(valor_exp1 + valor_exp2)
                 elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
                     return float(valor_exp1 + valor_exp2)
+                elif tipo_exp1 == tipo.STRING and tipo_exp2 == tipo.DIRSTRING:
+                    return str(valor_exp1 + valor_exp2)
                 else:
                     return "No son el mismo formato"
 

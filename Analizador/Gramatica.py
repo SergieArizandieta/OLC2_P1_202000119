@@ -282,7 +282,7 @@ def p_instruccion(t):
 from AST.Expresion import Identificador
 from AST.Instruccion import Declaracion, Asignacion, Funcion, Llamada
 from AST.TablaSimbolos.Tipos import tipo
-
+from AST.Expresion.Nativas import Nativas
 
 def p_llamada(t):
     '''llamada  : ID PI PD
@@ -501,7 +501,7 @@ def p_expresiones(t):
                     | PI expresiones PD
                     | ID
                     | ENTERO
-                    | CADENA PUNTO tipo_string
+                    | expresiones PUNTO nativas
                     | FLOAT
                     | CADENA
                     | TRUE
@@ -558,8 +558,8 @@ def p_expresiones(t):
             t[0] = Relacional.Relacional(t[1], "!=", t[3], False)
         elif t[1] == "(" and t[3] == ")":
             t[0] = t[2]
-        elif t.slice[1].type == 'CADENA':
-            t[0] = Primitivo.Primitivo(t[1], 'STRING')
+        elif t.slice[2].type == 'PUNTO':
+            t[0] = Nativas.Nativas(t[1], t[3])
 
 
     elif len(t) == 7:
@@ -569,11 +569,14 @@ def p_expresiones(t):
             t[0] = Aritmetica.Aritmetica(t[3], "^f", t[5], False)
 
 
-def p_tipo_string(t):
-    '''tipo_string      :  TOOWNED
-                        | TOSTRING'''
+def p_nativas(t):
+    '''nativas      : ABS
+                    | SQRT
+                    | TOSTRING
+                    | TOOWNED
+                    | CLONE'''
 
-    t[0] = Primitivo.Primitivo(t[1], 'STRING')
+    t[0] = t[1]
 
 
 def p_error(t):
