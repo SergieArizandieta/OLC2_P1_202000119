@@ -48,6 +48,7 @@ class Llamada(Intruccion, Expresion):
                     return retorno
 
     def validar_parametros(self, parametros_llamada, parametros_funcion, controlador, ts, ts_loca):
+
         if len(parametros_llamada) == len(parametros_funcion):
 
             for i in range(0, len(parametros_llamada)):
@@ -75,4 +76,5 @@ class Llamada(Intruccion, Expresion):
 
             return True
         else:
+            print(" Validacion parametros size")
             return False

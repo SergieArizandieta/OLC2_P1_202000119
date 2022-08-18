@@ -203,14 +203,21 @@ def revicion_reservadas(t):
 def t_CADENA(t):
     r'\".*?\"'
     t.value = t.value[1:-1]  # remuevo las comillas
-    print("Se reconcio cadena ", t.value)
+    print("Se reconcio cadena: ", t.value)
+    return t
+
+
+def t_CARACTER(t):
+    r'\'.?\''
+    t.value = t.value[1:-1]  # remuevo las comillas
+    print("Se reconcio caracter: ", t.value)
     return t
 
 
 # Comentario simple // ...
 def t_COMENTARIO(t):
     r'//.*\n'
-    print("Se reconcio comentario ", t.value.replace('\n', ''))
+    print("Se reconcio comentario: ", t.value.replace('\n', ''))
     t.lexer.lineno += 1
 
 
@@ -273,8 +280,9 @@ def p_instruccion(t):
 
 '''xxx'''
 from AST.Expresion import Identificador
-from AST.Instruccion import Declaracion, Asignacion,Funcion,Llamada
+from AST.Instruccion import Declaracion, Asignacion, Funcion, Llamada
 from AST.TablaSimbolos.Tipos import tipo
+
 
 def p_llamada(t):
     '''llamada  : ID PI PD
@@ -282,10 +290,11 @@ def p_llamada(t):
 
     if len(t) == 4:
         print("=== llamda tipo 1")
-        t[0] = Llamada.Llamada(t[1],[])
+        t[0] = Llamada.Llamada(t[1], [])
     else:
         print("=== llamda tipo 2")
-        t[0] = Llamada.Llamada(t[1],t[3])
+        t[0] = Llamada.Llamada(t[1], t[3])
+
 
 def p_lista_expres(t):
     '''lista_expres : lista_expres COMA  expresiones
@@ -298,21 +307,23 @@ def p_lista_expres(t):
     else:
         t[0] = [t[1]]
 
+
 def p_funciones(t):
     '''funcion  : FUNCION MAIN PI PD LI instrucciones LD
                 |  FUNCION ID PI PD tipo_funcion LI instrucciones LD
                 |  FUNCION ID PI parametros PD tipo_funcion LI instrucciones LD'''
 
     if len(t) == 8:
-       t[0]=Funcion.Funcion(t[2],None,[],t[6])
+        t[0] = Funcion.Funcion(t[2], None, [], t[6])
     elif len(t) == 9:
-        t[0]=Funcion.Funcion(t[2],t[5],[],t[7])
+        t[0] = Funcion.Funcion(t[2], t[5], [], t[7])
     elif len(t) == 10:
-        print("t2 ",t[2])
+        print("t2 ", t[2])
         print("t5 ", t[5])
         print("t4 ", t[4])
         print("t7 ", t[7])
         t[0] = Funcion.Funcion(t[2], t[6], t[4], t[8])
+
 
 def p_parametros(t):
     '''parametros : parametros COMA definiciones
@@ -325,11 +336,12 @@ def p_parametros(t):
     else:
         t[0] = [t[1]]
 
+
 def p_definiciones(t):
     """ definiciones : referencias mutable ID VECTOR tipado_vector
                     | referencias mutable ID tipado """
 
-    if len(t) == 5:    t[0] =  Declaracion.Declaracion(Identificador.Identificador(t[3]),None,t[4],t[1])
+    if len(t) == 5:    t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), None, t[4], t[1])
 
 
 def p_referencias(t):
@@ -342,8 +354,10 @@ def p_referencias(t):
     else:
         t[0] = False
 
+
 def p_tipado_vect(t):
     '''tipado_vector : '''
+
 
 def p_accceso(t):
     '''acceso   : PUBLICO
@@ -353,6 +367,7 @@ def p_accceso(t):
 
     else:
         t[0] = False
+
 
 def p_tipo_funcion(t):
     '''tipo_funcion : RESTA MAYOR tipo_datos
@@ -486,11 +501,12 @@ def p_expresiones(t):
                     | PI expresiones PD
                     | ID
                     | ENTERO
-                    | CADENA tipo_string
+                    | CADENA PUNTO tipo_string
                     | FLOAT
                     | CADENA
                     | TRUE
-                    | FALSE'''
+                    | FALSE
+                    | CARACTER'''
 
     # print(t.lineno(1))
     # rint(t.lexpos(1))
@@ -507,14 +523,15 @@ def p_expresiones(t):
             t[0] = Primitivo.Primitivo(True, 'BOOLEANO')
         elif t.slice[1].type == 'FALSE':
             t[0] = Primitivo.Primitivo(False, 'BOOLEANO')
+        elif t.slice[1].type == 'CARACTER':
+            t[0] = Primitivo.Primitivo(t[1], 'CARACTER')
         elif t.slice[1].type == 'ID':
             t[0] = Identificador.Identificador(t[1])
 
     elif len(t) == 3:
         if t[1] == "-":
             t[0] = Aritmetica.Aritmetica(t[2], "-", 0, True)
-        elif t.slice[1].type == 'CADENA':
-            t[0] = Primitivo.Primitivo(t[1], 'STRING')
+
 
     elif len(t) == 4:
         if t[2] == "+":
@@ -541,6 +558,8 @@ def p_expresiones(t):
             t[0] = Relacional.Relacional(t[1], "!=", t[3], False)
         elif t[1] == "(" and t[3] == ")":
             t[0] = t[2]
+        elif t.slice[1].type == 'CADENA':
+            t[0] = Primitivo.Primitivo(t[1], 'STRING')
 
 
     elif len(t) == 7:

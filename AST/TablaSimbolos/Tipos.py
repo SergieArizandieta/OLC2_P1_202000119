@@ -34,7 +34,12 @@ class Tipos():
             print("Se dectecto una STRING")
             return tipo.STRING
 
+        elif self.nombre == 'CARACTER':
+            print("Se dectecto una CARACTER")
+            return tipo.CARACTER
+
         elif self.nombre == 'BOOLEANO':
+            print("Se dectecto un booleano")
             return tipo.BOOLEANO
 
 
