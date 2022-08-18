@@ -14,7 +14,7 @@ class Imprimir(Intruccion):
         global valor, tipo
         if len(self.lista) > 0:
             texto_salida = ""
-            print(" Esta llena casdena: ", self.expresion )
+
 
             if  self.expresion.count("{}") > 0:
                 formato_nomal = self.expresion.split("{}")
@@ -27,6 +27,7 @@ class Imprimir(Intruccion):
                         if i <= len(self.lista)-1:
                             texto_salida += str(self.lista[i].ObtenerValor(controlador,ts))
 
+                    print("Print final: ", texto_salida)
                             #print("Obtener tipo: ", self.lista[i].ObtenerTipo(controlador, ts))
 
 

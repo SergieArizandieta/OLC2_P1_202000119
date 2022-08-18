@@ -14,7 +14,7 @@ class TablaDeSimbolos():
             padre.siguiente = self
 
     def Agregar_Simbolo(self, id, simbolo):
-        print("Agregando: ", id, " con simbolo: ", simbolo)
+        print("Agregando: ", id, " con simbolo: ", simbolo, " en: ", self.name)
         if not self.Existe_id(id):
             self.tabla[id] = simbolo
         else:
@@ -27,7 +27,7 @@ class TablaDeSimbolos():
             existe = ts.tabla.get(id)
 
             if existe is not None:
-                print("nombre donde ya existe: ", ts.name)
+                print("Si existe el simbolo: ", id)
                 return True
 
             ts = ts.padre

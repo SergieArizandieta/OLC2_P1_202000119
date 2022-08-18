@@ -10,7 +10,8 @@ class Identificador(Expresion):
 
     def ObtenerValor(self, controlador, ts):
         existe_id:Simbolos = ts.ObtenerSimbolo(self.id)
-        print("!!=== tratando de recuperar dato")
+        print("!!=== tratando de recuperar dato : ",existe_id, " id buscado: ",self.id)
+        print("Tabla donde se busca el valor : ",ts.name)
         return existe_id.valor
 
     def ObtenerTipo(self, controlador, ts):

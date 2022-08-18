@@ -11,9 +11,13 @@ class Llamada(Intruccion, Expresion):
         self.parametos = parametos
 
     def EjecutarInstruccion(self, controlador, ts: TablaDeSimbolos):
-        print("La funcion se esta ejecuntado en la tabla: ", ts.name)
+        print("Se ejecuto llamada de: ", self.identificador, " desde: ",ts.name)
+
         if ts.Existe_id(self.identificador):
-            ts_local = TablaDeSimbolos(ts, ts.name)
+            if self.identificador == "main":
+                ts_local = TablaDeSimbolos(ts, self.identificador)
+            else:
+                ts_local = TablaDeSimbolos(ts.padre, self.identificador)
             simbolo_funcion: Funcion = ts.ObtenerSimbolo(self.identificador)
 
             if self.validar_parametros(self.parametos, simbolo_funcion.parametros, controlador, ts, ts_local):
@@ -22,6 +26,11 @@ class Llamada(Intruccion, Expresion):
 
                 if retorno is not None:
                     return retorno
+            else:
+                print("Aqui fallo2")
+        else:
+            print("Aqui fallo1")
+
 
     def ObtenerValor(self, controlador, ts):
         simbolo_funcion = ts.Obtener_Tipo_Simbolo(self.identificador)
@@ -40,9 +49,6 @@ class Llamada(Intruccion, Expresion):
 
     def validar_parametros(self, parametros_llamada, parametros_funcion, controlador, ts, ts_loca):
         if len(parametros_llamada) == len(parametros_funcion):
-
-
-
 
             for i in range(0, len(parametros_llamada)):
                 aux = parametros_funcion[i]

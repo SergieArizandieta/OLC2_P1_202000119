@@ -11,10 +11,12 @@ class Funcion(Intruccion):
         self.instrucciones = instrucciones
 
     def EjecutarInstruccion(self, controlador, ts):
-        print("Intruccion de : ", self.identificador)
+        print("Intrucciones de : ", self.identificador)
+
         for instruccion in self.instrucciones:
             if isinstance(instruccion,Llamada):
-                retorno = instruccion.EjecutarInstruccion(controlador, ts.padre)
+               # retorno = instruccion.EjecutarInstruccion(controlador, ts.padre)
+               retorno = instruccion.EjecutarInstruccion(controlador, ts)
             else:
                 print("Instuccion: ",instruccion)
                 retorno = instruccion.EjecutarInstruccion(controlador, ts)
@@ -23,6 +25,7 @@ class Funcion(Intruccion):
                 return retorno
 
         return None
+
 
     def agregarFuncion(self, ts: TablaDeSimbolos):
         print("================== Se guardo funcion ================ ", self.identificador)
