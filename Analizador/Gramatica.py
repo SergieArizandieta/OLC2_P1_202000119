@@ -242,6 +242,9 @@ lexer = lex.lex()
 # procedencia
 # Asociación de operadores y precedencia
 precedence = (
+    ('left', 'OR'),
+    ('left', 'AND'),
+    ('left', 'NOT'),
     ('left', 'MAYORIGUAL', 'MAYOR', 'MENORIGUAL', 'MENOR', 'IGUALDAD', 'DESIGUALDAD'),
     ('left', 'SUMA', 'RESTA'),
     ('left', 'MULTI', 'DIVI'),
@@ -283,6 +286,7 @@ from AST.Expresion import Identificador
 from AST.Instruccion import Declaracion, Asignacion, Funcion, Llamada
 from AST.TablaSimbolos.Tipos import tipo
 from AST.Expresion.Nativas import Nativas
+from AST.Expresion.Operaciones import Logica
 
 def p_llamada(t):
     '''llamada  : ID PI PD
@@ -490,6 +494,9 @@ def p_expresiones(t):
                     | expresiones MULTI expresiones
                     | expresiones DIVI expresiones
                     | expresiones MODULO expresiones
+                    | expresiones OR expresiones
+                    | expresiones AND expresiones
+                    | NOT  expresiones
                     | POWF PI expresiones COMA expresiones PD
                     | POW PI expresiones COMA expresiones PD
                     | expresiones MAYORIGUAL expresiones
@@ -529,38 +536,25 @@ def p_expresiones(t):
             t[0] = Identificador.Identificador(t[1])
 
     elif len(t) == 3:
-        if t[1] == "-":
-            t[0] = Aritmetica.Aritmetica(t[2], "-", 0, True)
-
+        if t[1] == "-": t[0] = Aritmetica.Aritmetica(t[2], "-", 0, True)
+        elif t.slice[1].type == 'NOT': t[0] = Logica.Logica(t[2], "!", None, True)
 
     elif len(t) == 4:
-        if t[2] == "+":
-            t[0] = Aritmetica.Aritmetica(t[1], "+", t[3], False)
-        elif t[2] == "-":
-            t[0] = Aritmetica.Aritmetica(t[1], "-", t[3], False)
-        elif t[2] == "*":
-            t[0] = Aritmetica.Aritmetica(t[1], "*", t[3], False)
-        elif t[2] == "/":
-            t[0] = Aritmetica.Aritmetica(t[1], "/", t[3], False)
-        elif t[2] == "%":
-            t[0] = Aritmetica.Aritmetica(t[1], "%", t[3], False)
-        elif t[2] == ">=":
-            t[0] = Relacional.Relacional(t[1], ">=", t[3], False)
-        elif t[2] == ">":
-            t[0] = Relacional.Relacional(t[1], ">", t[3], False)
-        elif t[2] == "<=":
-            t[0] = Relacional.Relacional(t[1], "<=", t[3], False)
-        elif t[2] == "<":
-            t[0] = Relacional.Relacional(t[1], "<", t[3], False)
-        elif t[2] == "==":
-            t[0] = Relacional.Relacional(t[1], "==", t[3], False)
-        elif t[2] == "!=":
-            t[0] = Relacional.Relacional(t[1], "!=", t[3], False)
-        elif t[1] == "(" and t[3] == ")":
-            t[0] = t[2]
-        elif t.slice[2].type == 'PUNTO':
-            t[0] = Nativas.Nativas(t[1], t[3])
-
+        if t[2] == "+": t[0] = Aritmetica.Aritmetica(t[1], "+", t[3], False)
+        elif t[2] == "-": t[0] = Aritmetica.Aritmetica(t[1], "-", t[3], False)
+        elif t[2] == "*": t[0] = Aritmetica.Aritmetica(t[1], "*", t[3], False)
+        elif t[2] == "/": t[0] = Aritmetica.Aritmetica(t[1], "/", t[3], False)
+        elif t[2] == "%": t[0] = Aritmetica.Aritmetica(t[1], "%", t[3], False)
+        elif t[2] == ">=": t[0] = Relacional.Relacional(t[1], ">=", t[3], False)
+        elif t[2] == ">": t[0] = Relacional.Relacional(t[1], ">", t[3], False)
+        elif t[2] == "<=": t[0] = Relacional.Relacional(t[1], "<=", t[3], False)
+        elif t[2] == "<": t[0] = Relacional.Relacional(t[1], "<", t[3], False)
+        elif t[2] == "==": t[0] = Relacional.Relacional(t[1], "==", t[3], False)
+        elif t[2] == "!=": t[0] = Relacional.Relacional(t[1], "!=", t[3], False)
+        elif t[1] == "(" and t[3] == ")": t[0] = t[2]
+        elif t.slice[2].type == 'PUNTO': t[0] = Nativas.Nativas(t[1], t[3])
+        elif t.slice[2].type == 'OR': t[0] = Logica.Logica(t[1], "||", t[3], False)
+        elif t.slice[2].type == 'AND':t[0] = Logica.Logica(t[1], "&&", t[3], False)
 
     elif len(t) == 7:
         if t[1] == "::pow":

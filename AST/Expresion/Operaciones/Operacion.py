@@ -7,25 +7,26 @@ class operador(Enum):
     SUMA = 0,
     RESTA = 1,
     MULTIPLICACION = 2,
-    DIVISION =3,
-    POT= 4,
-    MOD =5,
-    UNARIO=6,
-    IGUALIGUAL=7,
-    DIFERENCIA=8,
-    MENORQUE=9,
-    MAYORQUE=10,
-    MENORIGUAL=11,
-    MAYORIGUAL=12,
-    OR=13,
-    AND=14,
-    NOT=15,
+    DIVISION = 3,
+    POT = 4,
+    MOD = 5,
+    UNARIO = 6,
+    IGUALIGUAL = 7,
+    DIFERENCIA = 8,
+    MENORQUE = 9,
+    MAYORQUE = 10,
+    MENORIGUAL = 11,
+    MAYORIGUAL = 12,
+    OR = 13,
+    AND = 14,
+    NOT = 15,
     POTF = 16,
-    Err= 100
+    Err = 100
+
 
 class Operacion(Expresion):
 
-    def __init__(self, exp1,signo, exp2, expU):
+    def __init__(self, exp1, signo, exp2, expU):
         self.exp1 = exp1
         self.exp2 = exp2
         self.expU = expU
@@ -38,7 +39,7 @@ class Operacion(Expresion):
     def ObtenerTipo(self, controlador, ts):
         pass
 
-    def ObtenerOperador(self,signo_operador):
+    def ObtenerOperador(self, signo_operador):
         print("============= Signo valor ", signo_operador)
         if signo_operador == '+':
             return operador.SUMA
@@ -69,7 +70,6 @@ class Operacion(Expresion):
         elif signo_operador == '<=':
             return operador.MENORIGUAL
         elif signo_operador == '>=':
-            print("========== Se reconocio >=")
             return operador.MAYORIGUAL
         elif signo_operador == '||':
             return operador.OR
@@ -77,5 +77,5 @@ class Operacion(Expresion):
             return operador.AND
         elif signo_operador == '!':
             return operador.NOT
-        else :
+        else:
             return operador.Err
