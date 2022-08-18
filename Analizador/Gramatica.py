@@ -277,7 +277,8 @@ def p_instruccion(t):
                         | declaracion
                         | asignacion
                         | funcion
-                        | llamada PYC'''
+                        | llamada PYC
+                        | start_match'''
     t[0] = t[1]
 
 
@@ -287,7 +288,47 @@ from AST.Instruccion import Declaracion, Asignacion, Funcion, Llamada
 from AST.TablaSimbolos.Tipos import tipo
 from AST.Expresion.Nativas import Nativas
 from AST.Expresion.Operaciones import Logica
+from AST.Instruccion.Match import Match, BloqueMatch
 
+
+def p_start_match(t):
+    '''start_match : MATCH expresiones LI matches LD '''
+
+    print("== Match == exp: ",t[2], " varios: ",t[4])
+def p_matches(t):
+    '''matches : matches bloque_match
+                | bloque_match'''
+    if len(t) > 2:
+        t[1].append(t[2])
+        t[0] = t[1]
+
+    else:
+        t[0] = [t[1]]
+
+
+def p_list_match(t):
+    '''bloque_match : varios_match IGUAL MAYOR LI instrucciones LD
+                    | varios_match IGUAL MAYOR instruccion COMA'''
+
+
+
+    if len(t) == 6: t[0] = BloqueMatch.BloqueMatch(t[1], [t[4]])
+    elif len(t) == 7: t[0] = BloqueMatch.BloqueMatch(t[1], t[5])
+
+
+def p_varios_match(t):
+    '''varios_match : varios_match BARRA expresiones
+                    | expresiones '''
+
+    if len(t) > 2:
+        t[1].append(t[3])
+        t[0] = t[1]
+
+    else:
+        t[0] = [t[1]]
+
+
+# instrucciones
 def p_llamada(t):
     '''llamada  : ID PI PD
                 | ID PI lista_expres PD'''
@@ -536,25 +577,42 @@ def p_expresiones(t):
             t[0] = Identificador.Identificador(t[1])
 
     elif len(t) == 3:
-        if t[1] == "-": t[0] = Aritmetica.Aritmetica(t[2], "-", 0, True)
-        elif t.slice[1].type == 'NOT': t[0] = Logica.Logica(t[2], "!", None, True)
+        if t[1] == "-":
+            t[0] = Aritmetica.Aritmetica(t[2], "-", 0, True)
+        elif t.slice[1].type == 'NOT':
+            t[0] = Logica.Logica(t[2], "!", None, True)
 
     elif len(t) == 4:
-        if t[2] == "+": t[0] = Aritmetica.Aritmetica(t[1], "+", t[3], False)
-        elif t[2] == "-": t[0] = Aritmetica.Aritmetica(t[1], "-", t[3], False)
-        elif t[2] == "*": t[0] = Aritmetica.Aritmetica(t[1], "*", t[3], False)
-        elif t[2] == "/": t[0] = Aritmetica.Aritmetica(t[1], "/", t[3], False)
-        elif t[2] == "%": t[0] = Aritmetica.Aritmetica(t[1], "%", t[3], False)
-        elif t[2] == ">=": t[0] = Relacional.Relacional(t[1], ">=", t[3], False)
-        elif t[2] == ">": t[0] = Relacional.Relacional(t[1], ">", t[3], False)
-        elif t[2] == "<=": t[0] = Relacional.Relacional(t[1], "<=", t[3], False)
-        elif t[2] == "<": t[0] = Relacional.Relacional(t[1], "<", t[3], False)
-        elif t[2] == "==": t[0] = Relacional.Relacional(t[1], "==", t[3], False)
-        elif t[2] == "!=": t[0] = Relacional.Relacional(t[1], "!=", t[3], False)
-        elif t[1] == "(" and t[3] == ")": t[0] = t[2]
-        elif t.slice[2].type == 'PUNTO': t[0] = Nativas.Nativas(t[1], t[3])
-        elif t.slice[2].type == 'OR': t[0] = Logica.Logica(t[1], "||", t[3], False)
-        elif t.slice[2].type == 'AND':t[0] = Logica.Logica(t[1], "&&", t[3], False)
+        if t[2] == "+":
+            t[0] = Aritmetica.Aritmetica(t[1], "+", t[3], False)
+        elif t[2] == "-":
+            t[0] = Aritmetica.Aritmetica(t[1], "-", t[3], False)
+        elif t[2] == "*":
+            t[0] = Aritmetica.Aritmetica(t[1], "*", t[3], False)
+        elif t[2] == "/":
+            t[0] = Aritmetica.Aritmetica(t[1], "/", t[3], False)
+        elif t[2] == "%":
+            t[0] = Aritmetica.Aritmetica(t[1], "%", t[3], False)
+        elif t[2] == ">=":
+            t[0] = Relacional.Relacional(t[1], ">=", t[3], False)
+        elif t[2] == ">":
+            t[0] = Relacional.Relacional(t[1], ">", t[3], False)
+        elif t[2] == "<=":
+            t[0] = Relacional.Relacional(t[1], "<=", t[3], False)
+        elif t[2] == "<":
+            t[0] = Relacional.Relacional(t[1], "<", t[3], False)
+        elif t[2] == "==":
+            t[0] = Relacional.Relacional(t[1], "==", t[3], False)
+        elif t[2] == "!=":
+            t[0] = Relacional.Relacional(t[1], "!=", t[3], False)
+        elif t[1] == "(" and t[3] == ")":
+            t[0] = t[2]
+        elif t.slice[2].type == 'PUNTO':
+            t[0] = Nativas.Nativas(t[1], t[3])
+        elif t.slice[2].type == 'OR':
+            t[0] = Logica.Logica(t[1], "||", t[3], False)
+        elif t.slice[2].type == 'AND':
+            t[0] = Logica.Logica(t[1], "&&", t[3], False)
 
     elif len(t) == 7:
         if t[1] == "::pow":
