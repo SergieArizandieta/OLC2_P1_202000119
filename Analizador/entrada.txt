@@ -1,5 +1,12 @@
 fn main () {
-    foo(1, 2.1,true,'?',"tipo String".to_string(),"tipo &str");
+    let a: i64 = 2;
+    let b: f64 = 2.2;
+    let c: bool = false;
+    let d: char = '@';
+    let e: String = "tipos String".to_string();
+    let f: &str = "tipos &str";
+
+    foo(a, b,c,d,e,f);
 }
 
 
