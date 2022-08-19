@@ -294,7 +294,9 @@ from AST.Instruccion.Match import Match, BloqueMatch
 def p_start_match(t):
     '''start_match : MATCH expresiones LI matches LD '''
 
-    print("== Match == exp: ",t[2], " varios: ",t[4])
+    print("== Match == exp: ", t[2], " varios: ", t[4])
+    t[0]= Match.Match(t[2],t[4])
+
 def p_matches(t):
     '''matches : matches bloque_match
                 | bloque_match'''
@@ -310,15 +312,14 @@ def p_list_match(t):
     '''bloque_match : varios_match IGUAL MAYOR LI instrucciones LD
                     | varios_match IGUAL MAYOR instruccion COMA'''
 
-
-
     if len(t) == 6: t[0] = BloqueMatch.BloqueMatch(t[1], [t[4]])
     elif len(t) == 7: t[0] = BloqueMatch.BloqueMatch(t[1], t[5])
 
 
 def p_varios_match(t):
     '''varios_match : varios_match BARRA expresiones
-                    | expresiones '''
+                    | expresiones
+                    | GBAJO'''
 
     if len(t) > 2:
         t[1].append(t[3])
