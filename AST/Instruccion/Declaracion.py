@@ -12,13 +12,14 @@ class Declaracion(Intruccion):
         self.mut = mut
 
     def EjecutarInstruccion(self, controlador, ts):
-
+        print(" ==== Declarar === ",self.expresion)
         if self.expresion is not None:
 
             ValorExpresion = self.expresion.ObtenerValor(controlador, ts)
             TipoExpresion = self.expresion.ObtenerTipo(controlador, ts)
 
             if self.tipo is not None:
+
                 if type(self.tipo) == type(TipoExpresion):
 
                     newSimbolo = Simbolos()

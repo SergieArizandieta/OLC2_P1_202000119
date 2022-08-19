@@ -244,7 +244,6 @@ lexer = lex.lex()
 precedence = (
     ('left', 'OR'),
     ('left', 'AND'),
-    ('left', 'NOT'),
     ('left', 'MAYORIGUAL', 'MAYOR', 'MENORIGUAL', 'MENOR', 'IGUALDAD', 'DESIGUALDAD'),
     ('left', 'SUMA', 'RESTA'),
     ('left', 'MULTI', 'DIVI'),
@@ -278,7 +277,9 @@ def p_instruccion(t):
                         | asignacion
                         | funcion
                         | llamada PYC
-                        | start_match'''
+                        | start_match PYC
+                         '''
+    #start_match
     t[0] = t[1]
 
 
@@ -289,13 +290,13 @@ from AST.TablaSimbolos.Tipos import tipo
 from AST.Expresion.Nativas import Nativas
 from AST.Expresion.Operaciones import Logica
 from AST.Instruccion.Match import Match, BloqueMatch
-
+from AST.Expresion import Primitivo
+from AST.Instruccion import Imprimir
+from AST.Expresion.Operaciones import Aritmetica, Relacional
 
 def p_start_match(t):
     '''start_match : MATCH expresiones LI matches LD '''
-
-    print("== Match == exp: ", t[2], " varios: ", t[4])
-    t[0]= Match.Match(t[2],t[4])
+    t[0] = Match.Match(t[2], t[4])
 
 def p_matches(t):
     '''matches : matches bloque_match
@@ -307,14 +308,18 @@ def p_matches(t):
     else:
         t[0] = [t[1]]
 
-
 def p_list_match(t):
-    '''bloque_match : varios_match IGUAL MAYOR LI instrucciones LD
-                    | varios_match IGUAL MAYOR instruccion COMA'''
+    '''bloque_match :  varios_match IGUAL MAYOR contenido_match COMA
+                    | varios_match IGUAL MAYOR LI instrucciones LD '''
 
-    if len(t) == 6: t[0] = BloqueMatch.BloqueMatch(t[1], [t[4]])
+    if len(t) == 6:t[0] = BloqueMatch.BloqueMatch(t[1], [t[4]])
     elif len(t) == 7: t[0] = BloqueMatch.BloqueMatch(t[1], t[5])
 
+
+def p_contenido_match(t):
+    ''' contenido_match : instruccion
+                        | expresiones  '''
+    t[0] = t[1]
 
 def p_varios_match(t):
     '''varios_match : varios_match BARRA expresiones
@@ -434,6 +439,7 @@ def p_declaracion(t):
         t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), None, t[4], t[2])
 
     elif len(t) == 8:
+        print("Llego bien a declarar ",t[6])
         t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), t[6], t[4], t[2])
 
 
@@ -482,12 +488,6 @@ def p_tipo_datos(t):
         t[0] = tipo.DIRSTRING
     elif t[1] == "bool":
         t[0] = tipo.BOOLEANO
-
-
-from AST.Expresion import Primitivo
-from AST.Instruccion import Imprimir
-from AST.Expresion.Operaciones import Aritmetica, Relacional
-
 
 def p_instruccion_imprimir(t):
     '''impresiones     : PRINTLN PI CADENA PD PYC
@@ -547,7 +547,6 @@ def p_expresiones(t):
                     | expresiones MENOR expresiones
                     | expresiones IGUALDAD expresiones
                     | expresiones DESIGUALDAD expresiones
-                    | PI expresiones PD
                     | ID
                     | ENTERO
                     | expresiones PUNTO nativas
@@ -555,7 +554,9 @@ def p_expresiones(t):
                     | CADENA
                     | TRUE
                     | FALSE
-                    | CARACTER'''
+                    | CARACTER
+                    | start_match
+                    | PI expresiones PD'''
 
     # print(t.lineno(1))
     # rint(t.lexpos(1))
@@ -576,12 +577,17 @@ def p_expresiones(t):
             t[0] = Primitivo.Primitivo(t[1], 'CARACTER')
         elif t.slice[1].type == 'ID':
             t[0] = Identificador.Identificador(t[1])
+        elif t.slice[1].type == 'start_match':
+            t[0] = t[1]
 
     elif len(t) == 3:
+        print("porque no funciona ",t[2])
         if t[1] == "-":
             t[0] = Aritmetica.Aritmetica(t[2], "-", 0, True)
         elif t.slice[1].type == 'NOT':
             t[0] = Logica.Logica(t[2], "!", None, True)
+
+
 
     elif len(t) == 4:
         if t[2] == "+":

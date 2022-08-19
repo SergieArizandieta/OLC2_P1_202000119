@@ -1,6 +1,8 @@
 from ..Abstracto.Instruccion import Intruccion
 from AST.Instruccion import Funcion
-from AST.Instruccion.Llamada import  Llamada
+from AST.Instruccion.Llamada import Llamada
+
+
 class AST(Intruccion):
     def __init__(self, Lista_instrucciones):
         self.Lista_instrucciones = Lista_instrucciones
