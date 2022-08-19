@@ -12,7 +12,7 @@ fn main () {
 
     let x = match 15 {
         6 | 7 | 8 => 10,
-        9 | 10 |11 |12|13|14|15 => 3,
+        9 | 10 |11 |12|13|14|15 => 6,
 
         _ => 40, 
     };
@@ -27,7 +27,7 @@ fn main () {
             let x = 100;
             println!("Rango de 1 a 3");
         } 
-        6 | 7 | 8 => println!("Rango de 6 a 8");,
+        6 | 7 | 8 => println!("Rango de 6 a 8l");,
         9 | 10 |11 |12|13|14|15 => println!("Rango de 9 a 15");, 
         _ => println!("Resto de casos");, 
       };
