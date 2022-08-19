@@ -8,10 +8,8 @@ fn main () {
 
     1 | 2 | 3 => {
         println!("Rango11 de 1 a 3 : {}",x);
-	let y= 999;
         x = 100;
-	println!("Rango de 1 a 3 y : {}",y);
-        println!("Rango de 1 a 3 x : {}",x);
+        println!("Rango de 1 a 3 : {}",x);
 	 match x {
 
     	    0 => {
@@ -28,7 +26,7 @@ fn main () {
     "9" => println!("Rango de 6 a 8");, 
     _ => println!("Resto de casos");, 
     };
-  println!("Fuera Rango de 1 a 3 y : {}",y);
+  
    println!(" Probando de 1 a 3 : {}",x);
 
     let cadena = match 16 {

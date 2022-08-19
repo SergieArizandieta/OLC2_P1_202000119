@@ -239,6 +239,8 @@ def t_error(t):
 import ply.lex as lex
 
 lexer = lex.lex()
+# procedencia
+# Asociación de operadores y precedencia
 precedence = (
     ('left', 'OR'),
     ('left', 'AND'),
@@ -270,31 +272,16 @@ def p_instrucciones_lista(t):
 
 
 def p_instruccion(t):
-    '''instruccion  : funcion
-                    | declaracion
-                    | asignacion
-                    '''
+    '''instruccion      : impresiones
+                        | declaracion
+                        | asignacion
+                        | funcion
+                        | llamada PYC
+                        | start_match PYC
+                         '''
     # start_match
     t[0] = t[1]
 
-def p_lista_bloque(t):
-    ''' lista_bloque : lista_bloque bloque
-                    | bloque'''
-    if len(t) > 2:
-        t[1].append(t[2])
-        t[0] = t[1]
-
-    else:
-        t[0] = [t[1]]
-
-def p_bloque(t):
-    '''bloque : impresiones
-                | declaracion
-                | asignacion
-                | llamada PYC
-                | start_match PYC
-                '''
-    t[0] = t[1]
 
 '''xxx'''
 from AST.Expresion import Identificador
@@ -310,7 +297,6 @@ from AST.Expresion.Operaciones import Aritmetica, Relacional
 
 def p_start_match(t):
     '''start_match : MATCH expresiones LI matches LD '''
-    print("Llego a match")
     t[0] = Match.Match(t[2], t[4])
 
 
@@ -324,22 +310,19 @@ def p_matches(t):
     else:
         t[0] = [t[1]]
 
-'''zzz'''
+
 def p_list_match(t):
     '''bloque_match :  varios_match IGUAL MAYOR contenido_match COMA
-                    | varios_match IGUAL MAYOR LI lista_bloque LD '''
+                    | varios_match IGUAL MAYOR LI instrucciones LD '''
 
     if len(t) == 6:
         t[0] = BloqueMatch.BloqueMatch(t[1], [t[4]])
     elif len(t) == 7:
         t[0] = BloqueMatch.BloqueMatch(t[1], t[5])
 
-def p_listado_x(t):
-    '''listado_x : listado_x contenido_match
-                | contenido_match'''
 
 def p_contenido_match(t):
-    ''' contenido_match : bloque
+    ''' contenido_match : instruccion
                         | expresiones  '''
     t[0] = t[1]
 
@@ -356,6 +339,8 @@ def p_varios_match(t):
     else:
         t[0] = [t[1]]
 
+
+# instrucciones
 def p_llamada(t):
     '''llamada  : ID PI PD
                 | ID PI lista_expres PD'''
@@ -381,9 +366,9 @@ def p_lista_expres(t):
 
 
 def p_funciones(t):
-    '''funcion  : FUNCION MAIN PI PD LI lista_bloque LD
-                |  FUNCION ID PI PD tipo_funcion LI lista_bloque LD
-                |  FUNCION ID PI parametros PD tipo_funcion LI lista_bloque LD'''
+    '''funcion  : FUNCION MAIN PI PD LI instrucciones LD
+                |  FUNCION ID PI PD tipo_funcion LI instrucciones LD
+                |  FUNCION ID PI parametros PD tipo_funcion LI instrucciones LD'''
 
     if len(t) == 8:
         t[0] = Funcion.Funcion(t[2], None, [], t[6])
@@ -549,7 +534,12 @@ def p_imprimir_lista_valores(t):
 
     else:
         t[0] = [t[1]]
-'''yyy'''
+
+
+def p_bloque(t):
+    '''bloque : '''
+
+
 def p_expresiones(t):
     '''expresiones  : funcion_nativa
                     | expre_logica
@@ -559,11 +549,11 @@ def p_expresiones(t):
 
     t[0] = t[1]
 
-def p_expre_valor(t):
-    '''expre_valor : datos_cast
-                    | start_match '''
-    t[0] = t[1]
 
+#  | start_match
+#  if len(t) == 2:
+#     if t.slice[1].type == 'start_match':
+#        t[0] = t[1]
 
 def p_funcion_nativa(t):
     '''funcion_nativa : expresiones PUNTO nativas '''
@@ -625,13 +615,14 @@ def p_expre_relacional(t):
 def p_expre_aritmetica(t):
     '''expre_aritmetica : RESTA expresiones %prec UMENOS
                     | PI expresiones PD
-                    | expresiones RESTA expresiones
                     | expresiones SUMA expresiones
+                    | expresiones RESTA expresiones
                     | expresiones MULTI expresiones
                     | expresiones DIVI expresiones
                     | expresiones MODULO expresiones
                     | POWF PI expresiones COMA expresiones PD
-                    | POW PI expresiones COMA expresiones PD '''
+                    | POW PI expresiones COMA expresiones PD'''
+
 
     if len(t) == 3:
         if t[1] == "-":
@@ -654,6 +645,11 @@ def p_expre_aritmetica(t):
             t[0] = Aritmetica.Aritmetica(t[3], "^", t[5], False)
         elif t[1] == "::powf":
             t[0] = Aritmetica.Aritmetica(t[3], "^f", t[5], False)
+
+
+def p_expre_valor(t):
+    '''expre_valor : datos_cast'''
+    t[0] = t[1]
 
 
 def p_datos_cast(t):
