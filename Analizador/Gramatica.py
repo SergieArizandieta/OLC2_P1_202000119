@@ -315,7 +315,6 @@ def p_list_match(t):
     if len(t) == 6:t[0] = BloqueMatch.BloqueMatch(t[1], [t[4]])
     elif len(t) == 7: t[0] = BloqueMatch.BloqueMatch(t[1], t[5])
 
-
 def p_contenido_match(t):
     ''' contenido_match : instruccion
                         | expresiones  '''
@@ -528,6 +527,11 @@ def p_imprimir_lista_valores(t):
     else:
         t[0] = [t[1]]
 
+def p_bloque(t):
+    '''bloque : '''
+
+def p_datos(t):
+    '''datos : '''
 
 def p_expresiones(t):
     '''expresiones  : RESTA expresiones %prec UMENOS
