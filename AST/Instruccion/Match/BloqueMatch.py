@@ -12,11 +12,12 @@ class BloqueMatch(Intruccion,Expresion):
     def EjecutarInstruccion(self, controlador, ts):
         ts_local = TablaDeSimbolos(ts, "Matc" + str(id(self.matches)))
         retorno = None
-        print("== Ejcutando intruccion ==")
+
         for intruccion in self.instrucciones:
             try:
                 retorno = intruccion.EjecutarInstruccion(controlador, ts_local)
-            except: pass
+            except:
+                pass
         return retorno
 
     def ObtenerValor(self, controlador, ts):
@@ -32,5 +33,8 @@ class BloqueMatch(Intruccion,Expresion):
     def ObtenerTipo(self, controlador, ts):
         retorno = None
         for intruccion in self.instrucciones:
-            retorno = intruccion.ObtenerTipo(controlador, ts)
+            try:
+                retorno = intruccion.ObtenerTipo(controlador, ts)
+            except:
+                pass
         return retorno

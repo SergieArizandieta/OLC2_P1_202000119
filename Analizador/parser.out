@@ -55,7 +55,7 @@ Rule 24    start_match -> MATCH expresiones LI matches LD
 Rule 25    matches -> matches bloque_match
 Rule 26    matches -> bloque_match
 Rule 27    bloque_match -> varios_match IGUAL MAYOR contenido_match COMA
-Rule 28    bloque_match -> varios_match IGUAL MAYOR LI lista_bloque LD
+Rule 28    bloque_match -> varios_match IGUAL MAYOR LI list_exp_ins LD
 Rule 29    contenido_match -> bloque
 Rule 30    contenido_match -> expresiones
 Rule 31    varios_match -> varios_match BARRA expresiones
@@ -247,8 +247,8 @@ impresiones          : 9
 init                 : 0
 instruccion          : 2 3
 instrucciones        : 1 2
-list_exp_ins         : 15 17 18 18 19 20 20 23
-lista_bloque         : 7 28 38 39 40
+list_exp_ins         : 15 17 18 18 19 20 20 23 28
+lista_bloque         : 7 38 39 40
 lista_elif           : 19 20 21
 lista_expres         : 35 36
 llamada              : 12
@@ -4468,7 +4468,7 @@ state 101
     (25) matches -> . matches bloque_match
     (26) matches -> . bloque_match
     (27) bloque_match -> . varios_match IGUAL MAYOR contenido_match COMA
-    (28) bloque_match -> . varios_match IGUAL MAYOR LI lista_bloque LD
+    (28) bloque_match -> . varios_match IGUAL MAYOR LI list_exp_ins LD
     (31) varios_match -> . varios_match BARRA expresiones
     (32) varios_match -> . expresiones
     (33) varios_match -> . GBAJO
@@ -5273,7 +5273,7 @@ state 131
     (24) start_match -> MATCH expresiones LI matches . LD
     (25) matches -> matches . bloque_match
     (27) bloque_match -> . varios_match IGUAL MAYOR contenido_match COMA
-    (28) bloque_match -> . varios_match IGUAL MAYOR LI lista_bloque LD
+    (28) bloque_match -> . varios_match IGUAL MAYOR LI list_exp_ins LD
     (31) varios_match -> . varios_match BARRA expresiones
     (32) varios_match -> . expresiones
     (33) varios_match -> . GBAJO
@@ -5373,7 +5373,7 @@ state 132
 state 133
 
     (27) bloque_match -> varios_match . IGUAL MAYOR contenido_match COMA
-    (28) bloque_match -> varios_match . IGUAL MAYOR LI lista_bloque LD
+    (28) bloque_match -> varios_match . IGUAL MAYOR LI list_exp_ins LD
     (31) varios_match -> varios_match . BARRA expresiones
 
     IGUAL           shift and go to state 161
@@ -6195,7 +6195,7 @@ state 160
 state 161
 
     (27) bloque_match -> varios_match IGUAL . MAYOR contenido_match COMA
-    (28) bloque_match -> varios_match IGUAL . MAYOR LI lista_bloque LD
+    (28) bloque_match -> varios_match IGUAL . MAYOR LI list_exp_ins LD
 
     MAYOR           shift and go to state 177
 
@@ -6610,7 +6610,7 @@ state 176
 state 177
 
     (27) bloque_match -> varios_match IGUAL MAYOR . contenido_match COMA
-    (28) bloque_match -> varios_match IGUAL MAYOR . LI lista_bloque LD
+    (28) bloque_match -> varios_match IGUAL MAYOR . LI list_exp_ins LD
     (29) contenido_match -> . bloque
     (30) contenido_match -> . expresiones
     (9) bloque -> . impresiones
@@ -7105,15 +7105,22 @@ state 190
 
 state 191
 
-    (28) bloque_match -> varios_match IGUAL MAYOR LI . lista_bloque LD
-    (7) lista_bloque -> . lista_bloque bloque
-    (8) lista_bloque -> . bloque
+    (28) bloque_match -> varios_match IGUAL MAYOR LI . list_exp_ins LD
+    (15) list_exp_ins -> . list_exp_ins contenido_match
+    (16) list_exp_ins -> . contenido_match
+    (29) contenido_match -> . bloque
+    (30) contenido_match -> . expresiones
     (9) bloque -> . impresiones
     (10) bloque -> . declaracion
     (11) bloque -> . asignacion
     (12) bloque -> . llamada PYC
     (13) bloque -> . start_match PYC
     (14) bloque -> . start_if PYC
+    (72) expresiones -> . funcion_nativa
+    (73) expresiones -> . expre_logica
+    (74) expresiones -> . expre_relacional
+    (75) expresiones -> . expre_aritmetica
+    (76) expresiones -> . expre_valor
     (66) impresiones -> . PRINTLN PI CADENA PD PYC
     (67) impresiones -> . PRINT PI CADENA PD PYC
     (68) impresiones -> . PRINTLN PI CADENA COMA impresion_valores PD PYC
@@ -7128,22 +7135,72 @@ state 191
     (18) start_if -> . IF expresiones LI list_exp_ins LD ELSE LI list_exp_ins LD
     (19) start_if -> . IF expresiones LI list_exp_ins LD lista_elif
     (20) start_if -> . IF expresiones LI list_exp_ins LD lista_elif ELSE LI list_exp_ins LD
+    (80) funcion_nativa -> . expresiones PUNTO nativas
+    (86) expre_logica -> . expresiones OR expresiones
+    (87) expre_logica -> . expresiones AND expresiones
+    (88) expre_logica -> . NOT expresiones
+    (89) expre_relacional -> . expresiones MAYORIGUAL expresiones
+    (90) expre_relacional -> . expresiones MAYOR expresiones
+    (91) expre_relacional -> . expresiones MENORIGUAL expresiones
+    (92) expre_relacional -> . expresiones MENOR expresiones
+    (93) expre_relacional -> . expresiones IGUALDAD expresiones
+    (94) expre_relacional -> . expresiones DESIGUALDAD expresiones
+    (95) expre_aritmetica -> . RESTA expresiones
+    (96) expre_aritmetica -> . PI expresiones PD
+    (97) expre_aritmetica -> . expresiones RESTA expresiones
+    (98) expre_aritmetica -> . expresiones SUMA expresiones
+    (99) expre_aritmetica -> . expresiones MULTI expresiones
+    (100) expre_aritmetica -> . expresiones DIVI expresiones
+    (101) expre_aritmetica -> . expresiones MODULO expresiones
+    (102) expre_aritmetica -> . POWF PI expresiones COMA expresiones PD
+    (103) expre_aritmetica -> . POW PI expresiones COMA expresiones PD
+    (77) expre_valor -> . datos_cast
+    (78) expre_valor -> . start_match
+    (79) expre_valor -> . start_if
+    (104) datos_cast -> . datos
+    (105) datos -> . ENTERO
+    (106) datos -> . FLOAT
+    (107) datos -> . CADENA
+    (108) datos -> . CARACTER
+    (109) datos -> . ID
+    (110) datos -> . TRUE
+    (111) datos -> . FALSE
 
     PRINTLN         shift and go to state 120
     PRINT           shift and go to state 121
     LET             shift and go to state 9
-    ID              shift and go to state 122
+    ID              shift and go to state 141
     MATCH           shift and go to state 34
     IF              shift and go to state 35
+    NOT             shift and go to state 25
+    RESTA           shift and go to state 26
+    PI              shift and go to state 27
+    POWF            shift and go to state 28
+    POW             shift and go to state 29
+    ENTERO          shift and go to state 36
+    FLOAT           shift and go to state 37
+    CADENA          shift and go to state 38
+    CARACTER        shift and go to state 39
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
 
-    lista_bloque                   shift and go to state 204
-    bloque                         shift and go to state 113
+    list_exp_ins                   shift and go to state 204
+    contenido_match                shift and go to state 137
+    bloque                         shift and go to state 138
+    expresiones                    shift and go to state 135
     impresiones                    shift and go to state 114
     declaracion                    shift and go to state 115
     asignacion                     shift and go to state 116
     llamada                        shift and go to state 117
-    start_match                    shift and go to state 118
-    start_if                       shift and go to state 119
+    start_match                    shift and go to state 139
+    start_if                       shift and go to state 140
+    funcion_nativa                 shift and go to state 20
+    expre_logica                   shift and go to state 21
+    expre_relacional               shift and go to state 22
+    expre_aritmetica               shift and go to state 23
+    expre_valor                    shift and go to state 24
+    datos_cast                     shift and go to state 30
+    datos                          shift and go to state 33
 
 state 192
 
@@ -7538,14 +7595,21 @@ state 203
 
 state 204
 
-    (28) bloque_match -> varios_match IGUAL MAYOR LI lista_bloque . LD
-    (7) lista_bloque -> lista_bloque . bloque
+    (28) bloque_match -> varios_match IGUAL MAYOR LI list_exp_ins . LD
+    (15) list_exp_ins -> list_exp_ins . contenido_match
+    (29) contenido_match -> . bloque
+    (30) contenido_match -> . expresiones
     (9) bloque -> . impresiones
     (10) bloque -> . declaracion
     (11) bloque -> . asignacion
     (12) bloque -> . llamada PYC
     (13) bloque -> . start_match PYC
     (14) bloque -> . start_if PYC
+    (72) expresiones -> . funcion_nativa
+    (73) expresiones -> . expre_logica
+    (74) expresiones -> . expre_relacional
+    (75) expresiones -> . expre_aritmetica
+    (76) expresiones -> . expre_valor
     (66) impresiones -> . PRINTLN PI CADENA PD PYC
     (67) impresiones -> . PRINT PI CADENA PD PYC
     (68) impresiones -> . PRINTLN PI CADENA COMA impresion_valores PD PYC
@@ -7560,22 +7624,72 @@ state 204
     (18) start_if -> . IF expresiones LI list_exp_ins LD ELSE LI list_exp_ins LD
     (19) start_if -> . IF expresiones LI list_exp_ins LD lista_elif
     (20) start_if -> . IF expresiones LI list_exp_ins LD lista_elif ELSE LI list_exp_ins LD
+    (80) funcion_nativa -> . expresiones PUNTO nativas
+    (86) expre_logica -> . expresiones OR expresiones
+    (87) expre_logica -> . expresiones AND expresiones
+    (88) expre_logica -> . NOT expresiones
+    (89) expre_relacional -> . expresiones MAYORIGUAL expresiones
+    (90) expre_relacional -> . expresiones MAYOR expresiones
+    (91) expre_relacional -> . expresiones MENORIGUAL expresiones
+    (92) expre_relacional -> . expresiones MENOR expresiones
+    (93) expre_relacional -> . expresiones IGUALDAD expresiones
+    (94) expre_relacional -> . expresiones DESIGUALDAD expresiones
+    (95) expre_aritmetica -> . RESTA expresiones
+    (96) expre_aritmetica -> . PI expresiones PD
+    (97) expre_aritmetica -> . expresiones RESTA expresiones
+    (98) expre_aritmetica -> . expresiones SUMA expresiones
+    (99) expre_aritmetica -> . expresiones MULTI expresiones
+    (100) expre_aritmetica -> . expresiones DIVI expresiones
+    (101) expre_aritmetica -> . expresiones MODULO expresiones
+    (102) expre_aritmetica -> . POWF PI expresiones COMA expresiones PD
+    (103) expre_aritmetica -> . POW PI expresiones COMA expresiones PD
+    (77) expre_valor -> . datos_cast
+    (78) expre_valor -> . start_match
+    (79) expre_valor -> . start_if
+    (104) datos_cast -> . datos
+    (105) datos -> . ENTERO
+    (106) datos -> . FLOAT
+    (107) datos -> . CADENA
+    (108) datos -> . CARACTER
+    (109) datos -> . ID
+    (110) datos -> . TRUE
+    (111) datos -> . FALSE
 
     LD              shift and go to state 211
     PRINTLN         shift and go to state 120
     PRINT           shift and go to state 121
     LET             shift and go to state 9
-    ID              shift and go to state 122
+    ID              shift and go to state 141
     MATCH           shift and go to state 34
     IF              shift and go to state 35
+    NOT             shift and go to state 25
+    RESTA           shift and go to state 26
+    PI              shift and go to state 27
+    POWF            shift and go to state 28
+    POW             shift and go to state 29
+    ENTERO          shift and go to state 36
+    FLOAT           shift and go to state 37
+    CADENA          shift and go to state 38
+    CARACTER        shift and go to state 39
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
 
-    bloque                         shift and go to state 144
+    contenido_match                shift and go to state 164
+    bloque                         shift and go to state 138
+    expresiones                    shift and go to state 135
     impresiones                    shift and go to state 114
     declaracion                    shift and go to state 115
     asignacion                     shift and go to state 116
     llamada                        shift and go to state 117
-    start_match                    shift and go to state 118
-    start_if                       shift and go to state 119
+    start_match                    shift and go to state 139
+    start_if                       shift and go to state 140
+    funcion_nativa                 shift and go to state 20
+    expre_logica                   shift and go to state 21
+    expre_relacional               shift and go to state 22
+    expre_aritmetica               shift and go to state 23
+    expre_valor                    shift and go to state 24
+    datos_cast                     shift and go to state 30
+    datos                          shift and go to state 33
 
 state 205
 
@@ -7895,24 +8009,24 @@ state 210
 
 state 211
 
-    (28) bloque_match -> varios_match IGUAL MAYOR LI lista_bloque LD .
+    (28) bloque_match -> varios_match IGUAL MAYOR LI list_exp_ins LD .
 
-    LD              reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI lista_bloque LD .)
-    GBAJO           reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI lista_bloque LD .)
-    NOT             reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI lista_bloque LD .)
-    RESTA           reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI lista_bloque LD .)
-    PI              reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI lista_bloque LD .)
-    POWF            reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI lista_bloque LD .)
-    POW             reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI lista_bloque LD .)
-    MATCH           reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI lista_bloque LD .)
-    IF              reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI lista_bloque LD .)
-    ENTERO          reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI lista_bloque LD .)
-    FLOAT           reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI lista_bloque LD .)
-    CADENA          reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI lista_bloque LD .)
-    CARACTER        reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI lista_bloque LD .)
-    ID              reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI lista_bloque LD .)
-    TRUE            reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI lista_bloque LD .)
-    FALSE           reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI lista_bloque LD .)
+    LD              reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI list_exp_ins LD .)
+    GBAJO           reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI list_exp_ins LD .)
+    NOT             reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI list_exp_ins LD .)
+    RESTA           reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI list_exp_ins LD .)
+    PI              reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI list_exp_ins LD .)
+    POWF            reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI list_exp_ins LD .)
+    POW             reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI list_exp_ins LD .)
+    MATCH           reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI list_exp_ins LD .)
+    IF              reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI list_exp_ins LD .)
+    ENTERO          reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI list_exp_ins LD .)
+    FLOAT           reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI list_exp_ins LD .)
+    CADENA          reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI list_exp_ins LD .)
+    CARACTER        reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI list_exp_ins LD .)
+    ID              reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI list_exp_ins LD .)
+    TRUE            reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI list_exp_ins LD .)
+    FALSE           reduce using rule 28 (bloque_match -> varios_match IGUAL MAYOR LI list_exp_ins LD .)
 
 
 state 212

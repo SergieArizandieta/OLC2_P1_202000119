@@ -373,7 +373,7 @@ def p_matches(t):
 
 def p_list_match(t):
     '''bloque_match :  varios_match IGUAL MAYOR contenido_match COMA
-                    | varios_match IGUAL MAYOR LI lista_bloque LD '''
+                    | varios_match IGUAL MAYOR LI list_exp_ins LD '''
 
     if len(t) == 6:
         t[0] = BloqueMatch.BloqueMatch(t[1], [t[4]])

@@ -29,7 +29,7 @@ fn main () {
     6 | 7 | 8 => println!("Rango de 6 a 8");,
     "9" => println!("Rango de 6 a 8");, 
     _ => println!("Resto de casos");, 
-    }
+    };
   println!("Fuera Rango de 1 a 3 y : {}",y);
    println!(" Probando de 1 a 3 : {}",x);
 
