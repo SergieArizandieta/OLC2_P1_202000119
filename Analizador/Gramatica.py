@@ -274,7 +274,7 @@ def p_instruccion(t):
                     | declaracion
                     | asignacion
                     '''
-    # start_match
+
     t[0] = t[1]
 
 def p_lista_bloque(t):
@@ -293,7 +293,10 @@ def p_bloque(t):
                 | asignacion
                 | llamada PYC
                 | start_match PYC
+                | start_if PYC
                 '''
+
+    #start_match
     t[0] = t[1]
 
 '''xxx'''
@@ -306,7 +309,49 @@ from AST.Instruccion.Match import Match, BloqueMatch
 from AST.Expresion import Primitivo
 from AST.Instruccion import Imprimir
 from AST.Expresion.Operaciones import Aritmetica, Relacional
+from AST.Instruccion.SentenciasControl import Ifs
+'''zzz'''
 
+def p_list_exp_ins(t):
+    '''list_exp_ins : list_exp_ins contenido_match
+                | contenido_match'''
+    if len(t) > 2:
+        t[1].append(t[2])
+        t[0] = t[1]
+
+    else:
+        t[0] = [t[1]]
+
+def p_start_if(t):
+    '''start_if : IF expresiones LI list_exp_ins LD
+                | IF expresiones LI list_exp_ins LD ELSE LI list_exp_ins LD
+                | IF expresiones LI list_exp_ins LD lista_elif
+                | IF expresiones LI list_exp_ins LD lista_elif ELSE LI list_exp_ins LD '''
+
+    print('Llego if gramatica ', len(t))
+    if len(t) == 6:
+        t[0]= Ifs.Ifs(t[2],t[4],None,None)
+    elif len(t)==10:
+        t[0] = Ifs.Ifs(t[2], t[4], t[8],None)
+    if len(t) == 7:
+        t[0]= Ifs.Ifs(t[2],t[4],None,t[6])
+    if len(t) == 11:
+        t[0]= Ifs.Ifs(t[2],t[4],t[9],t[6])
+
+
+def p_lista_if(t):
+    ''' lista_elif : lista_elif else_if
+                    | else_if'''
+    if len(t) > 2:
+        t[1].append(t[2])
+        t[0] = t[1]
+
+    else:
+        t[0] = [t[1]]
+
+def p_else_if(t):
+    ''' else_if : ELSE IF expresiones  LI list_exp_ins LD '''
+    t[0] = Ifs.Ifs(t[3], t[5], None,None)
 
 def p_start_match(t):
     '''start_match : MATCH expresiones LI matches LD '''
@@ -324,7 +369,8 @@ def p_matches(t):
     else:
         t[0] = [t[1]]
 
-'''zzz'''
+
+
 def p_list_match(t):
     '''bloque_match :  varios_match IGUAL MAYOR contenido_match COMA
                     | varios_match IGUAL MAYOR LI lista_bloque LD '''
@@ -334,9 +380,7 @@ def p_list_match(t):
     elif len(t) == 7:
         t[0] = BloqueMatch.BloqueMatch(t[1], t[5])
 
-def p_listado_x(t):
-    '''listado_x : listado_x contenido_match
-                | contenido_match'''
+
 
 def p_contenido_match(t):
     ''' contenido_match : bloque
@@ -561,7 +605,8 @@ def p_expresiones(t):
 
 def p_expre_valor(t):
     '''expre_valor : datos_cast
-                    | start_match '''
+                    | start_match
+                    | start_if'''
     t[0] = t[1]
 
 
@@ -683,8 +728,7 @@ def p_datos(t):
         t[0] = Primitivo.Primitivo(t[1], 'CARACTER')
     elif t.slice[1].type == 'ID':
         t[0] = Identificador.Identificador(t[1])
-    elif t.slice[1].type == 'start_match':
-        t[0] = t[1]
+
 
 
 def p_error(t):

@@ -1,7 +1,5 @@
 
 
-
-
 fn main () {
     let numero = 3;
     let x = 0;
