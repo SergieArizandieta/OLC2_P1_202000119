@@ -4,37 +4,41 @@ from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos
 
 class BloqueMatch(Intruccion,Expresion):
 
-
-    def __init__(self, matches, instrucciones):
+    def __init__(self, matches, instrucciones,condicion):
         self.matches = matches
         self.instrucciones = instrucciones
+        self.condicion=condicion
+        self.ts_local = None
 
     def EjecutarInstruccion(self, controlador, ts):
-        ts_local = TablaDeSimbolos(ts, "Matc" + str(id(self.matches)))
+        #print("Se ejecuto instucccion con: ", ("ts","tslocal")[self.condicion])
+        self.ts_local = TablaDeSimbolos(ts, "Matc" + str(id(self.matches)))
         retorno = None
 
         for intruccion in self.instrucciones:
             try:
-                retorno = intruccion.EjecutarInstruccion(controlador, ts_local)
+                retorno = intruccion.EjecutarInstruccion(controlador, (ts, self.ts_local)[self.condicion])
             except:
                 pass
         return retorno
 
     def ObtenerValor(self, controlador, ts):
+        #print("Se ejecuto expresion con: ", ("ts", "tslocal")[self.condicion])
+        self.ts_local = TablaDeSimbolos(ts, "Matc" + str(id(self.matches)))
         retorno = None
-        print("== Ejcutando Obtener valor ==")
+
         for intruccion in self.instrucciones:
             try:
-                retorno = intruccion.ObtenerValor(controlador, ts)
+                retorno = intruccion.ObtenerValor(controlador, (ts, self.ts_local)[self.condicion])
             except:
-                intruccion.EjecutarInstruccion(controlador, ts)
+                intruccion.EjecutarInstruccion(controlador, (ts, self.ts_local)[self.condicion])
         return retorno
 
     def ObtenerTipo(self, controlador, ts):
         retorno = None
         for intruccion in self.instrucciones:
             try:
-                retorno = intruccion.ObtenerTipo(controlador, ts)
+                retorno = intruccion.ObtenerTipo(controlador, (ts, self.ts_local)[self.condicion])
             except:
                 pass
         return retorno

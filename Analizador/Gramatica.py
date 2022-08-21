@@ -288,16 +288,29 @@ def p_lista_bloque(t):
         t[0] = [t[1]]
 
 def p_bloque(t):
-    '''bloque : impresiones
+    '''bloque : impresiones PYC
                 | declaracion
-                | asignacion
+                | asignacion PYC
                 | llamada PYC
-                | start_match PYC
-                | start_if PYC
+                | start_match
+                | start_if
+                | start_while
                 '''
+
+    #start_match PYC | start_if PYC
 
     #start_match
     t[0] = t[1]
+
+def p_bloque_match(t):
+    '''bloque_match : impresiones
+                    | asignacion
+                    | llamada
+                    | start_match
+                    | start_if
+                    | start_while
+                    '''
+    t[0]=t[1]
 
 '''xxx'''
 from AST.Expresion import Identificador
@@ -310,11 +323,16 @@ from AST.Expresion import Primitivo
 from AST.Instruccion import Imprimir
 from AST.Expresion.Operaciones import Aritmetica, Relacional
 from AST.Instruccion.SentenciasControl import Ifs
+from AST.Instruccion.SentenciasCiclicas import While
 '''zzz'''
 
+def p_start_while(t):
+    '''start_while : WHILE expresiones LI lista_bloque LD '''
+    t[0] = While.While(t[2],t[4])
+
 def p_list_exp_ins(t):
-    '''list_exp_ins : list_exp_ins contenido_match
-                | contenido_match'''
+    '''list_exp_ins : list_exp_ins bloque_exp
+                | bloque_exp '''
     if len(t) > 2:
         t[1].append(t[2])
         t[0] = t[1]
@@ -372,18 +390,28 @@ def p_matches(t):
 
 
 def p_list_match(t):
-    '''bloque_match :  varios_match IGUAL MAYOR contenido_match COMA
+    '''bloque_match :  varios_match IGUAL MAYOR simple_bloque_exp COMA
                     | varios_match IGUAL MAYOR LI list_exp_ins LD '''
 
     if len(t) == 6:
-        t[0] = BloqueMatch.BloqueMatch(t[1], [t[4]])
+        print("Llego con coma =")
+        print(t[4])
+        t[0] = BloqueMatch.BloqueMatch(t[1], [t[4]],False)
     elif len(t) == 7:
-        t[0] = BloqueMatch.BloqueMatch(t[1], t[5])
+        t[0] = BloqueMatch.BloqueMatch(t[1], t[5],True
+                                       )
 
 
+def p_simple_bloque_exp(t):
+    ''' simple_bloque_exp : expresiones
+                        | bloque_match'''
+    t[0] = t[1]
+    print("Llego con coma = a un simeple ")
+    print(t[1])
 
-def p_contenido_match(t):
-    ''' contenido_match : bloque
+
+def p_bloque_exp(t):
+    ''' bloque_exp : bloque
                         | expresiones  '''
     t[0] = t[1]
 
@@ -509,7 +537,7 @@ def p_declaracion(t):
 
 
 def p_asignacio(t):
-    '''asignacion      : ID IGUAL expresiones PYC '''
+    '''asignacion      : ID IGUAL expresiones  '''
 
     t[0] = Asignacion.Asignacion(t[1], t[3])
 
@@ -556,14 +584,12 @@ def p_tipo_datos(t):
 
 
 def p_instruccion_imprimir(t):
-    '''impresiones     : PRINTLN PI CADENA PD PYC
-                       | PRINT PI CADENA PD PYC
-                       | PRINTLN PI CADENA COMA impresion_valores PD PYC
-                       | PRINT PI CADENA COMA  impresion_valores PD PYC'''
+    '''impresiones     : PRINTLN PI CADENA PD
+                       | PRINT PI CADENA PD
+                       | PRINTLN PI CADENA COMA impresion_valores PD
+                       | PRINT PI CADENA COMA  impresion_valores PD '''
 
-    print("Se va imprimir: ", t[5])
-
-    if len(t) == 6:
+    if len(t) == 5:
 
         if t[1] == 'println!':
             t[0] = Imprimir.Imprimir(Primitivo.Primitivo(t[3], 'STRING'), True, [])
