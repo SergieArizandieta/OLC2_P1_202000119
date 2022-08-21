@@ -26,7 +26,7 @@ class Funcion(Intruccion):
                             return RetornoType()
                     else:
                         if retorno.tipo != tipo.UNDEFINED:
-                            print("####DEBERIA SER UN ERR")
+                            print("####DEBERIA SER UN ERR ")
                         return RetornoType()
 
 
