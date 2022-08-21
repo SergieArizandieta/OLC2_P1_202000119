@@ -300,6 +300,7 @@ def p_bloque(t):
                 | return_ins PYC
                 | break_ins PYC
                 | continue_ins PYC
+                | start_loop
                 |'''
 
     if len(t) > 1:
@@ -315,6 +316,7 @@ def p_bloque_match(t):
                     | start_if
                     | start_while
                     | return_ins PYC
+                    | start_loop
                     |
                     '''
     if len(t) >1 :
@@ -333,10 +335,15 @@ from AST.Expresion import Primitivo
 from AST.Instruccion import Imprimir
 from AST.Expresion.Operaciones import Aritmetica, Relacional
 from AST.Instruccion.SentenciasControl import Ifs
-from AST.Instruccion.SentenciasCiclicas import While
+from AST.Instruccion.SentenciasCiclicas import While,Loop
 from AST.Instruccion.SentenciasTranferencia import Return,Break,Continue
 
 '''zzz'''
+
+def p_start_loop(t):
+    '''start_loop : LOOP LI lista_bloque LD'''
+    t[0] = Loop.Loop(t[3])
+
 def p_continue_ins(t):
     '''continue_ins : CONTINUE'''
 
@@ -663,6 +670,7 @@ def p_expre_valor(t):
     '''expre_valor : datos_cast
                     | start_match
                     | start_if
+                    | start_loop
                     | llamada '''
     t[0] = t[1]
 
