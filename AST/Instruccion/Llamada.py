@@ -12,6 +12,7 @@ class Llamada(Intruccion, Expresion):
         self.parametos = parametos
 
     def EjecutarInstruccion(self, controlador, ts: TablaDeSimbolos):
+        print("====Funcion=== como intruccion")
         self.ObtenerValor(controlador,ts)
 
 
@@ -31,7 +32,8 @@ class Llamada(Intruccion, Expresion):
                 retorno = simbolo_funcion.EjecutarInstruccion(controlador, ts_local)
 
                 if retorno is not None:
-                    return retorno
+                    if isinstance(retorno,RetornoType):
+                        return retorno
             else:
                 print("Aqui fallo2")
         else:

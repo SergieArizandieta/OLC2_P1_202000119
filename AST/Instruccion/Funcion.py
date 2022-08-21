@@ -1,6 +1,6 @@
 from AST.Abstracto.Instruccion import Intruccion
 from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos
-from AST.TablaSimbolos.Tipos import RetornoType
+from AST.TablaSimbolos.Tipos import RetornoType,tipo
 
 class Funcion(Intruccion):
 
@@ -17,12 +17,17 @@ class Funcion(Intruccion):
 
             retorno = instruccion.EjecutarInstruccion(controlador, ts)
 
-            if retorno is not None:
+            if retorno is not None :
                 if isinstance(retorno,RetornoType):
-                    if retorno.tipo == self.tipo:
-                        return retorno
+                    if self.tipo is not None:
+                        if retorno.tipo == self.tipo:
+                            return retorno
+                        else:
+                            return RetornoType()
                     else:
-                        return RetornoType()
+                        if retorno.tipo != tipo.UNDEFINED:
+                            print("####DEBERIA SER UN ERR")
+                        pass
 
 
     def agregarFuncion(self, ts: TablaDeSimbolos):

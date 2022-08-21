@@ -1,12 +1,18 @@
 
 fn main () {
-
+     funcion ();
      another_function ();
      println!("==FIN While==");
      
 }
 
-fn another_function (){
+fn funcion () {
+	println!("A ver que pasa");
+	return ;
+	println!("No aver que pasa");
+}
+
+fn another_function () -> i64 {
     let mut var1 = 0;
     while var1 < 10 {
         print!("{}", var1); 
