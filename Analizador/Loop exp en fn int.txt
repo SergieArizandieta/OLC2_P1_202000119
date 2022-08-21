@@ -1,10 +1,10 @@
 
-
 fn main () {
-   funcion ();
+    let x  = funcion ();
+    println!(" x es {} ",x);
 }
 
-fn funcion () {
+fn funcion () -> i64{
     let mut counter = 0;
 
     loop {
@@ -21,10 +21,10 @@ fn funcion () {
             //break counter * 2;
             //break;
             //return counter * 2;
-            return;
+            //return;
         }
-    };
+    }
     
-    //return 9999;
+    return 9999;
     
 }

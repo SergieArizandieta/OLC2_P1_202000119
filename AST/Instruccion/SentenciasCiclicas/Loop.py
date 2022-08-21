@@ -38,5 +38,28 @@ class Loop(Intruccion,Expresion):
 
 
     def EjecutarInstruccion(self, controlador, ts):
-        pass
+        print("Loop ins")
+        print("Llego a loop")
+        try:
+            while True:
+                ts_local = TablaDeSimbolos(ts, "Loop" + str(id(self)))
+
+                for instruccion in self.lista_instrucciones:
+                    retorno = instruccion.EjecutarInstruccion(controlador, ts_local)
+
+                    if retorno is not None:
+                        if isinstance(retorno, RetornoType):
+                            if retorno.final == tipo.BREAK:
+                                if retorno.tipo != tipo.UNDEFINED:
+                                    print("Erro no se esperaba una expresion")
+
+                                return None
+
+                            if retorno.final == tipo.CONTINUE:
+                                break
+
+                            if retorno.final == tipo.RETURN:
+                                return retorno
+        except:
+            print("Error en el Loop")
 
