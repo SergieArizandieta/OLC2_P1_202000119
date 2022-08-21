@@ -298,6 +298,8 @@ def p_bloque(t):
                 | start_if
                 | start_while
                 | return_ins PYC
+                | break_ins PYC
+                | continue_ins PYC
                 |'''
 
     if len(t) > 1:
@@ -312,6 +314,7 @@ def p_bloque_match(t):
                     | start_match
                     | start_if
                     | start_while
+                    | return_ins PYC
                     |
                     '''
     if len(t) >1 :
@@ -331,8 +334,23 @@ from AST.Instruccion import Imprimir
 from AST.Expresion.Operaciones import Aritmetica, Relacional
 from AST.Instruccion.SentenciasControl import Ifs
 from AST.Instruccion.SentenciasCiclicas import While
-from AST.Instruccion.SentenciasTranferencia import Return
+from AST.Instruccion.SentenciasTranferencia import Return,Break,Continue
+
 '''zzz'''
+def p_continue_ins(t):
+    '''continue_ins : CONTINUE'''
+
+    t[0] = Continue.Continue()
+
+
+def p_break_ins(t):
+    '''break_ins : BREAK
+                    | BREAK expresiones'''
+    if len(t) == 2:
+        t[0] = Break.Break(None)
+    else:
+        t[0] = Break.Break(t[2])
+
 def p_return_ins(t):
     '''return_ins : RETURN
                     | RETURN expresiones'''

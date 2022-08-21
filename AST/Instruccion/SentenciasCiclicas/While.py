@@ -12,7 +12,6 @@ class While(Intruccion):
         valor_Exp = return_exp.valor
         tipo_Exp = return_exp.tipo
 
-
         if tipo_Exp == tipo.BOOLEANO:
             if valor_Exp:
                 try:
@@ -24,6 +23,16 @@ class While(Intruccion):
 
                             if retorno is not None:
                                 if isinstance(retorno,RetornoType):
+                                    if retorno.final == tipo.BREAK:
+                                        if retorno.tipo != tipo.UNDEFINED:
+                                            print("Se intento regresar dato con break")
+
+                                        return None
+
+                                    if retorno.final == tipo.CONTINUE:
+                                        break
+
                                     return retorno
                 except:
                     print("Error en el While")
+

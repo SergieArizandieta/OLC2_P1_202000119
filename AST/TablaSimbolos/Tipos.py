@@ -9,10 +9,13 @@ class tipo(Enum):
     STRING = 4,
     DIRSTRING = 5,
     UNDEFINED = 6,
-    ERROR =7
+    RETURN = 7,
+    BREAK = 8,
+    CONTINUE = 9,
+    ERROR = 10
 
 class RetornoType():
-    def __init__(self,  valor = None,tipo = tipo.UNDEFINED , final = False):
+    def __init__(self,  valor = None , tipo = tipo.UNDEFINED , final = tipo.UNDEFINED):
         self.tipo = tipo
         self.valor = valor
         self.final = final

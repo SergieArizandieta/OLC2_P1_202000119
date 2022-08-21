@@ -12,6 +12,7 @@ class Ifs(Intruccion,Expresion):
         self.bloques_elif = bloques_elif
 
     def EjecutarInstruccion(self, controlador, ts):
+        print("If como  instruccion")
         return_exp: RetornoType = self.condicion.ObtenerValor(controlador, ts)
         valor_Exp = return_exp.valor
         tipo_Exp = return_exp.tipo
@@ -54,6 +55,7 @@ class Ifs(Intruccion,Expresion):
 
 
     def ObtenerValor(self, controlador, ts):
+        print("If como  expresion")
         return_exp: RetornoType = self.condicion.ObtenerValor(controlador, ts)
         valor_Exp = return_exp.valor
         tipo_Exp = return_exp.tipo
