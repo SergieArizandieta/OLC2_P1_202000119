@@ -2,6 +2,7 @@ from AST.Abstracto.Instruccion import Intruccion
 from AST.Abstracto.Expresion import Expresion
 from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos, Simbolos
 from AST.Instruccion import Funcion
+from AST.TablaSimbolos.Tipos import RetornoType
 
 
 class Llamada(Intruccion, Expresion):
@@ -11,13 +12,18 @@ class Llamada(Intruccion, Expresion):
         self.parametos = parametos
 
     def EjecutarInstruccion(self, controlador, ts: TablaDeSimbolos):
-        print("Se ejecuto llamada de: ", self.identificador, " desde: ",ts.name)
+        self.ObtenerValor(controlador,ts)
+
+
+    def ObtenerValor(self, controlador, ts: TablaDeSimbolos):
+        print("Se ejecuto llamada de: ", self.identificador, " desde: ", ts.name)
 
         if ts.Existe_id(self.identificador):
             if self.identificador == "main":
                 ts_local = TablaDeSimbolos(ts, self.identificador)
             else:
                 ts_local = TablaDeSimbolos(ts.padre, self.identificador)
+
             simbolo_funcion: Funcion = ts.ObtenerSimbolo(self.identificador)
 
             if self.validar_parametros(self.parametos, simbolo_funcion.parametros, controlador, ts, ts_local):
@@ -32,12 +38,6 @@ class Llamada(Intruccion, Expresion):
             print("Aqui fallo1")
 
 
-    def ObtenerValor(self, controlador, ts):
-        pass
-
-    def ObtenerTipo(self, controlador, ts):
-        pass
-
     def validar_parametros(self, parametros_llamada, parametros_funcion, controlador, ts, ts_loca):
 
         if len(parametros_llamada) == len(parametros_funcion):
@@ -51,8 +51,9 @@ class Llamada(Intruccion, Expresion):
                 print("aux tipo: ", aux_tipo)
 
                 aux_exp = parametros_llamada[i]
-                aux_exp_valor = aux_exp.ObtenerValor(controlador, ts)
-                aux_exp_tipo = aux_exp.ObtenerTipo(controlador, ts)
+                aux_get_data:RetornoType = aux_exp.ObtenerValor(controlador, ts)
+                aux_exp_valor = aux_get_data.valor
+                aux_exp_tipo = aux_get_data.tipo
 
                 print("Parametro de la llamada")
                 print("aux valor: ", aux_exp_valor)

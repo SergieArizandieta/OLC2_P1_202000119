@@ -45,10 +45,13 @@ class Ifs(Intruccion,Expresion):
         for instruccion in lista:
             try:
                 retorno = instruccion.EjecutarInstruccion(controlador, ts)
+
+                if retorno is not None:
+                    if isinstance(retorno,RetornoType):
+                        return retorno
             except:
                 pass
 
-        return retorno
 
     def ObtenerValor(self, controlador, ts):
         return_exp: RetornoType = self.condicion.ObtenerValor(controlador, ts)
@@ -83,9 +86,12 @@ class Ifs(Intruccion,Expresion):
         retorno = None
         for instruccion in lista:
             try:
-                retorno = instruccion.ObtenerValor(controlador, ts)
+                retorno:RetornoType = instruccion.ObtenerValor(controlador, ts)
             except:
-                instruccion.EjecutarInstruccion(controlador, ts)
+                retorno = instruccion.EjecutarInstruccion(controlador, ts)
+                if retorno is not None:
+                    if isinstance(retorno,RetornoType):
+                        return retorno
 
         return retorno
 

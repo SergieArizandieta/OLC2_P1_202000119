@@ -334,7 +334,7 @@ def p_return_ins(t):
     if len(t) == 2:
         t[0] = Return.Return(None)
     else:
-        t[0] = Return.Return(t[1])
+        t[0] = Return.Return(t[2])
 
 def p_start_while(t):
     '''start_while : WHILE expresiones LI lista_bloque LD '''
@@ -762,8 +762,6 @@ def p_datos(t):
         t[0] = Primitivo.Primitivo(t[1], 'CARACTER')
     elif t.slice[1].type == 'ID':
         t[0] = Identificador.Identificador(t[1])
-
-
 
 def p_error(t):
     try:

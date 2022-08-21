@@ -6,10 +6,10 @@ class Return(Intruccion):
         self.expresion = expresion
 
     def EjecutarInstruccion(self, controlador, ts):
-
+        print(" Se encontro con un return: ",self.expresion)
         if self.expresion != None:
 
-            valor_Exp = self.expresion.ObtenerValor(controlador, ts)
+            valor_Exp:RetornoType = self.expresion.ObtenerValor(controlador, ts)
             return valor_Exp
 
         else:
