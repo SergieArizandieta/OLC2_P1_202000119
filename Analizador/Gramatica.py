@@ -297,12 +297,13 @@ def p_bloque(t):
                 | start_match
                 | start_if
                 | start_while
-                | return_ins PYC'''
+                | return_ins PYC
+                |'''
 
-    #start_match PYC | start_if PYC
-
-    #start_match
-    t[0] = t[1]
+    if len(t) > 1:
+        t[0] = t[1]
+    else:
+        t[0] = None
 
 def p_bloque_match(t):
     '''bloque_match : impresiones
@@ -311,8 +312,12 @@ def p_bloque_match(t):
                     | start_match
                     | start_if
                     | start_while
+                    |
                     '''
-    t[0]=t[1]
+    if len(t) >1 :
+        t[0]=t[1]
+    else:
+        t[0]= None
 
 '''xxx'''
 from AST.Expresion import Identificador

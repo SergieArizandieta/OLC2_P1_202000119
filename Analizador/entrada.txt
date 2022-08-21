@@ -1,15 +1,14 @@
-
 fn main () {
      funcion ();
-     another_function ();
-     println!("==FIN While==");
+     let x = another_function ();
+     println!("==FIN While== {}",x);
      
 }
 
 fn funcion () {
 	println!("A ver que pasa");
 	return ;
-	println!("No aver que pasa");
+	//println!("No aver que pasa");
 }
 
 fn another_function () -> i64 {
@@ -18,12 +17,10 @@ fn another_function () -> i64 {
         print!("{}", var1); 
         var1 = var1 + 1;
         if var1 == 7 {
-            return;
+            
         }
     }
     println!("");
     println!("==FIN While==");
-
-
-    
+    return 666;
 }

@@ -15,8 +15,13 @@ class Declaracion(Intruccion):
         print(" ==== Declarar === ",self.expresion)
         if self.expresion is not None:
             return_exp: RetornoType = self.expresion.ObtenerValor(controlador, ts)
-            ValorExpresion = return_exp.valor
-            TipoExpresion = return_exp.tipo
+            try:
+                ValorExpresion = return_exp.valor
+                TipoExpresion = return_exp.tipo
+            except:
+                print("Declaracion no se esta recuperando un dato")
+                return None
+
 
             if self.tipo is not None:
 
