@@ -1,9 +1,9 @@
 
 fn main () {
     let mut test =1;
-    match 16 {
+    match 9 {
         6 | 7 | 8 =>  test = 100,
-        9 | 10 |11 |12|13|14|15 => test = 99 ,
+        9 | 10 |11 |12|13|14|15 => test = 9 ,
         _ => test = 15,
     }
     println!("test: {}", test);

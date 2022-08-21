@@ -33,19 +33,10 @@ class Llamada(Intruccion, Expresion):
 
 
     def ObtenerValor(self, controlador, ts):
-        simbolo_funcion = ts.Obtener_Tipo_Simbolo(self.identificador)
-        return simbolo_funcion.tipo
+        pass
 
     def ObtenerTipo(self, controlador, ts):
-        if ts.Existe_id(self.identificador):
-            ts_local = TablaDeSimbolos(ts, ts.name)
-            simbolo_funcion = ts.Obtener_Tipo_Simbolo(self.identificador)
-
-            if self.validar_parametros(self.parametos, simbolo_funcion.parametos, controlador, ts, ts_local):
-                retorno = simbolo_funcion.EjecutarInstruccion(controlador, ts_local)
-
-                if retorno is not None:
-                    return retorno
+        pass
 
     def validar_parametros(self, parametros_llamada, parametros_funcion, controlador, ts, ts_loca):
 

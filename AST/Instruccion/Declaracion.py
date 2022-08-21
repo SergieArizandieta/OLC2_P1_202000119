@@ -1,7 +1,7 @@
 from AST.Abstracto.Instruccion import Intruccion
 from AST.Expresion import Identificador
 from AST.TablaSimbolos.Simbolos import Simbolos
-from AST.TablaSimbolos.Tipos import tipo
+from AST.TablaSimbolos.Tipos import tipo, RetornoType
 
 class Declaracion(Intruccion):
 
@@ -14,9 +14,9 @@ class Declaracion(Intruccion):
     def EjecutarInstruccion(self, controlador, ts):
         print(" ==== Declarar === ",self.expresion)
         if self.expresion is not None:
-
-            ValorExpresion = self.expresion.ObtenerValor(controlador, ts)
-            TipoExpresion = self.expresion.ObtenerTipo(controlador, ts)
+            return_exp: RetornoType = self.expresion.ObtenerValor(controlador, ts)
+            ValorExpresion = return_exp.valor
+            TipoExpresion = return_exp.tipo
 
             if self.tipo is not None:
 

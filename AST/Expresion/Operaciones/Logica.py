@@ -1,6 +1,6 @@
 from AST.Abstracto.Expresion import Expresion
 from AST.Expresion.Operaciones.Operacion import Operacion, operador
-from AST.TablaSimbolos.Tipos import tipo
+from AST.TablaSimbolos.Tipos import tipo,RetornoType
 
 
 class Logica(Operacion, Expresion):
@@ -9,40 +9,26 @@ class Logica(Operacion, Expresion):
 
     def ObtenerValor(self, controlador, ts):
 
-        valor_exp1 = self.exp1.ObtenerValor(controlador, ts)
-        tipo_exp1 = self.exp1.ObtenerTipo(controlador, ts)
+        return_exp1:RetornoType = self.exp1.ObtenerValor(controlador, ts)
+        valor_exp1 = return_exp1.valor
+        tipo_exp1 = return_exp1.tipo
 
         if not self.expU:
 
-            valor_exp2 = self.exp2.ObtenerValor(controlador, ts)
-            tipo_exp2 = self.exp2.ObtenerTipo(controlador, ts)
+            return_exp2: RetornoType = self.exp2.ObtenerValor(controlador, ts)
+            valor_exp2 = return_exp2.valor
+            tipo_exp2 = return_exp2.tipo
 
             if self.operador == operador.AND:
                 if tipo_exp1 == tipo_exp2 and tipo_exp1 == tipo.BOOLEANO:
-                    return valor_exp1 and valor_exp2
+                    return RetornoType(valor_exp1 and valor_exp2,tipo.BOOLEANO)
+
             elif self.operador == operador.OR:
                 if tipo_exp1 == tipo_exp2 and tipo_exp1 == tipo.BOOLEANO:
-                    return valor_exp1 or valor_exp2
+                    return RetornoType(valor_exp1 or valor_exp2, tipo.BOOLEANO)
+
         else:
             if self.operador == operador.NOT:
                 if tipo_exp1 == tipo.BOOLEANO:
-                    return not valor_exp1
+                    return RetornoType( not valor_exp1, tipo.BOOLEANO)
 
-    def ObtenerTipo(self, controlador, ts):
-
-        tipo_exp1 = self.exp1.ObtenerTipo(controlador, ts)
-
-        if not self.expU:
-
-            tipo_exp2 = self.exp2.ObtenerTipo(controlador, ts)
-
-            if self.operador == operador.AND:
-                if tipo_exp1 == tipo_exp2 and tipo_exp1 == tipo.BOOLEANO:
-                    return tipo.BOOLEANO
-            elif self.operador == operador.OR:
-                if tipo_exp1 == tipo_exp2 and tipo_exp1 == tipo.BOOLEANO:
-                    return tipo.BOOLEANO
-        else:
-            if self.operador == operador.NOT:
-                if tipo_exp1 == tipo.BOOLEANO:
-                    return tipo.BOOLEANO

@@ -1,5 +1,5 @@
 from AST.Abstracto.Expresion import Expresion
-from AST.TablaSimbolos.Tipos import tipo
+from AST.TablaSimbolos.Tipos import tipo,RetornoType
 import math
 import copy
 
@@ -11,8 +11,9 @@ class Nativas(Expresion):
 
     def ObtenerValor(self, controlador, ts):
 
-        valor_exp1 = self.expresion.ObtenerValor(controlador, ts)
-        tipo_exp1 = self.expresion.ObtenerTipo(controlador, ts)
+        return_exp1: RetornoType = self.expresion.ObtenerValor(controlador, ts)
+        valor_exp1 = return_exp1.valor
+        tipo_exp1 = return_exp1.tipo
         print("=== exp === ", self.expresion)
         print("=== exp valor === ",valor_exp1)
         print("=== exp tipo === ", tipo_exp1)
@@ -21,35 +22,17 @@ class Nativas(Expresion):
 
         if self.funcion == "abs":
             if tipo_exp1 == tipo.ENTERO or tipo_exp1 == tipo.DECIMAL:
-                return abs(valor_exp1)
+                return RetornoType(abs(valor_exp1),tipo_exp1)
 
         elif self.funcion == "sqrt":
             if tipo_exp1 == tipo.DECIMAL:
-                return math.sqrt(valor_exp1)
+                return RetornoType(math.sqrt(valor_exp1), tipo_exp1)
 
         elif self.funcion == "to_string()" or self.funcion == "to_owned()":
             if tipo_exp1 == tipo.DIRSTRING:
-                return valor_exp1
+                return RetornoType(valor_exp1, tipo.STRING)
 
         elif self.funcion == "clone()":
-            return copy.deepcopy(valor_exp1)
-           # return copy.deepcopy(self.expresion)
+            return RetornoType(copy.deepcopy(valor_exp1), tipo_exp1)
 
-    def ObtenerTipo(self, controlador, ts):
 
-        tipo_exp1 = self.expresion.ObtenerTipo(controlador, ts)
-
-        if self.funcion == "abs":
-            if tipo_exp1 == tipo.ENTERO or tipo_exp1 == tipo.DECIMAL:
-                return tipo_exp1
-
-        elif self.funcion == "sqrt":
-            if tipo_exp1 == tipo.DECIMAL:
-                return tipo_exp1
-
-        elif self.funcion == "to_string()" or self.funcion == "to_owned()":
-            if tipo_exp1 == tipo.DIRSTRING:
-                return tipo.STRING
-
-        elif self.funcion == "clone()":
-            return tipo_exp1

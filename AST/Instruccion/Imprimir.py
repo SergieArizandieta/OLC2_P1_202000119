@@ -1,6 +1,6 @@
 from AST.Abstracto.Instruccion import Intruccion
 from AST.TablaSimbolos.Tipos import tipo as t
-
+from AST.TablaSimbolos.Tipos import RetornoType
 class Imprimir(Intruccion):
 
     def __init__(self,  expresion, tipo, lista):
@@ -25,7 +25,7 @@ class Imprimir(Intruccion):
                     for i in range (0,len(formato_nomal)):
                         texto_salida += str(formato_nomal[i])
                         if i <= len(self.lista)-1:
-                            texto_salida += str(self.lista[i].ObtenerValor(controlador,ts))
+                            texto_salida += str(self.lista[i].ObtenerValor(controlador,ts).valor)
 
                     print("Print final: ", texto_salida)
                             #print("Obtener tipo: ", self.lista[i].ObtenerTipo(controlador, ts))
@@ -41,9 +41,10 @@ class Imprimir(Intruccion):
 
             controlador.imprimir(texto_salida, self.tipo)
         else:
+            return_exp: RetornoType = self.expresion.ObtenerValor(controlador, ts)
 
-            valor = self.expresion.ObtenerValor(controlador,ts)
-            tipo = self.expresion.ObtenerTipo(controlador,ts)
+            valor = return_exp.valor
+            tipo = return_exp.tipo
 
             print("======!!!! ", tipo , " !!!!======")
             if tipo == t.STRING or tipo == t.DIRSTRING:

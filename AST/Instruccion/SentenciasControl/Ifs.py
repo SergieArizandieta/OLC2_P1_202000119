@@ -1,6 +1,6 @@
 from AST.Abstracto.Instruccion import Intruccion
 from AST.Abstracto.Expresion import Expresion
-from AST.TablaSimbolos.Tipos import tipo
+from AST.TablaSimbolos.Tipos import tipo,RetornoType
 from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos
 
 class Ifs(Intruccion,Expresion):
@@ -12,8 +12,9 @@ class Ifs(Intruccion,Expresion):
         self.bloques_elif = bloques_elif
 
     def EjecutarInstruccion(self, controlador, ts):
-        valor_Exp = self.condicion.ObtenerValor(controlador, ts)
-        tipo_Exp = self.condicion.ObtenerTipo(controlador, ts)
+        return_exp: RetornoType = self.condicion.ObtenerValor(controlador, ts)
+        valor_Exp = return_exp.valor
+        tipo_Exp = return_exp.tipo
 
         if tipo_Exp == tipo.BOOLEANO :
 
@@ -27,8 +28,9 @@ class Ifs(Intruccion,Expresion):
                 if self.bloques_elif is not None:
 
                     for list_if in self.bloques_elif:
-                        valor_if = list_if.condicion.ObtenerValor(controlador, ts)
-                        tipo_if = list_if.condicion.ObtenerTipo(controlador, ts)
+                        return_if: RetornoType = list_if.condicion.ObtenerValor(controlador, ts)
+                        valor_if = return_if.valor
+                        tipo_if = return_if.tipo
 
                         if tipo_if == tipo.BOOLEANO :
                             if valor_if:
@@ -49,8 +51,9 @@ class Ifs(Intruccion,Expresion):
         return retorno
 
     def ObtenerValor(self, controlador, ts):
-        valor_Exp = self.condicion.ObtenerValor(controlador, ts)
-        tipo_Exp = self.condicion.ObtenerTipo(controlador, ts)
+        return_exp: RetornoType = self.condicion.ObtenerValor(controlador, ts)
+        valor_Exp = return_exp.valor
+        tipo_Exp = return_exp.tipo
 
         if tipo_Exp == tipo.BOOLEANO:
 
@@ -64,8 +67,9 @@ class Ifs(Intruccion,Expresion):
                 if self.bloques_elif is not None:
 
                     for list_if in self.bloques_elif:
-                        valor_if = list_if.condicion.ObtenerValor(controlador, ts)
-                        tipo_if = list_if.condicion.ObtenerTipo(controlador, ts)
+                        return_if: RetornoType = list_if.condicion.ObtenerValor(controlador, ts)
+                        valor_if = return_if.valor
+                        tipo_if = return_if.tipo
 
                         if tipo_if == tipo.BOOLEANO:
                             if valor_if:
@@ -85,39 +89,4 @@ class Ifs(Intruccion,Expresion):
 
         return retorno
 
-    def ObtenerTipo(self, controlador, ts):
-        valor_Exp = self.condicion.ObtenerValor(controlador, ts)
-        tipo_Exp = self.condicion.ObtenerTipo(controlador, ts)
 
-        if tipo_Exp == tipo.BOOLEANO:
-
-            if valor_Exp:
-
-                ts_local = TablaDeSimbolos(ts, "If" + str(id(self)))
-                return self.Recorrer_exp_tipo(controlador, ts_local, self.bloque_if)
-
-            else:
-
-                if self.bloques_elif is not None:
-
-                    for list_if in self.bloques_elif:
-                        valor_if = list_if.condicion.ObtenerValor(controlador, ts)
-                        tipo_if = list_if.condicion.ObtenerTipo(controlador, ts)
-
-                        if tipo_if == tipo.BOOLEANO:
-                            if valor_if:
-                                return self.Recorrer_exp_tipo(controlador, ts, self.bloques_elif)
-
-                if self.bloque_else is not None:
-                    ts_local = TablaDeSimbolos(ts, "Else" + str(id(self)))
-                    return self.Recorrer_exp_tipo(controlador, ts_local, self.bloque_else)
-
-    def Recorrer_exp_tipo(self, controlador, ts, lista):
-        retorno = None
-        for instruccion in lista:
-            try:
-                retorno = instruccion.ObtenerValor(controlador, ts)
-            except:
-                pass
-
-        return retorno

@@ -24,7 +24,7 @@ class operador(Enum):
     Err = 100
 
 
-class Operacion(Expresion):
+class Operacion():
 
     def __init__(self, exp1, signo, exp2, expU):
         self.exp1 = exp1
@@ -32,12 +32,6 @@ class Operacion(Expresion):
         self.expU = expU
         self.signo = signo
         self.operador = self.ObtenerOperador(self.signo)
-
-    def ObtenerValor(self, controlador, ts):
-        pass
-
-    def ObtenerTipo(self, controlador, ts):
-        pass
 
     def ObtenerOperador(self, signo_operador):
         print("============= Signo valor ", signo_operador)

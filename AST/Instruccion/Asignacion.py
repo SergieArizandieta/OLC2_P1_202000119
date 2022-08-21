@@ -1,5 +1,5 @@
 from AST.Abstracto.Instruccion import Intruccion
-
+from AST.TablaSimbolos.Tipos import RetornoType
 
 class Asignacion(Intruccion):
     def __init__(self,identificador,valor):
@@ -8,8 +8,8 @@ class Asignacion(Intruccion):
 
     def EjecutarInstruccion(self, controlador, ts):
         if(ts.Existe_id(self.identificador)):
-
-            ValorExpresion = self.valor.ObtenerValor(controlador, ts)
-            TipoExpresion = self.valor.ObtenerTipo(controlador, ts)
+            Expression: RetornoType = self.valor.ObtenerValor(controlador, ts)
+            ValorExpresion = Expression.valor
+            TipoExpresion = Expression.tipo
 
             ts.Actualizar_Simbolo(self.identificador,TipoExpresion,ValorExpresion)

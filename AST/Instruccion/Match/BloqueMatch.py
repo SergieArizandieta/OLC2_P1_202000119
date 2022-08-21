@@ -33,12 +33,3 @@ class BloqueMatch(Intruccion,Expresion):
             except:
                 intruccion.EjecutarInstruccion(controlador, (ts, self.ts_local)[self.condicion])
         return retorno
-
-    def ObtenerTipo(self, controlador, ts):
-        retorno = None
-        for intruccion in self.instrucciones:
-            try:
-                retorno = intruccion.ObtenerTipo(controlador, (ts, self.ts_local)[self.condicion])
-            except:
-                pass
-        return retorno

@@ -295,7 +295,7 @@ def p_bloque(t):
                 | start_match
                 | start_if
                 | start_while
-                '''
+                | return_ins PYC'''
 
     #start_match PYC | start_if PYC
 
@@ -324,7 +324,15 @@ from AST.Instruccion import Imprimir
 from AST.Expresion.Operaciones import Aritmetica, Relacional
 from AST.Instruccion.SentenciasControl import Ifs
 from AST.Instruccion.SentenciasCiclicas import While
+from AST.Instruccion.SentenciasTranferencia import Return
 '''zzz'''
+def p_return_ins(t):
+    '''return_ins : RETURN
+                    | RETURN expresiones'''
+    if len(t) == 2:
+        t[0] = Return.Return(None)
+    else:
+        t[0] = Return.Return(t[1])
 
 def p_start_while(t):
     '''start_while : WHILE expresiones LI lista_bloque LD '''
@@ -462,10 +470,6 @@ def p_funciones(t):
     elif len(t) == 9:
         t[0] = Funcion.Funcion(t[2], t[5], [], t[7])
     elif len(t) == 10:
-        print("t2 ", t[2])
-        print("t5 ", t[5])
-        print("t4 ", t[4])
-        print("t7 ", t[7])
         t[0] = Funcion.Funcion(t[2], t[6], t[4], t[8])
 
 
@@ -625,14 +629,16 @@ def p_expresiones(t):
                     | expre_logica
                     | expre_relacional
                     | expre_aritmetica
-                    | expre_valor'''
+                    | expre_valor
+                    | '''
 
     t[0] = t[1]
 
 def p_expre_valor(t):
     '''expre_valor : datos_cast
                     | start_match
-                    | start_if'''
+                    | start_if
+                    | llamada '''
     t[0] = t[1]
 
 
