@@ -27,7 +27,7 @@ class Funcion(Intruccion):
                     else:
                         if retorno.tipo != tipo.UNDEFINED:
                             print("####DEBERIA SER UN ERR")
-                        pass
+                        return RetornoType()
 
 
     def agregarFuncion(self, ts: TablaDeSimbolos):
