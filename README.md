@@ -1,2 +1,0 @@
-# OLC2_P1_202000119
-Proyecto 1 de OLC2
