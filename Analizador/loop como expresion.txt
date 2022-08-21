@@ -1,9 +1,4 @@
 fn main () {
-    let x  = funcion ();
-    println!(" x es {} ",x);
-}
-
-fn funcion () -> i64{
     let mut counter = 0;
 
     let result = loop {
@@ -17,14 +12,11 @@ fn funcion () -> i64{
         print!(" , ");
         
         if counter == 10 {
-            break counter * 2;
+            //break counter * 2;
             //break;
-            //return counter * 2;
-            //return;
+            return counter * 2;
         }
     };
     //println!("el valor es saber ");
     println!("el valor es {} ",result);
-    return 9999;
-    
 }
