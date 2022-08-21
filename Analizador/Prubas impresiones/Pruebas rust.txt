@@ -1,4 +1,4 @@
-fn main() {
+fn main () {
 
     //CON A 
     println!("{}","a">"hola");

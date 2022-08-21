@@ -12,7 +12,7 @@ class tipo(Enum):
     ERROR =7
 
 class RetornoType():
-    def __init__(self,  valor = None,tipo = None):
+    def __init__(self,  valor = None,tipo = tipo.UNDEFINED):
         self.tipo = tipo
         self.valor = valor
 

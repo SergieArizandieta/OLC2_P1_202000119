@@ -17,7 +17,7 @@ class Aritmetica(Operacion, Expresion):
 
             return_exp2: RetornoType = self.exp2.ObtenerValor(controlador, ts)
             valor_exp2 = return_exp2.valor
-            tipo_exp2 = valor_exp2.tipo
+            tipo_exp2 = return_exp2.tipo
 
             if self.operador == operador.SUMA:
 

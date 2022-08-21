@@ -1,29 +1,69 @@
-fn main () {
-    let mut test = 9;
-    
-    if test == 6 || test == 7 || test == 8 {
-        test = 100;
-    }else if test == 9 || test == 10 || test ==11 || test == 12 || test == 13 || test == 14  || test == 15 {
-        test = 9;
-    }else{
-        test = 111;
-        println!("Se llego al ese de test");
-        12;
-    }
-    
-    println!("test: {}", test);
-    
-    let mut test2 = if test == 1000 {
-        println!("Usando test = {}", test);
-        12453;
-    }else if test == 6 || test == 7 || test == 8 {
-        666;
-    }else if test == 9 || test == 10 || test ==11 || test == 12 || test == 13 || test == 14  || test == 15 {
-        999;
-    }else{
-        111;
-    };
 
-    println!("test2: {}", test2);
+fn main () {
+
+    //CON A 
+    println!("{}","a">"hola");
+    
+    let string4: String = "a".to_string();
+    let string5: String = "hola".to_string();
+    
+    println!("{}",string4>string5);
+    
+    let string6: &str = "a";
+    let string7: &str = "hola";
+    println!("{}",string6>string7);
+    
+    //CON S
+    println!("{}","s">"hola");
+    
+    let string4: String = "s".to_string();
+    let string5: String = "hola".to_string();
+    
+    println!("{}",string4>string5);
+    
+    let string6: &str = "s";
+    let string7: &str = "hola";
+    println!("{}",string6>string7);
+    
+    
+    //IMPRESIONES
+        
+    //let string1: String = "hello".to_owned();
+    let string1: String = "hello".to_string();
+    let string2: &str = "world";
+    //let string1 = "hello".to_owned();
+    //let string1 = "hello".to_string();
+    //let string2 = "world";
+    
+    println!("{}",string1);
+    println!("{}",string2);
+    
+    //println!(string1);
+    //println!(string2);
+    
+    //let string3: &str = string1 + string2;
+    let string3: String = string1 + string2;
+    println!("{}",string3);
+    //println!(string3);
+    
+    //println!("{}",string1);
+    println!("{}",string2);
+    
+    println!("{}","mario");
+    println!("{}","mario".to_string());
+    
+    
+    let astring ="a".to_string();
+    let holastring = "hola".to_string();
+    
+    
+    let holadirstring = "hola";
+    let adirstring = "a";
+    
+    println!("dirstings > {}",adirstring >holadirstring);
+    println!("String > {}",astring > holastring);
+    println!("dir y string != {}",adirstring != astring);
+    println!("dir y string == {}",astring == adirstring);
+
 
 }

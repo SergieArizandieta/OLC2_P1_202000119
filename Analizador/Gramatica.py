@@ -242,6 +242,7 @@ lexer = lex.lex()
 precedence = (
     ('left', 'OR'),
     ('left', 'AND'),
+    ('right', 'ABS', 'SQRT', 'TOSTRING', 'TOOWNED', 'CLONE'),
     ('left', 'MAYORIGUAL', 'MAYOR', 'MENORIGUAL', 'MENOR', 'IGUALDAD', 'DESIGUALDAD'),
     ('left', 'SUMA', 'RESTA'),
     ('left', 'MULTI', 'DIVI'),
@@ -249,6 +250,7 @@ precedence = (
     ('right', 'POWF', 'POW'),
     ('right', 'NOT', 'UMENOS')
 )
+
 
 
 # Definición de la gramática

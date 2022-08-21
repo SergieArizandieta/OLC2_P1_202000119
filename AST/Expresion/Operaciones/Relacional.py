@@ -26,6 +26,12 @@ class Relacional(Operacion, Expresion):
             elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
                 return RetornoType(valor_exp1 >= valor_exp2,t.BOOLEANO)
 
+            elif tipo_exp1 == t.STRING and tipo_exp2 == t.STRING:
+                return RetornoType(valor_exp1 >= valor_exp2, t.BOOLEANO)
+
+            elif tipo_exp1 == t.DIRSTRING and tipo_exp2 == t.DIRSTRING:
+                return RetornoType(valor_exp1 >= valor_exp2, t.BOOLEANO)
+
             else:
                 return "No son el mismo formato"
 
@@ -35,6 +41,12 @@ class Relacional(Operacion, Expresion):
                 return RetornoType(valor_exp1 > valor_exp2, t.BOOLEANO)
 
             elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+                return RetornoType(valor_exp1 > valor_exp2, t.BOOLEANO)
+
+            elif tipo_exp1 == t.STRING and tipo_exp2 == t.STRING:
+                return RetornoType(valor_exp1 > valor_exp2, t.BOOLEANO)
+
+            elif tipo_exp1 == t.DIRSTRING and tipo_exp2 == t.DIRSTRING:
                 return RetornoType(valor_exp1 > valor_exp2, t.BOOLEANO)
 
             else:
@@ -48,6 +60,12 @@ class Relacional(Operacion, Expresion):
             elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
                 return RetornoType(valor_exp1 <= valor_exp2, t.BOOLEANO)
 
+            elif tipo_exp1 == t.STRING and tipo_exp2 == t.STRING:
+                return RetornoType(valor_exp1 <= valor_exp2, t.BOOLEANO)
+
+            elif tipo_exp1 == t.DIRSTRING and tipo_exp2 == t.DIRSTRING:
+                return RetornoType(valor_exp1 <= valor_exp2, t.BOOLEANO)
+
             else:
                 return "No son el mismo formato"
 
@@ -57,6 +75,12 @@ class Relacional(Operacion, Expresion):
                 return RetornoType(valor_exp1 < valor_exp2, t.BOOLEANO)
 
             elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+                return RetornoType(valor_exp1 < valor_exp2, t.BOOLEANO)
+
+            elif tipo_exp1 == t.STRING and tipo_exp2 == t.STRING:
+                return RetornoType(valor_exp1 < valor_exp2, t.BOOLEANO)
+
+            elif tipo_exp1 == t.DIRSTRING and tipo_exp2 == t.DIRSTRING:
                 return RetornoType(valor_exp1 < valor_exp2, t.BOOLEANO)
 
             else:
@@ -70,6 +94,9 @@ class Relacional(Operacion, Expresion):
             elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
                 return RetornoType(valor_exp1 == valor_exp2, t.BOOLEANO)
 
+            elif isinstance(valor_exp1, str) and isinstance(valor_exp2, str):
+                return RetornoType(valor_exp1 == valor_exp2, t.BOOLEANO)
+
             else:
                 return "No son el mismo formato"
 
@@ -79,6 +106,10 @@ class Relacional(Operacion, Expresion):
                 return RetornoType(valor_exp1 != valor_exp2, t.BOOLEANO)
 
             elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+                return RetornoType(valor_exp1 != valor_exp2, t.BOOLEANO)
+
+            elif isinstance(valor_exp1, str) and isinstance(valor_exp2, str):
+                print(valor_exp1 != valor_exp2)
                 return RetornoType(valor_exp1 != valor_exp2, t.BOOLEANO)
 
             else:
