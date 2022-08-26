@@ -37,8 +37,6 @@ def ventanas():
             print("\nImprimeinedo arboles")
             AST_ej.EjecutarInstruccion(controlador,ts)
 
-
-
         notebook = ttk.Notebook(ventana)
         notebook.pack(fill=BOTH, expand=1)
 

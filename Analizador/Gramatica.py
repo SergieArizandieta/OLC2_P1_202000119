@@ -275,6 +275,7 @@ def p_instruccion(t):
     '''instruccion  : funcion
                     | declaracion
                     | asignacion
+                    | declaracion_arreglo
                     '''
 
     t[0] = t[1]
@@ -301,6 +302,7 @@ def p_bloque(t):
                 | break_ins PYC
                 | continue_ins PYC
                 | start_loop
+                | declaracion_arreglo
                 |'''
 
     if len(t) > 1:
@@ -317,6 +319,7 @@ def p_bloque_match(t):
                     | start_while
                     | return_ins PYC
                     | start_loop
+                    | declaracion_arreglo
                     |
                     '''
     if len(t) >1 :
@@ -326,7 +329,7 @@ def p_bloque_match(t):
 
 '''xxx'''
 from AST.Expresion import Identificador
-from AST.Instruccion import Declaracion, Asignacion, Funcion, Llamada
+from AST.Instruccion import Declaracion, Asignacion, Funcion, Llamada, DeclaracionArreglo
 from AST.TablaSimbolos.Tipos import tipo
 from AST.Expresion.Nativas import Nativas
 from AST.Expresion.Operaciones import Logica
@@ -337,8 +340,43 @@ from AST.Expresion.Operaciones import Aritmetica, Relacional
 from AST.Instruccion.SentenciasControl import Ifs
 from AST.Instruccion.SentenciasCiclicas import While,Loop
 from AST.Instruccion.SentenciasTranferencia import Return,Break,Continue
+from AST.Expresion.Arreglo import ArregloData, AccesoArreglo
 
 '''zzz'''
+
+def p_declaracion_arreglo(t):
+    '''declaracion_arreglo : LET mutable ID DP dimensiones_def IGUAL expresiones PYC '''
+    t[0]= DeclaracionArreglo.DeclaracionArreglo(t[2],t[3],t[5],t[7])
+
+def p_dimensiones_def(t):
+    '''dimensiones_def :  CI dimensiones_def PYC expresiones CD
+                        | CI tipo_datos PYC expresiones CD '''
+
+    if t.slice[2].type == 'dimensiones':
+        t[2].append(t[4])
+        t[0] = t[2]
+
+    else:
+        t[0] = [t[2], t[4]]
+
+def p_acceso_arreglo(t):
+    '''acceso_arreglo : ID dimensiones '''
+    print("Deberia ser id: ", t[1], " dimensiones: ",t[2])
+    t[0] = AccesoArreglo.AccesoArreglo(t[1], t[2])
+
+def p_dimensiones(t):
+    '''dimensiones : dimensiones dimension
+                    | dimension'''
+    if len(t) > 2:
+        t[1].append(t[2])
+        t[0] = t[1]
+
+    else:
+        t[0] = [t[1]]
+
+def p_dimension(t):
+    '''dimension : CI expresiones CD  '''
+    t[0] = t[2]
 
 def p_start_loop(t):
     '''start_loop : LOOP LI lista_bloque LD'''
@@ -346,9 +384,7 @@ def p_start_loop(t):
 
 def p_continue_ins(t):
     '''continue_ins : CONTINUE'''
-
     t[0] = Continue.Continue()
-
 
 def p_break_ins(t):
     '''break_ins : BREAK
@@ -396,7 +432,6 @@ def p_start_if(t):
     if len(t) == 11:
         t[0]= Ifs.Ifs(t[2],t[4],t[9],t[6])
 
-
 def p_lista_if(t):
     ''' lista_elif : lista_elif else_if
                     | else_if'''
@@ -416,7 +451,6 @@ def p_start_match(t):
     print("Llego a match")
     t[0] = Match.Match(t[2], t[4])
 
-
 def p_matches(t):
     '''matches : matches bloque_match
                 | bloque_match'''
@@ -426,8 +460,6 @@ def p_matches(t):
 
     else:
         t[0] = [t[1]]
-
-
 
 def p_list_match(t):
     '''bloque_match :  varios_match IGUAL MAYOR simple_bloque_exp COMA
@@ -441,7 +473,6 @@ def p_list_match(t):
         t[0] = BloqueMatch.BloqueMatch(t[1], t[5],True
                                        )
 
-
 def p_simple_bloque_exp(t):
     ''' simple_bloque_exp : expresiones
                         | bloque_match'''
@@ -449,12 +480,10 @@ def p_simple_bloque_exp(t):
     print("Llego con coma = a un simeple ")
     print(t[1])
 
-
 def p_bloque_exp(t):
     ''' bloque_exp : bloque
                         | expresiones  '''
     t[0] = t[1]
-
 
 def p_varios_match(t):
     '''varios_match : varios_match BARRA expresiones
@@ -479,7 +508,6 @@ def p_llamada(t):
         print("=== llamda tipo 2")
         t[0] = Llamada.Llamada(t[1], t[3])
 
-
 def p_lista_expres(t):
     '''lista_expres : lista_expres COMA  expresiones
                     | expresiones '''
@@ -490,7 +518,6 @@ def p_lista_expres(t):
 
     else:
         t[0] = [t[1]]
-
 
 def p_funciones(t):
     '''funcion  : FUNCION MAIN PI PD LI lista_bloque LD
@@ -504,7 +531,6 @@ def p_funciones(t):
     elif len(t) == 10:
         t[0] = Funcion.Funcion(t[2], t[6], t[4], t[8])
 
-
 def p_parametros(t):
     '''parametros : parametros COMA definiciones
                   | definiciones'''
@@ -516,13 +542,11 @@ def p_parametros(t):
     else:
         t[0] = [t[1]]
 
-
 def p_definiciones(t):
     """ definiciones : referencias mutable ID VECTOR tipado_vector
                     | referencias mutable ID tipado """
 
     if len(t) == 5:    t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), None, t[4], t[1])
-
 
 def p_referencias(t):
     '''referencias : REFER
@@ -534,10 +558,8 @@ def p_referencias(t):
     else:
         t[0] = False
 
-
 def p_tipado_vect(t):
     '''tipado_vector : '''
-
 
 def p_accceso(t):
     '''acceso   : PUBLICO
@@ -548,7 +570,6 @@ def p_accceso(t):
     else:
         t[0] = False
 
-
 def p_tipo_funcion(t):
     '''tipo_funcion : RESTA MAYOR tipo_datos
                     | RESTA MAYOR VECTOR MENOR tipo_datos MAYOR
@@ -558,7 +579,6 @@ def p_tipo_funcion(t):
         t[0] = t[3]
     elif len(t) == 1:
         t[0] = None
-
 
 def p_declaracion(t):
     '''declaracion  : LET mutable ID tipado PYC
@@ -571,12 +591,10 @@ def p_declaracion(t):
         print("Llego bien a declarar ", t[6])
         t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), t[6], t[4], t[2])
 
-
 def p_asignacio(t):
     '''asignacion      : ID IGUAL expresiones  '''
 
     t[0] = Asignacion.Asignacion(t[1], t[3])
-
 
 def p_mutable(t):
     '''mutable      : MUT
@@ -587,7 +605,6 @@ def p_mutable(t):
     else:
         t[0] = False
 
-
 def p_tipado(t):
     '''tipado      : DP tipo_datos
                         | '''
@@ -595,7 +612,6 @@ def p_tipado(t):
         t[0] = t[2]
     else:
         t[0] = None
-
 
 def p_tipo_datos(t):
     '''tipo_datos     : TIPOINT
@@ -617,7 +633,6 @@ def p_tipo_datos(t):
         t[0] = tipo.DIRSTRING
     elif t[1] == "bool":
         t[0] = tipo.BOOLEANO
-
 
 def p_instruccion_imprimir(t):
     '''impresiones     : PRINTLN PI CADENA PD
@@ -644,7 +659,6 @@ def p_instruccion_imprimir(t):
             t[0] = Imprimir.Imprimir(t[3], False, t[5])
             # print("\nRe reocnocio: print! con el token: ", t[5], "\n")
 
-
 def p_imprimir_lista_valores(t):
     '''impresion_valores     :  impresion_valores COMA expresiones
                          | expresiones '''
@@ -655,6 +669,7 @@ def p_imprimir_lista_valores(t):
 
     else:
         t[0] = [t[1]]
+
 '''yyy'''
 def p_expresiones(t):
     '''expresiones  : funcion_nativa
@@ -671,9 +686,26 @@ def p_expre_valor(t):
                     | start_match
                     | start_if
                     | start_loop
-                    | llamada '''
+                    | llamada
+                    | arreglo_init
+                    | acceso_arreglo '''
     t[0] = t[1]
 
+def p_arreglo_init(t):
+    '''arreglo_init : CI lista_Expresiones CD '''
+    t[0] = ArregloData.ArregloData(t[2])
+
+
+def p_lista_expresiones(t):
+    '''lista_Expresiones : lista_Expresiones COMA expresiones
+                        | expresiones'''
+
+    if len(t) > 2:
+        t[1].append(t[3])
+        t[0] = t[1]
+
+    else:
+        t[0] = [t[1]]
 
 def p_funcion_nativa(t):
     '''funcion_nativa : expresiones PUNTO nativas '''

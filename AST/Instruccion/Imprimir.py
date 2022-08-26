@@ -25,7 +25,10 @@ class Imprimir(Intruccion):
                     for i in range (0,len(formato_nomal)):
                         texto_salida += str(formato_nomal[i])
                         if i <= len(self.lista)-1:
-                            texto_salida += str(self.lista[i].ObtenerValor(controlador,ts).valor)
+                            try:
+                                texto_salida += str(self.lista[i].ObtenerValor(controlador,ts).valor)
+                            except:
+                                print("Fallo en: ",self.lista[i])
 
                     print("Print final: ", texto_salida)
                             #print("Obtener tipo: ", self.lista[i].ObtenerTipo(controlador, ts))

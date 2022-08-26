@@ -12,7 +12,9 @@ class tipo(Enum):
     RETURN = 7,
     BREAK = 8,
     CONTINUE = 9,
-    ERROR = 10
+    ARRAY = 10,
+    OBJETO = 11,
+    ERROR = 12
 
 class RetornoType():
     def __init__(self,  valor = None , tipo = tipo.UNDEFINED , final = tipo.UNDEFINED):
