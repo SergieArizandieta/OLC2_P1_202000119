@@ -305,7 +305,8 @@ def p_bloque(t):
                 | continue_ins PYC
                 | start_loop
                 | declaracion_arreglo
-                |'''
+                | asignacion_arreglo
+                | '''
 
     if len(t) > 1:
         t[0] = t[1]
@@ -319,7 +320,7 @@ def p_bloque_match(t):
                     | start_match
                     | start_if
                     | start_while
-                    | return_ins PYC
+                    | return_ins
                     | start_loop
                     | declaracion_arreglo
                     |
@@ -346,6 +347,11 @@ from AST.Expresion.Arreglo import ArregloData, AccesoArreglo
 from AST.Expresion.Casteo import  Casteo
 
 '''zzz'''
+
+def p_asignacion_arreglo(t):
+    ''' asignacion_arreglo : acceso_arreglo IGUAL expresiones '''
+    t[1].valor = t[3]
+    t[0] = t[1]
 
 def p_declaracion_arreglo(t):
     '''declaracion_arreglo : LET mutable ID validacion_dimension IGUAL expresiones PYC '''
@@ -376,7 +382,6 @@ def p_dimensiones_def(t):
         else:
             t[0].append(t[2])
             t[0].append(t[4])
-
 
 def p_acceso_arreglo(t):
     '''acceso_arreglo : ID dimensiones '''

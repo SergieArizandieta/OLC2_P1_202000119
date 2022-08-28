@@ -37,7 +37,7 @@ class DeclaracionArreglo(Intruccion):
                     print("ERROR")
                     return
                 i = i+1
-
+            objetoArreglo.mut = self.mutable
             ts.Agregar_Simbolo(self.identificador,objetoArreglo)
             ts.Print_Table()
 

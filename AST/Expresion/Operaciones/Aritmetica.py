@@ -95,7 +95,6 @@ class Aritmetica(Operacion, Expresion):
         else:
 
             if self.operador == operador.RESTA:
-                valor_exp1 = self.exp1.ObtenerValor(controlador, ts)
 
                 if isinstance(valor_exp1, int):
                     return RetornoType(int(valor_exp1 * -1), tipo.ENTERO)
