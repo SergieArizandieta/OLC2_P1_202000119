@@ -1,3 +1,5 @@
+from AST.Expresion.Casteo.Casteo import Casteo
+
 reservadas = {
     # ACCESO
     'pub': 'PUBLICO',
@@ -20,8 +22,8 @@ reservadas = {
     'fn': 'FUNCION',
     'main': 'MAIN',
     # FUNCIONES NATIVAS
-    'abs': 'ABS',
-    'sqrt': 'SQRT',
+    'abs()': 'ABS',
+    'sqrt()': 'SQRT',
     'to_string()': 'TOSTRING',
     'to_owned()': 'TOOWNED',
     'clone()': 'CLONE',
@@ -242,7 +244,7 @@ lexer = lex.lex()
 precedence = (
     ('left', 'OR'),
     ('left', 'AND'),
-    ('right', 'ABS', 'SQRT', 'TOSTRING', 'TOOWNED', 'CLONE'),
+   # ('right', 'ABS', 'SQRT', 'TOSTRING', 'TOOWNED', 'CLONE'),
     ('left', 'MAYORIGUAL', 'MAYOR', 'MENORIGUAL', 'MENOR', 'IGUALDAD', 'DESIGUALDAD'),
     ('left', 'SUMA', 'RESTA'),
     ('left', 'MULTI', 'DIVI'),
@@ -341,23 +343,40 @@ from AST.Instruccion.SentenciasControl import Ifs
 from AST.Instruccion.SentenciasCiclicas import While,Loop
 from AST.Instruccion.SentenciasTranferencia import Return,Break,Continue
 from AST.Expresion.Arreglo import ArregloData, AccesoArreglo
+from AST.Expresion.Casteo import  Casteo
 
 '''zzz'''
 
 def p_declaracion_arreglo(t):
-    '''declaracion_arreglo : LET mutable ID DP dimensiones_def IGUAL expresiones PYC '''
-    t[0]= DeclaracionArreglo.DeclaracionArreglo(t[2],t[3],t[5],t[7])
+    '''declaracion_arreglo : LET mutable ID validacion_dimension IGUAL expresiones PYC '''
+    t[0]= DeclaracionArreglo.DeclaracionArreglo(t[2],t[3],t[4],t[6])
+
+def p_validacion_dimension(t):
+    '''validacion_dimension : DP dimensiones_def'''
+
+    if len(t) > 1:
+        t[0] = t[2]
+    else:
+        t[0] = None
 
 def p_dimensiones_def(t):
     '''dimensiones_def :  CI dimensiones_def PYC expresiones CD
                         | CI tipo_datos PYC expresiones CD '''
 
-    if t.slice[2].type == 'dimensiones':
+
+    if t.slice[2].type == 'dimensiones_def':
+        print("Dimension: Se detcto expresion: ", t[2], " dimensiones: ", t[4])
         t[2].append(t[4])
         t[0] = t[2]
 
-    else:
-        t[0] = [t[2], t[4]]
+    elif t.slice[2].type == 'tipo_datos':
+        print("Definicion: Se detcto tipo: ", t[2], " dimensiones: ",t[4])
+        if  t[0] is None:
+            t[0] = [t[2],t[4]]
+        else:
+            t[0].append(t[2])
+            t[0].append(t[4])
+
 
 def p_acceso_arreglo(t):
     '''acceso_arreglo : ID dimensiones '''
@@ -799,8 +818,15 @@ def p_expre_aritmetica(t):
 
 
 def p_datos_cast(t):
-    ''' datos_cast : datos'''
-    t[0]=t[1]
+    ''' datos_cast : datos
+                   | expresiones AS tipo_datos'''
+
+    if len(t) == 2:
+        t[0] = t[1]
+    else:
+        t[0]= Casteo.Casteo(t[1],t[3])
+
+
 
 def p_datos(t):
     '''datos : ENTERO

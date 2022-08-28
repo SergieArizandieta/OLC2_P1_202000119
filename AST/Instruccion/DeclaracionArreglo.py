@@ -20,7 +20,7 @@ class DeclaracionArreglo(Intruccion):
 
         if self.dimensiones is not None:
             self.tipo = self.dimensiones.pop(0)
-
+            print("dimesiones, ",self.dimensiones)
             if Exp_arreglo.tipo != tipo.ARRAY:
                 return
 
@@ -28,9 +28,30 @@ class DeclaracionArreglo(Intruccion):
 
             if objetoArreglo.tipo != self.tipo:
                 return
-
+            i = 0
 
             objetoArreglo.identificador = self.identificador
+
+            for x in self.dimensiones:
+                if x.valor != objetoArreglo.dimensiones[i]:
+                    print("ERROR")
+                    return
+                i = i+1
+
             ts.Agregar_Simbolo(self.identificador,objetoArreglo)
             ts.Print_Table()
-            print("Terminado")
+
+        else:
+
+            if Exp_arreglo.tipo != tipo.ARRAY:
+                return
+
+            objetoArreglo = Exp_arreglo.valor
+            self.tipo =  objetoArreglo.tipo
+            objetoArreglo.identificador = self.identificador
+            ts.Agregar_Simbolo(self.identificador, objetoArreglo)
+            ts.Print_Table()
+
+
+
+            print("=== Sin valores")

@@ -1,6 +1,7 @@
 from AST.Abstracto.Instruccion import Intruccion
 from AST.TablaSimbolos.Tipos import tipo as t
 from AST.TablaSimbolos.Tipos import RetornoType
+from AST.TablaSimbolos.InstanciaArreglo import InstanciaArreglo
 class Imprimir(Intruccion):
 
     def __init__(self,  expresion, tipo, lista):
@@ -10,11 +11,9 @@ class Imprimir(Intruccion):
 
     def EjecutarInstruccion(self, controlador, ts):
 
-
         global valor, tipo
         if len(self.lista) > 0:
             texto_salida = ""
-
 
             if  self.expresion.count("{}") > 0:
                 formato_nomal = self.expresion.split("{}")
@@ -33,14 +32,43 @@ class Imprimir(Intruccion):
                     print("Print final: ", texto_salida)
                             #print("Obtener tipo: ", self.lista[i].ObtenerTipo(controlador, ts))
 
+                else:
+                    # Error
+                    pass
+
+            contador = self.expresion.count("{:?}")
+            if self.expresion.count("{:?}") > 0:
+                print("Llego a impresion")
+                ts.Print_Table()
+                formato_nomal = self.expresion.split("{:?}")
+                contador_nomal = self.expresion.count("{:?}")
+
+                if contador_nomal == len(self.lista):
+
+                    for i in range (0,len(formato_nomal)):
+                        texto_salida += str(formato_nomal[i])
+                        if i <= len(self.lista)-1:
+                            try:
+                                array = ts.ObtenerSimbolo(self.lista[i].id)
+                                if isinstance(array,InstanciaArreglo):
+                                    texto_salida += self.ObtenerArrayText(array.valores)
+                                else:
+                                    texto_salida += str(self.lista[i].ObtenerValor(controlador, ts).valor)
+                                #array = self.lista[i].ObtenerValor(controlador,ts)
+
+                            except:
+                                print("Fallo en: ",self.lista[i])
+
+                    print("Print final: ", texto_salida)
+                            #print("Obtener tipo: ", self.lista[i].ObtenerTipo(controlador, ts))
 
                 else:
                     # Error
                     pass
 
 
-            formato_lista = self.expresion.split("{:?}")
-            contador_lista  = self.expresion.count("{:?}")
+            #formato_lista = self.expresion.split("{:?}")
+            #contador_lista  = self.expresion.count("{:?}")
 
             controlador.imprimir(texto_salida, self.tipo)
         else:
@@ -56,3 +84,35 @@ class Imprimir(Intruccion):
             else:
                 #error
                 pass
+
+    def ObtenerArrayText(self,array):
+        print(type(array))
+        text = ""
+        if isinstance(array,list):
+            text += "["
+
+            bandera = True
+            banderaint = len(array)
+            aux = 0
+            for x in array:
+                if isinstance(x,list):
+                    text += self.ObtenerArrayText(x)
+                    if aux+1 != banderaint:
+                        text += ","
+                else:
+                    if bandera:
+                        text += str(x)
+                        bandera = False
+                    else:
+                        text += "," + str(x)
+
+                aux += 1
+
+
+
+
+
+            text += "]"
+            return text
+        else:
+            print("fallo")

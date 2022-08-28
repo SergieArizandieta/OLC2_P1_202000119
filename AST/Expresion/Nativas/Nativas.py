@@ -20,11 +20,11 @@ class Nativas(Expresion):
         print("=== exp tipo py === ", type(valor_exp1))
         print("=== exp tipo py === ", type(2))
 
-        if self.funcion == "abs":
+        if self.funcion == "abs()":
             if tipo_exp1 == tipo.ENTERO or tipo_exp1 == tipo.DECIMAL:
                 return RetornoType(abs(valor_exp1),tipo_exp1)
 
-        elif self.funcion == "sqrt":
+        elif self.funcion == "sqrt()":
             if tipo_exp1 == tipo.DECIMAL:
                 return RetornoType(math.sqrt(valor_exp1), tipo_exp1)
 
