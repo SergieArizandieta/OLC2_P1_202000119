@@ -23,7 +23,14 @@ class Llamada(Intruccion, Expresion):
             if self.identificador == "main":
                 ts_local = TablaDeSimbolos(ts, self.identificador)
             else:
-                if ts.padre.name == self.identificador:
+                bandera = False
+                pointer = ts
+                while pointer is not None:
+                    if pointer.name == self.identificador:
+                        bandera = True
+                    pointer = pointer.padre
+
+                if bandera:
                     apuntador = ts
                     while apuntador.padre is not None:
                         apuntador = apuntador.padre
