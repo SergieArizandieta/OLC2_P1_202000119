@@ -735,7 +735,8 @@ def p_expre_valor(t):
                     | start_loop
                     | llamada
                     | arreglo_init
-                    | acceso_arreglo '''
+                    | acceso_arreglo
+                    '''
     t[0] = t[1]
 
 def p_arreglo_init(t):
@@ -863,7 +864,8 @@ def p_datos(t):
             | CARACTER
             | ID
             | TRUE
-            | FALSE'''
+            | FALSE
+            | REFERENCE ID'''
 
     if t.slice[1].type == 'ENTERO':
         t[0] = Primitivo.Primitivo(t[1], 'ENTERO')
@@ -879,6 +881,8 @@ def p_datos(t):
         t[0] = Primitivo.Primitivo(t[1], 'CARACTER')
     elif t.slice[1].type == 'ID':
         t[0] = Identificador.Identificador(t[1])
+    elif t.slice[1].type == 'REFERENCE':
+        t[0] = Identificador.Identificador(t[2], True)
 
 def p_error(t):
     try:

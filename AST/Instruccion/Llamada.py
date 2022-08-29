@@ -93,6 +93,7 @@ class Llamada(Intruccion, Expresion):
                         tipo_array = aux_tipo.pop(0)
 
                         aux_exp_data: Simbolos = ts.ObtenerSimbolo(aux_exp.id)
+
                         for x in range(0,len(aux_tipo)):
                             if aux_tipo[x].valor != aux_exp_data.dimensiones[x]:
                                 return False
@@ -100,7 +101,9 @@ class Llamada(Intruccion, Expresion):
                         if tipo_array != aux_exp_data.tipo:
                             return False
 
-                        ts_loca.Agregar_Simbolo(aux_id, aux_exp_data)
+                        if aux_exp.referencia and aux_mut:
+                            ts_loca.Agregar_Simbolo(aux_id, aux_exp_data)
+
                         print("Llego: ",tipo_array, " - ")
 
                     print("Es por memoeria ")
