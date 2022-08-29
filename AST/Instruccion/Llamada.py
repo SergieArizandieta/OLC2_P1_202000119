@@ -88,6 +88,7 @@ class Llamada(Intruccion, Expresion):
                         return False
                 else:
                     print("Se llego")
+                    print(aux_id)
                     if( isinstance(aux_tipo,list)):
 
                         tipo_array = aux_tipo[0]

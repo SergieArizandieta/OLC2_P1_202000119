@@ -26,15 +26,16 @@ class DeclaracionArreglo(Intruccion):
 
             if objetoArreglo.tipo != self.tipo:
                 return
-            i = 0
 
+
+            i = len(objetoArreglo.dimensiones)-1
             objetoArreglo.identificador = self.identificador
 
             for x in self.dimensiones:
                 if x.valor != objetoArreglo.dimensiones[i]:
                     print("ERROR")
                     return
-                i = i+1
+                i -= 1
             objetoArreglo.mut = self.mutable
             ts.Agregar_Simbolo(self.identificador,objetoArreglo)
             ts.Print_Table()

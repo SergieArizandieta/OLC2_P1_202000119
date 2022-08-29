@@ -40,7 +40,7 @@ class Imprimir(Intruccion):
                     # Error
                     pass
 
-            contador = self.expresion.count("{:?}")
+
             if self.expresion.count("{:?}") > 0:
                 print("Llego a impresion")
                 ts.Print_Table()

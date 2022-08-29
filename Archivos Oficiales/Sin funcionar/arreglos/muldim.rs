@@ -15,8 +15,8 @@ fn imprimir_punteo(ests: &mut [String; 4], cursos: &mut [&str; 3], notas: &mut [
     }
 }
 
-/* imprime la nota total por curso de cada estudiante*/
-/* parciales 43, lab sobre 32 y examen final 25*/
+// imprime la nota total por curso de cada estudiante
+// parciales 43, lab sobre 32 y examen final 25
 fn imprimir_nota_final(ests: &mut [String; 4], cursos: &mut [&str; 3], notas: &mut [[[i64;5];3];4]) {
     for i in 0..ests.len() {
         for j in 0..cursos.len() {
@@ -55,7 +55,7 @@ fn corregir_notas(corregir: &mut [[i64;5];3], notas: &mut [[[i64;5];3];4]) {
     }
 }
 
-fn main() {
+fn main () {
     let mut estudiantes: [String; 4] = ["Lorenza".to_string(), "Rosendo".to_string(), "Fermina".to_string(), "Markel".to_string()];
     
     let mut cursos: [&str; 3] = ["Arqui1", "Archivos", "Compi2"];
