@@ -1,4 +1,4 @@
-/* imprime los puntos por curso de cada estudiante */
+// imprime los puntos por curso de cada estudiante 
 fn imprimir_punteo(ests: &mut [String; 4], cursos: &mut [&str; 3], notas: &mut [[[i64;5];3];4]) {
     let ponderacion: [&str; 5] = ["1er parcial", "2do parcial", "3er parcial", "Lab", "Examen final"];
     println!("{:?}", ponderacion);
@@ -44,7 +44,7 @@ fn imprimir_nota_final(ests: &mut [String; 4], cursos: &mut [&str; 3], notas: &m
     }
 }
 
-/* correccion de notas */
+// correccion de notas 
 fn corregir_notas(corregir: &mut [[i64;5];3], notas: &mut [[[i64;5];3];4]) {
     for i in 0..notas.len() {
         for j in 0..notas[i].len() {

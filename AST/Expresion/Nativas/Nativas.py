@@ -1,5 +1,6 @@
 from AST.Abstracto.Expresion import Expresion
 from AST.TablaSimbolos.Tipos import tipo,RetornoType
+from AST.TablaSimbolos.InstanciaArreglo import InstanciaArreglo
 import math
 import copy
 
@@ -34,5 +35,13 @@ class Nativas(Expresion):
 
         elif self.funcion == "clone()":
             return RetornoType(copy.deepcopy(valor_exp1), tipo_exp1)
+
+        elif self.funcion == "len()":
+            return_exp1: RetornoType = ts.ObtenerSimbolo(self.expresion.id)
+            if isinstance(return_exp1,InstanciaArreglo):
+                return RetornoType(len(return_exp1.valores), tipo.ENTERO)
+
+
+
 
 

@@ -2,7 +2,8 @@ fn llenarMat(a: &mut [[i64; 3]; 3], b: &mut [[i64; 3]; 3]) {
     for i in 0..a.len() {
         for j in 0..a.len() {
             a[i][j] = (j as i64) * 3 + (i as i64);
-            b[i][j] = (i as i64) ^ 3 - (j as i64) ^ 2;
+            b[i][j] =  i64::pow((i as i64), 3)  -  i64::pow((j as i64), 2) ;
+            //b[i][j] = (i as i64) ^ 3 - (j as i64) ^ 2;
         }
     }
 }
@@ -43,16 +44,16 @@ fn limpiarMat(a: &mut [[i64; 3]; 3]) {
 
 fn printMat(r: &mut [[i64; 3]; 3]) {
     for i in 0..r.len() {
-        println!("{:?}", r[i])
+        println!("{:?}", r[i]);
     }
 }
 
-fn main() {
+fn main () {
     let mut matA: [[i64; 3]; 3] = [[0,0,0],[0,0,0],[0,0,0]];
     let mut matB: [[i64; 3]; 3] = [[0,0,0],[0,0,0],[0,0,0]];
     let mut matR: [[i64; 3]; 3] = [[0,0,0],[0,0,0],[0,0,0]];
 
-    /* llenar matriz */
+    // llenar matriz 
     llenarMat(&mut matA, &mut matB);
 
     println!("Matriz A");
@@ -65,20 +66,20 @@ fn main() {
     printMat(&mut matR);
     println!("");
 
-    /* sumar matriz */
+    // sumar matriz 
     sumarMat(&mut matA, &mut matB, &mut matR);
     println!("R = A + B");
     printMat(&mut matR);
     println!("");
 
-    /* restar matriz */
+    // restar matriz 
     limpiarMat(&mut matR);
     restarMat(&mut matA, &mut matB, &mut matR);
     println!("R = A - B");
     printMat(&mut matR);
     println!("");
 
-    /* multiplicar matriz */
+    // multiplicar matriz 
     limpiarMat(&mut matR);
     multMat(&mut matA, &mut matB, &mut matR);
     println!("R = A * B");

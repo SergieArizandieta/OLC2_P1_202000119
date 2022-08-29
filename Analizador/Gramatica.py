@@ -143,6 +143,7 @@ t_GBAJO = r'_'
 t_REFER = r'&'
 
 
+
 def t_FLOAT(t):
     r'\d+\.\d+'
     try:
@@ -308,6 +309,7 @@ def p_bloque(t):
                 | start_loop
                 | declaracion_arreglo
                 | asignacion_arreglo
+                | start_for
                 | '''
 
     if len(t) > 1:
@@ -325,6 +327,7 @@ def p_bloque_match(t):
                     | return_ins
                     | start_loop
                     | declaracion_arreglo
+                    | start_for
                     |
                     '''
     if len(t) >1 :
@@ -343,12 +346,25 @@ from AST.Expresion import Primitivo
 from AST.Instruccion import Imprimir
 from AST.Expresion.Operaciones import Aritmetica, Relacional
 from AST.Instruccion.SentenciasControl import Ifs
-from AST.Instruccion.SentenciasCiclicas import While,Loop
+from AST.Instruccion.SentenciasCiclicas import While,Loop,For
 from AST.Instruccion.SentenciasTranferencia import Return,Break,Continue
 from AST.Expresion.Arreglo import ArregloData, AccesoArreglo
 from AST.Expresion.Casteo import  Casteo
 
 '''zzz'''
+
+def p_start_for(t):
+    '''start_for : FOR ID IN opciones_for LI lista_bloque LD '''
+    t[0]= For.For(t[2],t[4],t[6])
+
+def p_opciones_for(t):
+    '''opciones_for :  expresiones
+                    | expresiones PUNTO PUNTO expresiones'''
+
+    if len(t) == 2:
+        t[0]= [1,t[1]]
+    else:
+        t[0]= [2,t[1],t[4]]
 
 def p_asignacion_arreglo(t):
     ''' asignacion_arreglo : acceso_arreglo IGUAL expresiones '''
@@ -769,7 +785,8 @@ def p_nativas(t):
                     | SQRT
                     | TOSTRING
                     | TOOWNED
-                    | CLONE'''
+                    | CLONE
+                    | LEN'''
 
     t[0] = t[1]
 
@@ -820,8 +837,8 @@ def p_expre_aritmetica(t):
                     | expresiones MULTI expresiones
                     | expresiones DIVI expresiones
                     | expresiones MODULO expresiones
-                    | POWF PI expresiones COMA expresiones PD
-                    | POW PI expresiones COMA expresiones PD '''
+                    | TIPOFLOAT POWF PI expresiones COMA expresiones PD
+                    | TIPOINT POW PI expresiones COMA expresiones PD '''
 
     if len(t) == 3:
         if t[1] == "-":
@@ -839,11 +856,12 @@ def p_expre_aritmetica(t):
             t[0] = Aritmetica.Aritmetica(t[1], "%", t[3], False)
         elif t[1] == "(" and t[3] == ")":
             t[0] = t[2]
-    elif len(t) == 7:
-        if t[1] == "::pow":
-            t[0] = Aritmetica.Aritmetica(t[3], "^", t[5], False)
-        elif t[1] == "::powf":
-            t[0] = Aritmetica.Aritmetica(t[3], "^f", t[5], False)
+    elif len(t) == 8:
+
+        if t[2] == "::pow":
+            t[0] = Aritmetica.Aritmetica(t[4], "^", t[6], False)
+        elif t[2] == "::powf":
+            t[0] = Aritmetica.Aritmetica(t[4], "^f", t[6], False)
 
 
 def p_datos_cast(t):

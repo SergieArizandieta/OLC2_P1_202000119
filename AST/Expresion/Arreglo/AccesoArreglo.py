@@ -34,6 +34,7 @@ class AccesoArreglo(Expresion,Intruccion):
     def ObtenerValor(self, controlador,ts:TablaDeSimbolos) -> RetornoType:
         print("Llego a accesoL ",self.idArreglo, " lista dimensiones: ",self.listaExpresiones)
         ts.Print_Table()
+        ts.padre.Print_Table()
         if ts.Existe_id(self.idArreglo) is not True:
             return RetornoType()
 
@@ -41,7 +42,7 @@ class AccesoArreglo(Expresion,Intruccion):
         if isinstance(arreglo, InstanciaArreglo) is not True:
             return RetornoType()
 
-        if len(self.listaExpresiones) != len(arreglo.dimensiones):
+        if len(self.listaExpresiones) > len(arreglo.dimensiones):
             return RetornoType()
 
         dimensiones = self.compilarDimensiones(controlador,ts)

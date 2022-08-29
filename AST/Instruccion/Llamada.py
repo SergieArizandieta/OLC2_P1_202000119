@@ -90,12 +90,12 @@ class Llamada(Intruccion, Expresion):
                     print("Se llego")
                     if( isinstance(aux_tipo,list)):
 
-                        tipo_array = aux_tipo.pop(0)
+                        tipo_array = aux_tipo[0]
 
                         aux_exp_data: Simbolos = ts.ObtenerSimbolo(aux_exp.id)
 
-                        for x in range(0,len(aux_tipo)):
-                            if aux_tipo[x].valor != aux_exp_data.dimensiones[x]:
+                        for x in range(1,len(aux_tipo)):
+                            if aux_tipo[x].valor != aux_exp_data.dimensiones[x-1]:
                                 return False
 
                         if tipo_array != aux_exp_data.tipo:

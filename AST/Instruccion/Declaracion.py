@@ -2,7 +2,7 @@ from AST.Abstracto.Instruccion import Intruccion
 from AST.Expresion import Identificador
 from AST.TablaSimbolos.Simbolos import Simbolos
 from AST.TablaSimbolos.Tipos import tipo, RetornoType
-
+from AST.Instruccion.DeclaracionArreglo import DeclaracionArreglo
 class Declaracion(Intruccion):
 
     def __init__(self, id: Identificador, expresion, tipo, mut,referencia = False):
@@ -19,6 +19,10 @@ class Declaracion(Intruccion):
             try:
                 ValorExpresion = return_exp.valor
                 TipoExpresion = return_exp.tipo
+                if TipoExpresion == tipo.ARRAY:
+                    declaracion_arreglo = DeclaracionArreglo(self.mut,self.identificador.id,None, self.expresion)
+                    declaracion_arreglo.EjecutarInstruccion(controlador,ts)
+                    return None
             except:
                 print("Declaracion no se esta recuperando un dato")
                 return None

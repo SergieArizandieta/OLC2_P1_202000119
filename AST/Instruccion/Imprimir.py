@@ -2,6 +2,8 @@ from AST.Abstracto.Instruccion import Intruccion
 from AST.TablaSimbolos.Tipos import tipo as t
 from AST.TablaSimbolos.Tipos import RetornoType
 from AST.TablaSimbolos.InstanciaArreglo import InstanciaArreglo
+from AST.Expresion.Identificador import Identificador
+from AST.Expresion.Arreglo.AccesoArreglo import AccesoArreglo
 class Imprimir(Intruccion):
 
     def __init__(self,  expresion, tipo, lista):
@@ -15,6 +17,8 @@ class Imprimir(Intruccion):
         if len(self.lista) > 0:
             texto_salida = ""
 
+            self.expresion = self.expresion.replace('\\n', '\n')
+            print( self.expresion )
             if  self.expresion.count("{}") > 0:
                 formato_nomal = self.expresion.split("{}")
                 contador_nomal = self.expresion.count("{}")
@@ -49,11 +53,25 @@ class Imprimir(Intruccion):
                         texto_salida += str(formato_nomal[i])
                         if i <= len(self.lista)-1:
                             try:
-                                array = ts.ObtenerSimbolo(self.lista[i].id)
-                                if isinstance(array,InstanciaArreglo):
-                                    texto_salida += self.ObtenerArrayText(array.valores)
-                                else:
-                                    texto_salida += str(self.lista[i].ObtenerValor(controlador, ts).valor)
+
+                                if isinstance(self.lista[i],Identificador):
+                                    array = ts.ObtenerSimbolo(self.lista[i].id)
+
+                                    if isinstance(array, InstanciaArreglo):
+                                        texto_salida += self.ObtenerArrayText(array.valores)
+                                    else:
+                                        texto_salida += str(self.lista[i].ObtenerValor(controlador, ts).valor)
+
+                                elif isinstance(self.lista[i],AccesoArreglo):
+                                    array = self.lista[i].ObtenerValor(controlador,ts)
+
+                                    if isinstance(array, RetornoType):
+                                        texto_salida += self.ObtenerArrayText(array.valor)
+
+
+
+
+
                                 #array = self.lista[i].ObtenerValor(controlador,ts)
 
                             except:
@@ -76,7 +94,7 @@ class Imprimir(Intruccion):
 
             valor = return_exp.valor
             tipo = return_exp.tipo
-
+            valor = valor.replace('\\n', '\n')
             print("======!!!! ", tipo , " !!!!======")
             if tipo == t.STRING or tipo == t.DIRSTRING:
                 print("Se confirmo")
@@ -107,10 +125,6 @@ class Imprimir(Intruccion):
                         text += "," + str(x)
 
                 aux += 1
-
-
-
-
 
             text += "]"
             return text

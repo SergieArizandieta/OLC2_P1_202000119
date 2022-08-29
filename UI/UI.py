@@ -5,7 +5,7 @@ import Analizador.Gramatica as g
 from AST.AST_Ejecucion.AST import AST
 from AST.Controlador import Controlador
 from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos
-
+import io
 opcion = ["No data"]
 def ventanas():
         global opcion
@@ -22,7 +22,8 @@ def ventanas():
             #CodeText = CodeTxt.get("1.0", 'end-1c')
             #messagebox.showinfo(title="Error", message="Ingrese un valor")
 
-            f = open("../Analizador/entrada.txt", "r")
+            #f = open("../Analizador/entrada.txt", "r")
+            f = io.open("../Analizador/entrada.txt", mode="r", encoding="utf-8")
             entrada = f.read()
 
 
