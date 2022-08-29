@@ -1,3 +1,4 @@
+
 fn f(n: i64) -> i64 {
     if n < 2 {
         return 1;
@@ -31,3 +32,17 @@ fn main (){
     println!("Ackerman de 2,8 {}",ack(2,8));
     println!("Ackerman de 2,1 {}",ack(2,1));
 }
+
+
+/*
+--------------------------
+----ARCHIVO RECURSIVOS----
+--------------------------
+Factorial de 6 720
+Factorial de 4 24
+Factorial de 3 6
+
+Ackerman de 3,0 5
+Ackerman de 2,8 19
+Ackerman de 2,1 5
+*/

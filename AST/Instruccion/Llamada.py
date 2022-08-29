@@ -23,7 +23,14 @@ class Llamada(Intruccion, Expresion):
             if self.identificador == "main":
                 ts_local = TablaDeSimbolos(ts, self.identificador)
             else:
-                ts_local = TablaDeSimbolos(ts.padre, self.identificador)
+                if ts.padre.name == self.identificador:
+                    apuntador = ts
+                    while apuntador.padre is not None:
+                        apuntador = apuntador.padre
+
+                    ts_local = TablaDeSimbolos(apuntador, self.identificador)
+                else:
+                    ts_local = TablaDeSimbolos(ts.padre, self.identificador)
 
             simbolo_funcion: Funcion = ts.ObtenerSimbolo(self.identificador)
 
