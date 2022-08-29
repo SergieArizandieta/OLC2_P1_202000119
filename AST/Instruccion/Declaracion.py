@@ -5,11 +5,12 @@ from AST.TablaSimbolos.Tipos import tipo, RetornoType
 
 class Declaracion(Intruccion):
 
-    def __init__(self, id: Identificador, expresion, tipo, mut):
+    def __init__(self, id: Identificador, expresion, tipo, mut,referencia = False):
         self.identificador = id
         self.expresion = expresion
         self.tipo = tipo
         self.mut = mut
+        self.referencia = referencia
 
     def EjecutarInstruccion(self, controlador, ts):
         print(" ==== Declarar === ",self.expresion)

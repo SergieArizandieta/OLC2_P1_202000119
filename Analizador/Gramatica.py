@@ -61,7 +61,9 @@ reservadas = {
     '::powf': 'POWF',
     # BOOLS
     'true': 'TRUE',
-    'false': 'FALSE'
+    'false': 'FALSE',
+    #
+    '&mut': 'REFERENCE'
 }
 
 tokens = [
@@ -567,10 +569,27 @@ def p_parametros(t):
         t[0] = [t[1]]
 
 def p_definiciones(t):
-    """ definiciones : referencias mutable ID VECTOR tipado_vector
-                    | referencias mutable ID tipado """
+    """ definiciones : MUT ID tipado
+                    | ID tipado
+                    | ID  tipados_tipos  """
 
-    if len(t) == 5:    t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), None, t[4], t[1])
+    #referencias mutable ID VECTOR tipado_vector
+    print("Llego a definiciones, ",len(t))
+
+    if len(t) == 4 :
+        t[0] = Declaracion.Declaracion(Identificador.Identificador(t[2]), None, t[3],True)
+
+    elif len(t) == 3:
+        if t.slice[2].type == 'tipado':
+            t[0] = Declaracion.Declaracion(Identificador.Identificador(t[1]), None, t[2], False)
+        else:
+            t[0] = Declaracion.Declaracion(Identificador.Identificador(t[1]), None, t[2], True,True)
+
+def p_tipados_tipos(t):
+    '''tipados_tipos :  DP REFERENCE dimensiones_def'''
+
+    t[0] = t[3]
+
 
 def p_referencias(t):
     '''referencias : REFER
@@ -631,11 +650,15 @@ def p_mutable(t):
 
 def p_tipado(t):
     '''tipado      : DP tipo_datos
-                        | '''
+                     |'''
     if len(t) > 1:
+
         t[0] = t[2]
     else:
         t[0] = None
+
+
+
 
 def p_tipo_datos(t):
     '''tipo_datos     : TIPOINT
