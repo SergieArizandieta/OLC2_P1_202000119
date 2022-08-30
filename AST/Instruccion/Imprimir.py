@@ -29,7 +29,13 @@ class Imprimir(Intruccion):
                         texto_salida += str(formato_nomal[i])
                         if i <= len(self.lista)-1:
                             try:
-                                texto_salida += str(self.lista[i].ObtenerValor(controlador,ts).valor)
+                                if isinstance(self.lista[i],AccesoArreglo):
+                                    array = self.lista[i].ObtenerValor(controlador,ts)
+
+                                    if isinstance(array, RetornoType):
+                                        texto_salida += str(array.valor)
+                                else:
+                                    texto_salida += str(self.lista[i].ObtenerValor(controlador,ts).valor)
                             except:
                                 print("Fallo en: ",self.lista[i])
 

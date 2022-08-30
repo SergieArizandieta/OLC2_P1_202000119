@@ -19,6 +19,8 @@ class Simbolos() :
         self.valores = []
         self.dimensiones = []
 
+        self.referencia = False
+
     def SimboloPremitivo(self,id,valor,tipo,mut):
         self.id = id
         self.valor = valor

@@ -14,7 +14,7 @@ class While(Intruccion):
 
         if tipo_Exp == tipo.BOOLEANO:
             if valor_Exp:
-                try:
+                #try:
                     while self.expresion.ObtenerValor(controlador, ts).valor:
                         ts_local = TablaDeSimbolos(ts, "While" + str(id(self)))
 
@@ -33,6 +33,6 @@ class While(Intruccion):
                                         break
 
                                     return retorno
-                except:
-                    print("Error en el While")
+                #except:
+                #    print("Error en el While")
 

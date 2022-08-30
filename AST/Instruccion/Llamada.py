@@ -23,12 +23,13 @@ class Llamada(Intruccion, Expresion):
             if self.identificador == "main":
                 ts_local = TablaDeSimbolos(ts, self.identificador)
             else:
-                bandera = False
+                bandera = True
+                #bandera = False
                 pointer = ts
-                while pointer is not None:
-                    if pointer.name == self.identificador:
-                        bandera = True
-                    pointer = pointer.padre
+                #while pointer is not None:
+                #    if pointer.name == self.identificador:
+                #        bandera = True
+                #    pointer = pointer.padre
 
                 if bandera:
                     apuntador = ts
@@ -90,22 +91,38 @@ class Llamada(Intruccion, Expresion):
                     print("Se llego")
                     print(aux_id)
                     if( isinstance(aux_tipo,list)):
+                        if len(aux_tipo) != 1:
+                            tipo_array = aux_tipo[0]
 
-                        tipo_array = aux_tipo[0]
-
-                        aux_exp_data: Simbolos = ts.ObtenerSimbolo(aux_exp.id)
-                        aux_tipo.reverse()
-                        for x in range(0,len(aux_tipo)-1):
-                            if aux_tipo[x].valor != aux_exp_data.dimensiones[x]:
+                            aux_exp_data: Simbolos = ts.ObtenerSimbolo(aux_exp.id)
+                            aux_tipo.reverse()
+                            for x in range(0,len(aux_tipo)-1):
+                                if aux_tipo[x].valor != aux_exp_data.dimensiones[x]:
+                                    return False
+                            aux_tipo.reverse()
+                            if tipo_array != aux_exp_data.tipo:
                                 return False
-                        aux_tipo.reverse()
-                        if tipo_array != aux_exp_data.tipo:
-                            return False
 
-                        if aux_exp.referencia and aux_mut:
-                            ts_loca.Agregar_Simbolo(aux_id, aux_exp_data)
+                            if (aux_exp.referencia or aux_exp_data.referencia) and aux_mut:
+                                aux_exp_data.referencia = True
+                                ts_loca.Agregar_Simbolo(aux_id, aux_exp_data)
 
-                        print("Llego: ",tipo_array, " - ")
+
+                            print("Llego: ",tipo_array, " - ")
+                        else:
+
+                            tipo_array = aux_tipo[0]
+
+                            aux_exp_data: Simbolos = ts.ObtenerSimbolo(aux_exp.id)
+
+                            if tipo_array != aux_exp_data.tipo:
+                                return False
+
+                            if (aux_exp.referencia or aux_exp_data.referencia)and aux_mut:
+                                aux_exp_data.referencia = True
+                                ts_loca.Agregar_Simbolo(aux_id, aux_exp_data)
+
+                            print("Llego: ", tipo_array, " - ")
 
                     print("Es por memoeria ")
 

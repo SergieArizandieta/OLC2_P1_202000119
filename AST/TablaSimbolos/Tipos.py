@@ -14,7 +14,8 @@ class tipo(Enum):
     CONTINUE = 9,
     ARRAY = 10,
     OBJETO = 11,
-    ERROR = 12
+    USIZE = 12,
+    ERROR = 13
 
 class RetornoType():
     def __init__(self,  valor = None , tipo = tipo.UNDEFINED , final = tipo.UNDEFINED):
@@ -51,6 +52,10 @@ class Tipos():
         elif self.nombre == 'BOOLEANO':
             print("Se dectecto un booleano")
             return tipo.BOOLEANO
+
+        elif self.nombre == 'USIZE':
+            print("Se dectecto un USIZE")
+            return tipo.USIZE
 
 
         else:

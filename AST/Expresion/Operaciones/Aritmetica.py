@@ -21,64 +21,95 @@ class Aritmetica(Operacion, Expresion):
 
             if self.operador == operador.SUMA:
 
-                if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
+                if tipo_exp1 == tipo.ENTERO and  tipo_exp2 == tipo.ENTERO:
                     return RetornoType(int(valor_exp1 + valor_exp2),tipo.ENTERO)
 
-                elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+                elif tipo_exp1 == tipo.DECIMAL and tipo_exp2 == tipo.DECIMAL:
                     return RetornoType(float(valor_exp1 + valor_exp2), tipo.DECIMAL)
+
+                elif (tipo_exp2 == tipo.USIZE or tipo_exp2 == tipo.ENTERO) and (tipo_exp2 == tipo.USIZE or tipo_exp2 == tipo.ENTERO):
+                    return RetornoType(int(valor_exp1 + valor_exp2), tipo.USIZE)
 
                 elif tipo_exp1 == tipo.STRING and tipo_exp2 == tipo.DIRSTRING:
                     return RetornoType(str(valor_exp1 + valor_exp2),tipo.STRING)
+
+                elif tipo_exp1 == tipo.USIZE and tipo_exp2 == tipo.USIZE:
+                    return RetornoType(int(valor_exp1 + valor_exp2),tipo.USIZE)
 
                 else:
                     return "No son el mismo formato"
 
             elif self.operador == operador.RESTA:
 
-                if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
+                if tipo_exp1 == tipo.ENTERO and  tipo_exp2 == tipo.ENTERO:
                     return RetornoType(int(valor_exp1 - valor_exp2), tipo.ENTERO)
 
-                elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+                elif tipo_exp1 == tipo.DECIMAL and tipo_exp2 == tipo.DECIMAL:
                     return RetornoType(float(valor_exp1 - valor_exp2), tipo.DECIMAL)
+
+                elif (tipo_exp2 == tipo.USIZE or tipo_exp2 == tipo.ENTERO) and (tipo_exp2 == tipo.USIZE or tipo_exp2 == tipo.ENTERO):
+                    return RetornoType(int(valor_exp1 - valor_exp2), tipo.USIZE)
+
+                elif tipo_exp1 == tipo.USIZE and tipo_exp2 == tipo.USIZE:
+                    return RetornoType(int(valor_exp1 - valor_exp2),tipo.USIZE)
+
                 else:
                     return "No son el mismo formato"
 
             elif self.operador == operador.MULTIPLICACION:
 
-                if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
+                if tipo_exp1 == tipo.ENTERO and  tipo_exp2 == tipo.ENTERO:
                     return RetornoType(int(valor_exp1 * valor_exp2), tipo.ENTERO)
 
-                elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+                elif tipo_exp1 == tipo.DECIMAL and tipo_exp2 == tipo.DECIMAL:
                     return RetornoType(float(valor_exp1 * valor_exp2), tipo.DECIMAL)
+
+                elif (tipo_exp2 == tipo.USIZE or tipo_exp2 == tipo.ENTERO) and (tipo_exp2 == tipo.USIZE or tipo_exp2 == tipo.ENTERO):
+                    return RetornoType(int(valor_exp1 * valor_exp2), tipo.USIZE)
+
+                elif tipo_exp1 == tipo.USIZE and tipo_exp2 == tipo.USIZE:
+                    return RetornoType(int(valor_exp1 * valor_exp2),tipo.USIZE)
 
                 else:
                     return "No son el mismo formato"
 
             elif self.operador == operador.DIVISION:
 
-                if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
+                if tipo_exp1 == tipo.ENTERO and  tipo_exp2 == tipo.ENTERO:
                     return RetornoType(int(valor_exp1 / valor_exp2), tipo.ENTERO)
 
-                elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+                elif tipo_exp1 == tipo.DECIMAL and tipo_exp2 == tipo.DECIMAL:
                     return RetornoType(float(valor_exp1 / valor_exp2), tipo.DECIMAL)
+
+                elif (tipo_exp2 == tipo.USIZE or tipo_exp2 == tipo.ENTERO) and (tipo_exp2 == tipo.USIZE or tipo_exp2 == tipo.ENTERO):
+                    return RetornoType(int(valor_exp1 / valor_exp2), tipo.USIZE)
+
+                elif tipo_exp1 == tipo.USIZE and tipo_exp2 == tipo.USIZE:
+                    return RetornoType(int(valor_exp1 / valor_exp2),tipo.USIZE)
 
                 else:
                     return "No son el mismo formato"
 
             elif self.operador == operador.MOD:
 
-                if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
+                if tipo_exp1 == tipo.ENTERO and  tipo_exp2 == tipo.ENTERO:
                     return RetornoType(int(valor_exp1 % valor_exp2), tipo.ENTERO)
 
-                elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+                elif tipo_exp1 == tipo.DECIMAL and tipo_exp2 == tipo.DECIMAL:
                     return RetornoType(float(valor_exp1 % valor_exp2), tipo.DECIMAL)
+
+                elif (tipo_exp2 == tipo.USIZE or tipo_exp2 == tipo.ENTERO) and (tipo_exp2 == tipo.USIZE or tipo_exp2 == tipo.ENTERO):
+                    return RetornoType(int(valor_exp1 % valor_exp2), tipo.USIZE)
+
+                elif tipo_exp1 == tipo.USIZE and tipo_exp2 == tipo.USIZE:
+                    return RetornoType(int(valor_exp1 % valor_exp2),tipo.USIZE)
 
                 else:
                     return "No son el mismo formato"
 
             elif self.operador == operador.POT:
 
-                if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
+                if tipo_exp1 == tipo.ENTERO and  tipo_exp2 == tipo.ENTERO:
                     return RetornoType(int(valor_exp1 ** valor_exp2), tipo.ENTERO)
 
                 else:
@@ -86,7 +117,7 @@ class Aritmetica(Operacion, Expresion):
 
             elif self.operador == operador.POTF:
 
-                if isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+                if tipo_exp1 == tipo.DECIMAL and tipo_exp2 == tipo.DECIMAL:
                     return RetornoType(float(valor_exp1 ** valor_exp2), tipo.DECIMAL)
 
                 else:

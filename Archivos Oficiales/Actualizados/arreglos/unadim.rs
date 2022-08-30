@@ -12,9 +12,9 @@ fn ordIntercambio(arr: &mut [i64]) {
     
     while i < (arr.len() - 1) {
         j = i + 1;
-        while j < arr.len() {
+        while j < (arr.len()) {
             if arr[i] > arr[j] {
-                intercambiar(arr, i, j)
+                intercambiar(arr, i, j);
             }
             j = j + 1;
         }
@@ -56,7 +56,7 @@ fn ordInsercion(arr: &mut [i64]) {
     let mut aux: i64 = 0;
 
     i = 1;
-    while (i < arr.len()) {
+    while (i < (arr.len())) {
         j = i;
         aux = arr[i];
 

@@ -57,7 +57,7 @@ class AccesoArreglo(Expresion,Intruccion):
         for dim in self.listaExpresiones:
             dimVal = dim.ObtenerValor(controlador,ts)
             # operador ternario      hacer_si_true if condicion else hacer_si_false
-            if dimVal.tipo != tipo.ENTERO:
+            if dimVal.tipo != tipo.ENTERO and dimVal.tipo != tipo.USIZE:
                 return
             else:
                 listaDimensiones.append(dimVal.valor)

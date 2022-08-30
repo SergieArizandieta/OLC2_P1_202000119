@@ -10,6 +10,7 @@ reservadas = {
     'char': 'TIPOCHAR',
     'String': 'TIPOSTRING',
     '&str': 'DIRSTRING',
+    'usize': 'TIPOUSIZE',
     # CASTEO
     'as': 'AS',
     # IMPRIMIR
@@ -367,7 +368,7 @@ def p_opciones_for(t):
         t[0]= [2,t[1],t[4]]
 
 def p_asignacion_arreglo(t):
-    ''' asignacion_arreglo : acceso_arreglo IGUAL expresiones '''
+    ''' asignacion_arreglo : acceso_arreglo IGUAL expresiones PYC '''
     t[1].valor = t[3]
     t[0] = t[1]
 
@@ -602,9 +603,13 @@ def p_definiciones(t):
             t[0] = Declaracion.Declaracion(Identificador.Identificador(t[1]), None, t[2], True,True)
 
 def p_tipados_tipos(t):
-    '''tipados_tipos :  DP REFERENCE dimensiones_def'''
+    '''tipados_tipos :  DP REFERENCE dimensiones_def
+                    |  DP REFERENCE CI tipo_datos CD'''
 
-    t[0] = t[3]
+    if len(t)==4:
+        t[0] = t[3]
+    else:
+        t[0]= [t[4]]
 
 
 def p_referencias(t):
@@ -682,7 +687,8 @@ def p_tipo_datos(t):
                       | TIPOCHAR
                       | TIPOSTRING
                       | DIRSTRING
-                      | TIPOBOOL '''
+                      | TIPOBOOL
+                      | TIPOUSIZE'''
 
     if t[1] == "i64":
         t[0] = tipo.ENTERO
@@ -696,6 +702,8 @@ def p_tipo_datos(t):
         t[0] = tipo.DIRSTRING
     elif t[1] == "bool":
         t[0] = tipo.BOOLEANO
+    elif t[1] == "usize":
+        t[0] = tipo.USIZE
 
 def p_instruccion_imprimir(t):
     '''impresiones     : PRINTLN PI CADENA PD
