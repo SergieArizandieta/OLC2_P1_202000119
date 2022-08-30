@@ -247,7 +247,7 @@ lexer = lex.lex()
 precedence = (
     ('left', 'OR'),
     ('left', 'AND'),
-   # ('right', 'ABS', 'SQRT', 'TOSTRING', 'TOOWNED', 'CLONE'),
+    ('left', 'ABS', 'SQRT', 'TOSTRING', 'TOOWNED', 'CLONE','LEN'),
     ('left', 'MAYORIGUAL', 'MAYOR', 'MENORIGUAL', 'MENOR', 'IGUALDAD', 'DESIGUALDAD'),
     ('left', 'SUMA', 'RESTA'),
     ('left', 'MULTI', 'DIVI'),

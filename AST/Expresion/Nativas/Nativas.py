@@ -1,6 +1,7 @@
 from AST.Abstracto.Expresion import Expresion
 from AST.TablaSimbolos.Tipos import tipo,RetornoType
 from AST.TablaSimbolos.InstanciaArreglo import InstanciaArreglo
+from AST.Expresion.Arreglo.AccesoArreglo import AccesoArreglo
 import math
 import copy
 
@@ -34,12 +35,20 @@ class Nativas(Expresion):
                 return RetornoType(valor_exp1, tipo.STRING)
 
         elif self.funcion == "clone()":
+            if tipo_exp1 == tipo.STRING:
+                tipo_exp1 = tipo.DIRSTRING
             return RetornoType(copy.deepcopy(valor_exp1), tipo_exp1)
 
         elif self.funcion == "len()":
-            return_exp1: RetornoType = ts.ObtenerSimbolo(self.expresion.id)
-            if isinstance(return_exp1,InstanciaArreglo):
-                return RetornoType(len(return_exp1.valores), tipo.ENTERO)
+            if isinstance(self.expresion,AccesoArreglo):
+                return_exp1: RetornoType = self.expresion.ObtenerValor(controlador,ts)
+                if isinstance(return_exp1,RetornoType):
+                    return RetornoType(len(return_exp1.valor), tipo.ENTERO)
+                print(return_exp1)
+            else:
+                return_exp1 = ts.ObtenerSimbolo(self.expresion.id)
+                if isinstance(return_exp1,InstanciaArreglo):
+                    return RetornoType(len(return_exp1.valores), tipo.ENTERO)
 
 
 

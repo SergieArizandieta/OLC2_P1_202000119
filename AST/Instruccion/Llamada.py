@@ -94,11 +94,11 @@ class Llamada(Intruccion, Expresion):
                         tipo_array = aux_tipo[0]
 
                         aux_exp_data: Simbolos = ts.ObtenerSimbolo(aux_exp.id)
-
-                        for x in range(1,len(aux_tipo)):
-                            if aux_tipo[x].valor != aux_exp_data.dimensiones[x-1]:
+                        aux_tipo.reverse()
+                        for x in range(0,len(aux_tipo)-1):
+                            if aux_tipo[x].valor != aux_exp_data.dimensiones[x]:
                                 return False
-
+                        aux_tipo.reverse()
                         if tipo_array != aux_exp_data.tipo:
                             return False
 
