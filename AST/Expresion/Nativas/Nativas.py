@@ -1,6 +1,7 @@
 from AST.Abstracto.Expresion import Expresion
 from AST.TablaSimbolos.Tipos import tipo,RetornoType
 from AST.TablaSimbolos.InstanciaArreglo import InstanciaArreglo
+from AST.TablaSimbolos.InstanciaVector import InstanciaVector
 from AST.Expresion.Arreglo.AccesoArreglo import AccesoArreglo
 import math
 import copy
@@ -47,7 +48,7 @@ class Nativas(Expresion):
                 print(return_exp1)
             else:
                 return_exp1 = ts.ObtenerSimbolo(self.expresion.id)
-                if isinstance(return_exp1,InstanciaArreglo):
+                if isinstance(return_exp1,InstanciaArreglo) or isinstance(return_exp1,InstanciaVector):
                     return RetornoType(len(return_exp1.valores), tipo.ENTERO)
 
 

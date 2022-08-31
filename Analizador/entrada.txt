@@ -1,8 +1,15 @@
+fn main () { let capacidad: usize = 10;
+    let capacidad: usize = 10;
+    let mut pila: Vec<i64> = Vec::with_capacity(capacidad - 2);
+    let mut cola: Vec<i64> = vec![1,2,3,4,5];
 
+    println!("{:?}", pila);
+    println!("{}",pila.capacity());
+    pila.insert(0,21);
+    //pila.push(0);
+    println!("{:?}", pila);
+    println!("{}",pila.capacity());
+   
 
-fn main () {
-    
-   //let mut v: Vec<i64> = Vec::new();
-   //let mut pila: Vec<i64> = Vec::with_capacity(10- 2);
-   let mut cola: Vec<i64> = vec![1,2,3,4,5];
 }
+

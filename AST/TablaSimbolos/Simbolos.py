@@ -21,6 +21,9 @@ class Simbolos() :
 
         self.referencia = False
 
+        #simbolo arreglo
+        self.withcapacity = 0
+
     def SimboloPremitivo(self,id,valor,tipo,mut):
         self.id = id
         self.valor = valor
@@ -44,6 +47,11 @@ class Simbolos() :
         self.tipo = tipo
 
     def iniciarSimboloArreglo(self, tipo, dimensiones, valores):
+        self.dimensiones = dimensiones
+        self.valores = valores
+        self.tipo = tipo
+
+    def iniciarSimboloVector(self, tipo, dimensiones, valores):
         self.dimensiones = dimensiones
         self.valores = valores
         self.tipo = tipo

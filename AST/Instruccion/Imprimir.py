@@ -2,6 +2,7 @@ from AST.Abstracto.Instruccion import Intruccion
 from AST.TablaSimbolos.Tipos import tipo as t
 from AST.TablaSimbolos.Tipos import RetornoType
 from AST.TablaSimbolos.InstanciaArreglo import InstanciaArreglo
+from AST.TablaSimbolos.InstanciaVector import InstanciaVector
 from AST.Expresion.Identificador import Identificador
 from AST.Expresion.Arreglo.AccesoArreglo import AccesoArreglo
 class Imprimir(Intruccion):
@@ -63,7 +64,7 @@ class Imprimir(Intruccion):
                                 if isinstance(self.lista[i],Identificador):
                                     array = ts.ObtenerSimbolo(self.lista[i].id)
 
-                                    if isinstance(array, InstanciaArreglo):
+                                    if isinstance(array, InstanciaArreglo) or  isinstance(array, InstanciaVector):
                                         texto_salida += self.ObtenerArrayText(array.valores)
                                     else:
                                         texto_salida += str(self.lista[i].ObtenerValor(controlador, ts).valor)

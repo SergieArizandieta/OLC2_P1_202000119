@@ -54,5 +54,5 @@ class VectorData(Expresion):
                 valores.insert(i, instanciaArray.valores)
 
         instanciaArrayRetorno = InstanciaVector(tipoFinal, listaDimensiones, valores)
-        return RetornoType(instanciaArrayRetorno, t.ARRAY)
+        return RetornoType(instanciaArrayRetorno, t.VECTOR)
 

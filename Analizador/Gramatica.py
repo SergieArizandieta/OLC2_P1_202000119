@@ -311,6 +311,7 @@ def p_bloque(t):
                 | declaracion_arreglo
                 | asignacion_arreglo
                 | start_for
+                | funcion_nativa PYC
                 | '''
 
     if len(t) > 1:
@@ -340,7 +341,7 @@ def p_bloque_match(t):
 from AST.Expresion import Identificador
 from AST.Instruccion import Declaracion, Asignacion, Funcion, Llamada, DeclaracionArreglo,DeclaracionVector
 from AST.TablaSimbolos.Tipos import tipo
-from AST.Expresion.Nativas import Nativas
+from AST.Expresion.Nativas import Nativas, NativasVectores
 from AST.Expresion.Operaciones import Logica
 from AST.Instruccion.Match import Match, BloqueMatch
 from AST.Expresion import Primitivo
@@ -605,10 +606,13 @@ def p_definiciones(t):
 
 def p_tipados_tipos(t):
     '''tipados_tipos :  DP REFERENCE dimensiones_def
-                    |  DP REFERENCE CI tipo_datos CD'''
+                    |  DP REFERENCE CI tipo_datos CD
+                    | DP REFERENCE VECTOR tipado_vector'''
 
     if len(t)==4:
         t[0] = t[3]
+    elif len(t)== 5:
+        t[0]= [t[4]]
     else:
         t[0]= [t[4]]
 
@@ -802,13 +806,35 @@ def p_lista_expresiones(t):
         t[0] = [t[1]]
 
 def p_funcion_nativa(t):
-    '''funcion_nativa : expresiones PUNTO nativas '''
+    '''funcion_nativa : expresiones PUNTO nativas'''
+#
+    print("Llego a nativas")
 
-    if len(t) > 2:
-        t[0] = Nativas.Nativas(t[1], t[3])
+    if isinstance(t[3],NativasVectores.NativasVectores):
+        nativa = t[3]
+        nativa.expresion = t[1]
+        print("Llego a nativa vectores", nativa)
+        t[0] = nativa
     else:
-        t[0] = t[1]
 
+        t[0] = Nativas.Nativas(t[1], t[3])
+
+
+
+
+
+def p_nativas_vectores(t):
+    '''nativas_vectores : PUSH PI expresiones PD
+                        | REMOVE PI expresiones PD
+                        | CONTAINS PI expresiones PD
+                        | INSERT PI expresiones COMA expresiones PD
+                        | CAPACITY '''
+    if len(t)==5:
+        t [0] = NativasVectores.NativasVectores(t[3],t[1].lower())
+    elif len(t) == 7:
+        t[0] = NativasVectores.NativasVectores(t[3], t[1].lower(),t[5])
+    else:
+        t[0] = NativasVectores.NativasVectores(None, t[1].lower())
 
 def p_nativas(t):
     '''nativas      : ABS
@@ -816,7 +842,8 @@ def p_nativas(t):
                     | TOSTRING
                     | TOOWNED
                     | CLONE
-                    | LEN'''
+                    | LEN
+                    | nativas_vectores'''
 
     t[0] = t[1]
 

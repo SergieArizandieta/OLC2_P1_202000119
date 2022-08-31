@@ -1,9 +1,9 @@
-from AST.Abstracto.Instruccion import Intruccion
+
 from AST.Abstracto.Instruccion import Intruccion
 from AST.Expresion import Identificador
 from AST.TablaSimbolos.Simbolos import Simbolos
 from AST.TablaSimbolos.Tipos import tipo, RetornoType
-from AST.Instruccion.DeclaracionArreglo import DeclaracionArreglo
+from AST.TablaSimbolos.InstanciaVector import InstanciaVector
 from colorama import Fore
 from colorama import Style
 
@@ -30,18 +30,32 @@ class DeclaracionVector(Intruccion):
 
             objetoVector.identificador = self.identificador
             objetoVector.mut = self.mut
+            objetoVector.withcapacity = len(objetoVector.valores)
             ts.Agregar_Simbolo(self.identificador, objetoVector)
             ts.Print_Table()
             print("Hola: ",objetoVector)
         else:
             if len( self.expresion) ==0:
                 print("Llego solo con decalracion normal" )
-                newSimbolo = Simbolos()
-                newSimbolo.SimboloPremitivo(self.identificador, [], self.tipo, self.mut)
-                ts.Agregar_Simbolo(self.identificador, newSimbolo)
+
+                new_vector = InstanciaVector(self.tipo, 1, [])
+                new_vector.withcapacity = self.capacidad
+                new_vector.tipo = self.tipo
+                new_vector.mut = self.mut
+
+                ts.Agregar_Simbolo(self.identificador, new_vector)
             else:
                 print("Llego solo con decalracion capacity")
-                newSimbolo = Simbolos()
+
                 self.capacidad= self.expresion.pop(0).ObtenerValor(controlador, ts).valor
-                newSimbolo.SimboloPremitivo(self.identificador, [], self.tipo, self.mut)
-                ts.Agregar_Simbolo(self.identificador, newSimbolo)
+
+                new_vector = InstanciaVector(self.tipo, 1, [])
+                new_vector.withcapacity = self.capacidad
+                new_vector.tipo = self.tipo
+                new_vector.mut = self.mut
+
+
+                ts.Agregar_Simbolo(self.identificador, new_vector)
+
+                return_exp = ts.ObtenerSimbolo(self.identificador)
+                print("Llego solo con decalracion capacity")

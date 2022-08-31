@@ -14,10 +14,14 @@ class For(Intruccion):
         tipo_for = self.elementos[0]
 
         if tipo_for == 1:
-            array = self.elementos[1].ObtenerValor(controlador,ts)
-            if isinstance(array.valor,InstanciaArreglo):
-                valores = array.valor.valores
-                tipo_array = array.valor.tipo
+                array = self.elementos[1].ObtenerValor(controlador,ts)
+                if not isinstance(array.valor,InstanciaArreglo):
+                    array = ts.ObtenerSimbolo(self.elementos[1].id)
+                    valores = array.valores
+                    tipo_array = array.tipo
+                else:
+                    valores = array.valor.valores
+                    tipo_array = array.valor.tipo
                 for i in valores:
                     print("iteracion: ", i)
                     ts_local = TablaDeSimbolos(ts, "for" + str(id(self)))
@@ -43,7 +47,8 @@ class For(Intruccion):
 
                 print("Termino con iteracion: ", self.ID_Iterable)
 
-            pass
+
+
         elif tipo_for == 2:
             parametro1 = self.elementos[1].ObtenerValor(controlador,ts)
             parametro2 = self.elementos[2].ObtenerValor(controlador,ts)
