@@ -338,7 +338,7 @@ def p_bloque_match(t):
 
 '''xxx'''
 from AST.Expresion import Identificador
-from AST.Instruccion import Declaracion, Asignacion, Funcion, Llamada, DeclaracionArreglo
+from AST.Instruccion import Declaracion, Asignacion, Funcion, Llamada, DeclaracionArreglo,DeclaracionVector
 from AST.TablaSimbolos.Tipos import tipo
 from AST.Expresion.Nativas import Nativas
 from AST.Expresion.Operaciones import Logica
@@ -351,6 +351,7 @@ from AST.Instruccion.SentenciasCiclicas import While,Loop,For
 from AST.Instruccion.SentenciasTranferencia import Return,Break,Continue
 from AST.Expresion.Arreglo import ArregloData, AccesoArreglo
 from AST.Expresion.Casteo import  Casteo
+from AST.Expresion.Vector import VectorData
 
 '''zzz'''
 
@@ -622,8 +623,7 @@ def p_referencias(t):
     else:
         t[0] = False
 
-def p_tipado_vect(t):
-    '''tipado_vector : '''
+
 
 def p_accceso(t):
     '''acceso   : PUBLICO
@@ -646,7 +646,8 @@ def p_tipo_funcion(t):
 
 def p_declaracion(t):
     '''declaracion  : LET mutable ID tipado PYC
-                        | LET mutable ID tipado IGUAL expresiones PYC'''
+                        | LET mutable ID tipado IGUAL expresiones PYC
+                        | LET mutable ID DP VECTOR tipado_vector IGUAL expresiones PYC'''
 
     if len(t) == 6:
         t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), None, t[4], t[2])
@@ -654,6 +655,18 @@ def p_declaracion(t):
     elif len(t) == 8:
         print("Llego bien a declarar ", t[6])
         t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), t[6], t[4], t[2])
+    else:
+        t[0] = DeclaracionVector.DeclaracionVector(t[3],t[8],t[6],t[2])
+        print("Llego bien a declarar vector")
+
+def p_tipado_vect(t):
+    '''tipado_vector : MENOR tipo_datos MAYOR
+                    | '''
+
+    if len(t) == 1:
+        t[0]= t[2]
+    else:
+        t[0]=t[2]
 
 def p_asignacio(t):
     '''asignacion      : ID IGUAL expresiones  '''
@@ -677,9 +690,6 @@ def p_tipado(t):
         t[0] = t[2]
     else:
         t[0] = None
-
-
-
 
 def p_tipo_datos(t):
     '''tipo_datos     : TIPOINT
@@ -760,8 +770,20 @@ def p_expre_valor(t):
                     | llamada
                     | arreglo_init
                     | acceso_arreglo
+                    | iniciando_vector
                     '''
     t[0] = t[1]
+
+def p_iniciando_vector(t):
+    ''' iniciando_vector : VECTOR NEW
+                        | VECTOR WCAPACITY PI expresiones PD
+                        | VECT CI lista_Expresiones CD'''
+    if t.slice[2].type == 'NEW':
+        t[0]= []
+    elif t.slice[2].type == 'WCAPACITY':
+        t[0]= [t[4]]
+    elif t.slice[2].type == 'CI':
+        t[0] = VectorData.VectorData(t[3])
 
 def p_arreglo_init(t):
     '''arreglo_init : CI lista_Expresiones CD '''

@@ -37,19 +37,11 @@ class Declaracion(Intruccion):
                     ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
 
             else:
-               # print("=== Se guardo aqui ===")
+
                 self.tipo = TipoExpresion
                 newSimbolo = Simbolos()
                 newSimbolo.SimboloPremitivo(self.identificador.id, ValorExpresion, self.tipo, self.mut)
                 ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
-               # print(" Sin modificar Valor de la variable: ", newSimbolo.id, " valor de: ", newSimbolo.valor)
-               # print(newSimbolo)
-
-               # prueba: Simbolos = ts.ObtenerSimbolo("x")
-               # prueba.valor = 999
-               # print("Modificado Valor de la variable: ", prueba.id, " valor de: ", prueba.valor)
-               # print(prueba)
-               # print("=== Termino prueba ===")
                 return None
 
         else:
