@@ -3,6 +3,7 @@ from AST.Expresion import Identificador
 from AST.TablaSimbolos.Simbolos import Simbolos
 from AST.TablaSimbolos.Tipos import tipo, RetornoType
 from AST.Instruccion.DeclaracionArreglo import DeclaracionArreglo
+from AST.Instruccion.DeclaracionVector import DeclaracionVector
 class Declaracion(Intruccion):
 
     def __init__(self, id: Identificador, expresion, tipo, mut,referencia = False):
@@ -22,6 +23,10 @@ class Declaracion(Intruccion):
                 if TipoExpresion == tipo.ARRAY:
                     declaracion_arreglo = DeclaracionArreglo(self.mut,self.identificador.id,None, self.expresion)
                     declaracion_arreglo.EjecutarInstruccion(controlador,ts)
+                    return None
+                elif TipoExpresion == tipo.VECTOR:
+                    declaracion_vector = DeclaracionVector(self.identificador.id,self.expresion,self.tipo,self.mut)
+                    declaracion_vector.EjecutarInstruccion(controlador,ts)
                     return None
             except:
                 print("Declaracion no se esta recuperando un dato")

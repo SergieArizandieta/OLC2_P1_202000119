@@ -593,7 +593,7 @@ def p_definiciones(t):
                     | ID tipado
                     | ID  tipados_tipos  """
 
-    #referencias mutable ID VECTOR tipado_vector
+
     print("Llego a definiciones, ",len(t))
 
     if len(t) == 4 :
@@ -608,14 +608,16 @@ def p_definiciones(t):
 def p_tipados_tipos(t):
     '''tipados_tipos :  DP REFERENCE dimensiones_def
                     |  DP REFERENCE CI tipo_datos CD
-                    | DP REFERENCE VECTOR tipado_vector'''
+                    | DP REFERENCE  tipado_vector'''
 
     if len(t)==4:
-        t[0] = t[3]
+        if t.slice[3].type == 'dimensiones_def':
+            t[0] = t[3]
+        else:
+            t[0] = [t[3]]
     elif len(t)== 5:
         t[0]= [t[4]]
-    else:
-        t[0]= [t[4]]
+
 
 
 def p_referencias(t):
@@ -945,7 +947,8 @@ def p_datos(t):
             | ID
             | TRUE
             | FALSE
-            | REFERENCE ID'''
+            | REFERENCE ID
+            | REFER CADENA'''
 
     if t.slice[1].type == 'ENTERO':
         t[0] = Primitivo.Primitivo(t[1], 'ENTERO')
@@ -963,6 +966,8 @@ def p_datos(t):
         t[0] = Identificador.Identificador(t[1])
     elif t.slice[1].type == 'REFERENCE':
         t[0] = Identificador.Identificador(t[2], True)
+    else:
+        t[0] = Primitivo.Primitivo(t[2], 'DIRSTRING')
 
 def p_error(t):
     try:

@@ -31,21 +31,18 @@ class InstanciaVector(Simbolos):
     def ObtenerValor(self, listaDimensiones, index, valores):
 
         indiceDimension:int = listaDimensiones.pop(0)
-        tamanoDimension:int = self.dimensiones[index]
+        tamanoDimension:int = self.dimensiones
 
         if len(listaDimensiones) > 0:
 
-            if indiceDimension > (tamanoDimension-1):
-                return None
 
-            else:
 
-                subArreglo = valores[indiceDimension]
-                return self.ObtenerValor(listaDimensiones, index+1, subArreglo)
+            subArreglo = valores[indiceDimension]
+            return self.ObtenerValor(listaDimensiones, index+1, subArreglo)
 
         else:
-            if indiceDimension > (tamanoDimension-1):
-                return None
-            else:
-                return valores[indiceDimension]
+            if isinstance(valores,InstanciaVector):
+                return valores.valores[indiceDimension]
+
+            return valores[indiceDimension]
 

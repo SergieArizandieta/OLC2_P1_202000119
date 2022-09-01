@@ -3,6 +3,7 @@ from AST.Abstracto.Instruccion import Intruccion
 from AST.TablaSimbolos.Tipos import RetornoType,tipo
 from AST.TablaSimbolos.InstanciaArreglo import InstanciaArreglo
 from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos
+from AST.TablaSimbolos.InstanciaVector import InstanciaVector
 
 class AccesoArreglo(Expresion,Intruccion):
     def __init__(self, idArreglo, listaExpresiones, valor = None):
@@ -39,17 +40,24 @@ class AccesoArreglo(Expresion,Intruccion):
             return RetornoType()
 
         arreglo = ts.ObtenerSimbolo(self.idArreglo)
-        if isinstance(arreglo, InstanciaArreglo) is not True:
+        if not (isinstance(arreglo, InstanciaArreglo) or isinstance(arreglo, InstanciaVector)) :
             return RetornoType()
 
-        if len(self.listaExpresiones) > len(arreglo.dimensiones):
-            return RetornoType()
+        if not isinstance(arreglo, InstanciaVector):
+            if len(self.listaExpresiones) > len(arreglo.dimensiones):
+                return RetornoType()
 
-        dimensiones = self.compilarDimensiones(controlador,ts)
+            dimensiones = self.compilarDimensiones(controlador, ts)
 
-        valor = arreglo.ObtenerValor(dimensiones,0,arreglo.valores)
-        return RetornoType(valor,arreglo.tipo)
+            valor = arreglo.ObtenerValor(dimensiones, 0, arreglo.valores)
+            return RetornoType(valor, arreglo.tipo)
 
+        else:
+
+            dimensiones = self.compilarDimensiones(controlador, ts)
+
+            valor = arreglo.ObtenerValor(dimensiones, 0, arreglo.valores)
+            return RetornoType(valor, arreglo.tipo)
 
     def compilarDimensiones(self,controlador, ts ):
         listaDimensiones = []

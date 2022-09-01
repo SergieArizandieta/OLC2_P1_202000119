@@ -25,8 +25,11 @@ class DeclaracionVector(Intruccion):
             Exp_arreglo: RetornoType = self.expresion.ObtenerValor(controlador, ts)
             objetoVector = Exp_arreglo.valor
 
-            if self.tipo != objetoVector.tipo:
-                return None
+            if self.tipo != None:
+                if self.tipo != objetoVector.tipo:
+                    return None
+            else:
+                self.tipo = objetoVector.tipo
 
             objetoVector.identificador = self.identificador
             objetoVector.mut = self.mut

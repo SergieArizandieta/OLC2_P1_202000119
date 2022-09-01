@@ -73,7 +73,10 @@ class Imprimir(Intruccion):
                                     array = self.lista[i].ObtenerValor(controlador,ts)
 
                                     if isinstance(array, RetornoType):
-                                        texto_salida += self.ObtenerArrayText(array.valor)
+                                        if isinstance(array.valor,InstanciaVector):
+                                            texto_salida += self.ObtenerArrayText(array.valor.valores)
+                                        else:
+                                            texto_salida += self.ObtenerArrayText(array.valor)
 
                                 #array = self.lista[i].ObtenerValor(controlador,ts)
 

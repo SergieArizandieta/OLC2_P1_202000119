@@ -42,7 +42,7 @@ fn desencolar(vec: &mut Vec<i64>) -> i64 {
     return 0;
 }
 
-fn main() {
+fn main () {
     let capacidad: usize = 10;
     let mut pila: Vec<i64> = Vec::with_capacity(capacidad - 2);
     let mut cola: Vec<i64> = vec![1,2,3,4,5];
@@ -108,8 +108,8 @@ fn main() {
     println!("");
 
     let vec = vec!["Hola", "!", "Sale", "Este", "Semestre", "2022"];
-    println!("{}", vec.contains(&"Semestre") || vec.contains(&"2023"));
-    println!("{}", vec.contains(&"Semestre") && vec.contains(&"2023"));
+    println!("{}", vec.contains(&"Semestre") || (vec.contains(&"2023")));
+    println!("{}", vec.contains(&"Semestre") && (vec.contains(&"2023")));
     println!("{}", vec.contains(&"Hola"));
 }
 

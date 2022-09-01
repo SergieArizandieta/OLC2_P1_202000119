@@ -59,7 +59,9 @@ class NativasVectores(Expresion,Intruccion):
 
 
             elif self.funcion == "contains" :
-               pass
+                if self.exp1.valor in valor_expresion:
+                    return RetornoType(True, tipo.BOOLEANO)
+                return RetornoType(False, tipo.BOOLEANO)
 
             elif self.funcion == "insert":
                 exp1 = self.exp1.ObtenerValor(controlador, ts)
