@@ -286,6 +286,7 @@ def p_instruccion(t):
 
     t[0] = t[1]
 
+
 def p_lista_bloque(t):
     ''' lista_bloque : lista_bloque bloque
                     | bloque'''
@@ -668,9 +669,9 @@ def p_tipado_vect(t):
                     |  VECTOR MENOR tipo_datos MAYOR'''
 
     if len(t) == 1:
-        t[0]= t[2]
+        t[0]= t[3]
     else:
-        t[0]=t[2]
+        t[0]=t[3]
 
 def p_asignacio(t):
     '''asignacion      : ID IGUAL expresiones  '''

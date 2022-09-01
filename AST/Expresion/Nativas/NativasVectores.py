@@ -38,10 +38,17 @@ class NativasVectores(Expresion,Intruccion):
 
 
             elif self.funcion == "push":
+
                 exp1 =  self.exp1.ObtenerValor(controlador,ts)
                 valor_exp1 = exp1.valor
                 valor_tipo = exp1.tipo
-                if tipo_expresion == valor_tipo:
+                bandera = False
+
+                if valor_tipo == tipo.VECTOR:
+                    if exp1.valor.tipo == tipo_expresion:
+                        bandera = True
+
+                if tipo_expresion == valor_tipo or bandera:
                     valor_expresion.append(valor_exp1)
 
                     if return_exp.withcapacity == 0:

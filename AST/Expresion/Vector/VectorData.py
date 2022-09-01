@@ -60,8 +60,9 @@ class VectorData(Expresion):
         else:
             valor= []
             for i in range (0,self.exp2.valor):
-                valor.append(self.expresiones.valor)
+                valor.append(self.expresiones)
 
             vectorData = VectorData(valor)
-            return vectorData.ObtenerValor(controlador,ts)
+            retunr_var = vectorData.ObtenerValor(controlador,ts)
+            return retunr_var
 

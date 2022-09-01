@@ -75,10 +75,6 @@ class Imprimir(Intruccion):
                                     if isinstance(array, RetornoType):
                                         texto_salida += self.ObtenerArrayText(array.valor)
 
-
-
-
-
                                 #array = self.lista[i].ObtenerValor(controlador,ts)
 
                             except:
@@ -124,6 +120,12 @@ class Imprimir(Intruccion):
                     text += self.ObtenerArrayText(x)
                     if aux+1 != banderaint:
                         text += ","
+
+                elif isinstance(x,InstanciaVector):
+                    text += self.ObtenerArrayText(x.valores)
+                    if aux + 1 != banderaint:
+                        text += ","
+
                 else:
                     if bandera:
                         text += str(x)
