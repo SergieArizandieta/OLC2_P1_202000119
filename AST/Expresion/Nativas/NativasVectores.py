@@ -29,7 +29,13 @@ class NativasVectores(Expresion,Intruccion):
             print("=== exp tipo py === ", type(valor_expresion))
 
             if self.funcion == "remove":
-                pass
+                exp1 = self.exp1.ObtenerValor(controlador, ts)
+                valor_exp1 = exp1.valor
+                valor_tipo = exp1.tipo
+                if tipo_expresion == valor_tipo:
+                    devolucion = valor_expresion.pop(valor_exp1)
+                    return RetornoType(devolucion, tipo_expresion)
+
 
             elif self.funcion == "push":
                 exp1 =  self.exp1.ObtenerValor(controlador,ts)

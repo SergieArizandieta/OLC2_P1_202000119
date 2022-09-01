@@ -1,6 +1,6 @@
 // PILA
 fn pila_vacia(vec: &mut Vec<i64>) -> bool {
-    return vec.len() == 0
+    return vec.len() == 0;
 }
 
 fn apilar(capacidad: usize, vec: &mut Vec<i64>, value: i64) {
@@ -17,12 +17,12 @@ fn desapilar(vec: &mut Vec<i64>) -> i64 {
     } else {
         println!("La pila no tiene elementos");
     }
-    return 0
+    return 0;
 }
 
 // COLA
 fn cola_vacia(vec: &mut Vec<i64>) -> bool {
-    return vec.len() == 0
+    return vec.len() == 0;
 }
 
 fn encolar(capacidad: usize, vec: &mut Vec<i64>, value: i64) {
@@ -39,7 +39,7 @@ fn desencolar(vec: &mut Vec<i64>) -> i64 {
     } else {
         println!("La cola no tiene elementos");
     }
-    return 0
+    return 0;
 }
 
 fn main() {

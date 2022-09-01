@@ -51,7 +51,7 @@ class Ifs(Intruccion,Expresion):
                     if isinstance(retorno,RetornoType):
                         return retorno
             except:
-                pass
+                print("Erro en if")
 
 
     def ObtenerValor(self, controlador, ts):

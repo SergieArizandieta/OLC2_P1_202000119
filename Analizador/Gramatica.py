@@ -651,7 +651,7 @@ def p_tipo_funcion(t):
 def p_declaracion(t):
     '''declaracion  : LET mutable ID tipado PYC
                         | LET mutable ID tipado IGUAL expresiones PYC
-                        | LET mutable ID DP VECTOR tipado_vector IGUAL expresiones PYC'''
+                        | LET mutable ID DP  tipado_vector IGUAL expresiones PYC'''
 
     if len(t) == 6:
         t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), None, t[4], t[2])
@@ -660,12 +660,12 @@ def p_declaracion(t):
         print("Llego bien a declarar ", t[6])
         t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), t[6], t[4], t[2])
     else:
-        t[0] = DeclaracionVector.DeclaracionVector(t[3],t[8],t[6],t[2])
+        t[0] = DeclaracionVector.DeclaracionVector(t[3],t[7],t[5],t[2])
         print("Llego bien a declarar vector")
 
 def p_tipado_vect(t):
-    '''tipado_vector : MENOR tipo_datos MAYOR
-                    | '''
+    '''tipado_vector : VECTOR MENOR tipado_vector MAYOR
+                    |  VECTOR MENOR tipo_datos MAYOR'''
 
     if len(t) == 1:
         t[0]= t[2]
@@ -781,13 +781,17 @@ def p_expre_valor(t):
 def p_iniciando_vector(t):
     ''' iniciando_vector : VECTOR NEW
                         | VECTOR WCAPACITY PI expresiones PD
-                        | VECT CI lista_Expresiones CD'''
+                        | VECT CI lista_Expresiones CD
+                        | VECT CI expresiones PYC expresiones CD'''
     if t.slice[2].type == 'NEW':
         t[0]= []
     elif t.slice[2].type == 'WCAPACITY':
         t[0]= [t[4]]
     elif t.slice[2].type == 'CI':
-        t[0] = VectorData.VectorData(t[3])
+        if t.slice[3].type == 'lista_Expresiones':
+            t[0] = VectorData.VectorData(t[3])
+        else:
+            t[0] = VectorData.VectorData(t[3],t[5])
 
 def p_arreglo_init(t):
     '''arreglo_init : CI lista_Expresiones CD '''
