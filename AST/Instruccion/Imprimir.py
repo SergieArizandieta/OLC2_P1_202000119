@@ -5,6 +5,7 @@ from AST.TablaSimbolos.InstanciaArreglo import InstanciaArreglo
 from AST.TablaSimbolos.InstanciaVector import InstanciaVector
 from AST.Expresion.Identificador import Identificador
 from AST.Expresion.Arreglo.AccesoArreglo import AccesoArreglo
+from AST.Expresion.Struct.AccesoStruct import AccesoStruct
 class Imprimir(Intruccion):
 
     def __init__(self,  expresion, tipo, lista):
@@ -77,6 +78,13 @@ class Imprimir(Intruccion):
                                             texto_salida += self.ObtenerArrayText(array.valor.valores)
                                         else:
                                             texto_salida += self.ObtenerArrayText(array.valor)
+                                elif isinstance(self.lista[i], AccesoStruct):
+                                    dato = self.lista[i].ObtenerValor(controlador, ts)
+                                    print(dato)
+                                    if isinstance(dato.valor, InstanciaArreglo) or isinstance(dato.valor, InstanciaVector):
+                                        texto_salida += self.ObtenerArrayText(dato.valor.valores)
+                                    else:
+                                        texto_salida += str(self.lista[i].ObtenerValor(controlador, ts).valor)
 
                                 #array = self.lista[i].ObtenerValor(controlador,ts)
 

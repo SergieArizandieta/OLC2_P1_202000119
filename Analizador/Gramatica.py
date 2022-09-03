@@ -357,7 +357,7 @@ from AST.Expresion.Casteo import  Casteo
 from AST.Expresion.Vector import VectorData
 from AST.TablaSimbolos import InstanciaStruct
 from AST.Expresion.Struct import AccesoStruct
-from AST.Expresion import DeclararStruct
+from AST.Expresion import DeclararStruct, Repeticiones
 '''zzz'''
 def p_star_struct(t):
     ''' star_struct :  STRUCT definition_strct'''
@@ -384,7 +384,8 @@ def p_list_declaracion_coma(t):
 def p_struct_var(t):
     '''struct_var : ID DP tipo_datos
                 |  ID DP definition_strct_v2
-                | ID DP expresiones'''
+                | ID DP expresiones
+                '''
     t[0] = Declaracion.Declaracion(t[1], t[3], None, None)
 
 def p_start_for(t):
@@ -697,8 +698,6 @@ def p_declaracion(t):
         else:
             t[0] = DeclaracionVector.DeclaracionVector(t[3],t[7],t[5],t[2])
 
-
-
 def p_tipado_vect(t):
     '''tipado_vector : VECTOR MENOR tipado_vector MAYOR
                     |  VECTOR MENOR tipo_datos MAYOR'''
@@ -814,9 +813,17 @@ def p_expre_valor(t):
                     | arreglo_init
                     | acceso_arreglo
                     | iniciando_vector
-
+                    | repeticiones
                     '''
     t[0] = t[1]
+
+def p_repeticiones(t):
+    '''repeticiones : CI expresiones PYC expresiones CD
+                    | CI tipo_datos PYC expresiones CD '''
+    if  t.slice[2].type == 'expresiones':
+        t[0] = Repeticiones.Repeticiones(t[2],t[4])
+    else:
+        t[0] = Repeticiones.Repeticiones(t[2], t[4],True)
 
 def p_iniciando_vector(t):
     ''' iniciando_vector : VECTOR NEW
@@ -870,10 +877,12 @@ def p_funcion_nativa(t):
 
 def p_nativas_vectores(t):
     '''nativas_vectores : PUSH PI expresiones PD
+                        | PUSH PI definition_strct_v2 PD
                         | REMOVE PI expresiones PD
                         | CONTAINS PI expresiones PD
                         | INSERT PI expresiones COMA expresiones PD
                         | CAPACITY '''
+
     if len(t)==5:
         t [0] = NativasVectores.NativasVectores(t[3],t[1].lower())
     elif len(t) == 7:

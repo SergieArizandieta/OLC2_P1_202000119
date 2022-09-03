@@ -6,6 +6,7 @@ from AST.TablaSimbolos.Tipos import tipo, RetornoType
 from AST.TablaSimbolos.InstanciaVector import InstanciaVector
 from colorama import Fore
 from colorama import Style
+from AST.Expresion.Identificador import Identificador
 
 class DeclaracionVector(Intruccion):
 
@@ -40,6 +41,8 @@ class DeclaracionVector(Intruccion):
         else:
             if len( self.expresion) ==0:
                 print("Llego solo con decalracion normal" )
+                if isinstance(self.tipo, Identificador):
+                    self.tipo = ts.ObtenerSimbolo(self.tipo.id).tipo
 
                 new_vector = InstanciaVector(self.tipo, 1, [])
                 new_vector.withcapacity = self.capacidad

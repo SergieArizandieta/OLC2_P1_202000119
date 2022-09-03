@@ -1,102 +1,154 @@
-struct Carro {
-    placa: String,
-    color: String,
-    tipo: String
-}
+fn main () {
+    let mut a: i64 = 909;
 
-struct Personaje {
-    nombre: String,
-    edad: i64,
-    descripcion: String,
-    carro_: Carro
-}
-// Struct
+    println!("=======================================================================");
+    println!("==================================IF===================================");
+    println!("=======================================================================");
 
+    if (a > 50) {
+        println!("IF CORRECTO");
+    }else if (a == 56) {
+        println!("IF INCORRECTO");
+    } else {
+        println!("IF INCORRECTO");
+    }
 
-
-fn main (){
-
-    
-    println!("*******************CREANDO STRUCTS ");
-    
-    let mut p1 = Personaje { 
-        nombre:"Fer".to_string(),
-        edad:18,
-        descripcion:"No hace nada".to_string(),
-        carro_: Carro { placa:"090PLO".to_string(),
-                        color:"gris".to_string(), 
-                        tipo:"mecanico".to_string() 
-            
+    println!("");
+    println!("=======================================================================");
+    println!("=============================IFs ANIDADOS==============================");
+    println!("=======================================================================");
+    let aux: i64 = 10;
+    if aux > 0 {
+        println!("PRIMER IF CORRECTO");
+        if true && (aux == 1) {
+            println!("SEGUNDO IF INCORRECTO");
+        } else if aux > 10 {
+            println!("SEGUNDO IF INCORRECTO");
+        } else {
+            println!("SEGUNDO IF CORRECTO");
         }
-    };
-    
-    let per1 = CreandoPersonaje(2000,2,true);
-    let per2 = CreandoPersonaje(2007,2,true);
-    let per3 = CreandoPersonaje(2000,3,false);
-    
-    
-    println!("Persona <<per1>> nombre: {}, edad: {}, carroTipo: {}, carroColor: {} ",per1.nombre, per1.edad, per1.carro_.tipo,per1.carro_.color);
-    println!("Persona <<per2>> nombre: {}, edad: {}, carroTipo: {}, carroColor: {} ",per2.nombre, per2.edad, per2.carro_.tipo,per2.carro_.color);
-    println!("Persona <<per3>> nombre: {}, edad: {}, carroTipo: {}, carroColor: {} ",per3.nombre, per3.edad, per3.carro_.tipo,per3.carro_.color);
-
-
-}
-
-fn CreandoPersonaje (anio: i64, color: i64, mecanico: bool) -> Personaje{
-
-
-    let mut car = CreandoStruct(anio,color,mecanico);
-    
-    let mut p1 = Personaje { 
-        nombre:"Fer".to_string(),
-        edad:18,
-        descripcion:"No hace nada".to_string(),
-        carro_: car
-    };
-    
-    return p1;
-}
-
-
-fn CreandoStruct ( anio: i64, color: i64, mecanico: bool) ->  Carro{
-
-    let mut placa_: String = "".to_string();
-
-    // Ejemplo 1: Match como instrucción 
-    // Después del match sigue una expresión
-    match anio {
-        // 1 | 2 | 3 estas son coincidencias
-        2000 | 2001 | 2002 => {
-            placa_ = "20012PLO0".to_string();
-        } //esto se conoce como brazo
-        
-        2003 | 2004 | 2005 => placa_ = "200345LO0".to_string(),//esto se conoce como brazo
-        2006 =>  placa_ = "20090PLO0".to_string(), // esto es un error!
-        _ => println!("Resto de casos"), //brazo por defecto
-    }
-    
-    //  Match como expresión 
-    let colorAuto = match color {
-        1 => "amarillo",
-        2 => "verde",
-        3 => "rojo",
-        4 => "azul",
-        5 => "negro",
-        _ => "N/A",
-    };
-
-    let mut tipo : String = "".to_string();
-    
-    if mecanico {
-        tipo = "mecanico".to_string(); 
-    }
-    else{
-        tipo = "Automatico".to_string();
+    }else if aux <= 3 {
+        println!("PRIMER IF INCORRECTO");
+        if true && (aux == 1) {
+            println!("SEGUNDO IF INCORRECTO");
+        } else if aux > 10 {
+            println!("SEGUNDO IF INCORRECTO");
+        } else {
+            println!("SEGUNDO IF CORRECTO");
+        } 
+    } else if aux == a {
+        println!("PRIMER IF INCORRECTO");
+        if true && (aux == 1) {
+            println!("SEGUNDO IF INCORRECTO");
+        } else if aux > 10 {
+            println!("SEGUNDO IF INCORRECTO");
+        } else {
+            println!("SEGUNDO IF CORRECTO");
+        } 
     }
 
-    return Carro { placa: placa_,
-                    color:colorAuto.to_string(), 
-                    tipo:tipo
-        
-    };
+    println!("");
+    println!("=======================================================================");
+    println!("=================================WHILE=================================");
+    println!("=======================================================================");
+
+    let mut index: i64 = 0;
+
+    while (index >= 0) {
+
+        if (index == 0) {
+            index = index + 100;
+        } else if (index > 50) {
+            index = index / 2 - 25;
+        } else {
+            index = (index / 2) - 1;
+        } 
+
+        println!("{}",index);
+    }
+
+    println!("");
+    println!("=======================================================================");
+    println!("================================WHILE-2================================");
+    println!("=======================================================================");
+
+    index = -2;
+    index = index + 1;
+
+    while (index != 12) {
+        index = index + 1;
+        if (index == 0 || index == 1 || index == 11 || index == 12) {
+            println!("*********************************************************************************************************");
+        } else if (index == 2) {
+            println!("**********  ***************  ******                 ******                 ******              **********");
+        } else if (index >= 3 && index <= 5) {
+            println!("**********  ***************  ******  *********************  *************  ******  **********************");
+        } else if (index == 6) {
+            println!("**********  ***************  ******                 ******                 ******  **********************");
+        } else if (index >= 7 && index <= 9) {
+            println!("**********  ***************  ********************   ******  *************  ******  **********************");
+        } else if (index == 10) {
+            println!("**********                   ******                 ******  *************  ******              **********");
+        } 
+    }
+
+    println!("");
+    println!("=======================================================================");
+    println!("=============================TRANSFERENCIA=============================");
+    println!("=======================================================================");
+
+    a = -1;
+    while (a < 5) {
+        a = a + 1;
+        if a == 3 {
+            println!("a");
+            continue;
+        } else if a == 4 {
+            println!("b");
+            break;
+        } 
+
+        println!("El valor de a es: {}, ", a);
+    }
+
+    println!("Se debió imprimir");
+
+    println!("");
+    println!("=======================================================================");
+    println!("==================================FOR==================================");
+    println!("=======================================================================");
+
+    for i in 0..9 {
+
+        let mut output: String = "".to_string();
+        for j in 0..(10 - i) {
+            output = output + " ";
+        }
+
+        for k in 0..i {
+            output = output + "* ";
+        }
+        println!("{}",output);
+
+    }
+
+    println!("");
+    println!("=======================================================================");
+    println!("=================================FOR-2=================================");
+    println!("=======================================================================");
+
+    let arr = [1,2,3,4,5,6];
+    for i in [0,1,2,3,4,5] {
+        println!("{},{},{},{},{},{}", arr[i] == 1, arr[i] == 2, arr[i] == 3, arr[i] == 4, arr[i] == 5, arr[i] == 6);
+    }
+
+    println!("");
+    println!("=======================================================================");
+    println!("=================================FOR-3=================================");
+    println!("=======================================================================");
+    for e in [0,1,2,3,4,5] {
+        if (arr.len() > e) {
+            println!("{},{},{},{},{},{}", e*arr[e],e*arr[e],e*arr[e],e*arr[e],e*arr[e],e*arr[e]);
+        }
+    }
 }

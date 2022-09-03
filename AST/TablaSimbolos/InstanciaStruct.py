@@ -4,6 +4,7 @@ from AST.Instruccion.Declaracion import Declaracion
 from AST.TablaSimbolos.Tipos import RetornoType
 from AST.TablaSimbolos.Tipos import tipo as t
 from AST.Expresion.Identificador import Identificador
+from AST.Expresion.Repeticiones import Repeticiones
 import copy
 
 class InstanciaStruct(Expresion):
@@ -46,6 +47,8 @@ class InstanciaStruct(Expresion):
 
 
                 if name == nombre:
+                    if isinstance(tipo,Repeticiones):
+                        tipo = t.ARRAY
                     if data == tipo:
                         diccionario[name] = copy.deepcopy(copy.copy(agregar))
                         break

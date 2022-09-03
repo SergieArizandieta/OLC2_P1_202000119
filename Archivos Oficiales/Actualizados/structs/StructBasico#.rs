@@ -23,7 +23,7 @@ struct Personaje {
 
 
 
-fn main(){
+fn main (){
 
     println!("*******************VECTOR CON STRUCTS");
     
@@ -104,7 +104,7 @@ fn CreandoStruct ( anio: i64, color: i64, mecanico: bool) ->  Carro{
 
     let mut placa_: String = "".to_string();
 
-    /* Ejemplo 1: Match como instrucción */
+    // Ejemplo 1: Match como instrucción 
     // Después del match sigue una expresión
     match anio {
         // 1 | 2 | 3 estas son coincidencias
@@ -117,7 +117,7 @@ fn CreandoStruct ( anio: i64, color: i64, mecanico: bool) ->  Carro{
         _ => println!("Resto de casos"), //brazo por defecto
     }
     
-    /*  Match como expresión */
+    //  Match como expresión 
     let colorAuto = match color {
         1 => "amarillo",
         2 => "verde",
