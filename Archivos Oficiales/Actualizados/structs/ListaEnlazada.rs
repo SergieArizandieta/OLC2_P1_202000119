@@ -146,7 +146,7 @@ fn PrintListBack(actualDL : &mut Vec<Node>, valores: &mut ValoresPiv){
 
 
 
-fn main(){
+fn main (){
 
 
     let mut actualDL: Vec<Node> = Vec::with_capacity(10);

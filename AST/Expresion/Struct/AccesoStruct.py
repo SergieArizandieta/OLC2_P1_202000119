@@ -2,6 +2,7 @@
 from AST.Abstracto.Expresion import Expresion
 from AST.Abstracto.Instruccion import Intruccion
 from AST.TablaSimbolos.Tipos import RetornoType
+from AST.Expresion.Arreglo.AccesoArreglo import AccesoArreglo
 class AccesoStruct(Intruccion,Expresion):
 
     def __init__(self,id,expresiones,exp):
@@ -9,6 +10,8 @@ class AccesoStruct(Intruccion,Expresion):
         self.expresiones =expresiones
         self.exp=exp
         self.ts = None
+        self.controlador = None
+
 
     def EjecutarInstruccion(self, controlador, ts):
         print(self.identificador)
@@ -22,7 +25,13 @@ class AccesoStruct(Intruccion,Expresion):
             id = self.expresiones[0].id
             valor_acc = struck_dic.get(id)
             if valor_acc is not  None:
-                struck_dic[id].valor = self.exp.valor
+                if not hasattr(self.exp,'valor'):
+                    if isinstance( self.exp,AccesoStruct):
+                        valor = self.exp.ObtenerValor(controlador,ts)
+                        struck_dic[id].valor = valor.valor
+
+                else:
+                    struck_dic[id].valor = self.exp.valor
 
         print("Se asigno a struct")
 
@@ -31,13 +40,19 @@ class AccesoStruct(Intruccion,Expresion):
         print(self.expresiones)
         print(self.exp)
         self.ts = ts
+        self.controlador = controlador
         return self.fn_obtner_valor(self.identificador,self.expresiones)
 
 
     def fn_obtner_valor(self,identificador,expresiones):
 
-        struck_ccr =  self.ts.ObtenerSimbolo(identificador.id)
-        struck_dic = struck_ccr.valor.diccionario
+        if isinstance(identificador,AccesoArreglo):
+            struck_ccr = identificador.ObtenerValor(self.controlador,self.ts)
+            print(struck_ccr)
+            struck_dic = struck_ccr.valor.diccionario
+        else:
+            struck_ccr =  self.ts.ObtenerSimbolo(identificador.id)
+            struck_dic = struck_ccr.valor.diccionario
 
         while(True):
             if not isinstance(expresiones[0], AccesoStruct):

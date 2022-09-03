@@ -37,7 +37,9 @@ class Imprimir(Intruccion):
                                     if isinstance(array, RetornoType):
                                         texto_salida += str(array.valor)
                                 else:
-                                    texto_salida += str(self.lista[i].ObtenerValor(controlador,ts).valor)
+                                    valor = self.lista[i].ObtenerValor(controlador,ts)
+
+                                    texto_salida += str(valor.valor)
                             except:
                                 print("Fallo en: ",self.lista[i])
 

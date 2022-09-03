@@ -57,6 +57,9 @@ class DeclaracionVector(Intruccion):
 
                 new_vector = InstanciaVector(self.tipo, 1, [])
                 new_vector.withcapacity = self.capacidad
+
+                if isinstance(self.tipo, Identificador):
+                    self.tipo = ts.ObtenerSimbolo(self.tipo.id).tipo
                 new_vector.tipo = self.tipo
                 new_vector.mut = self.mut
 

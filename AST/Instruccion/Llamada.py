@@ -3,7 +3,7 @@ from AST.Abstracto.Expresion import Expresion
 from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos, Simbolos
 from AST.Instruccion import Funcion
 from AST.TablaSimbolos.Tipos import RetornoType
-
+from AST.Expresion.Identificador import Identificador
 
 class Llamada(Intruccion, Expresion):
 
@@ -114,6 +114,14 @@ class Llamada(Intruccion, Expresion):
                             tipo_array = aux_tipo[0]
 
                             aux_exp_data: Simbolos = ts.ObtenerSimbolo(aux_exp.id)
+                            if isinstance(tipo_array ,Identificador):
+                                tipo_array = ts.ObtenerSimbolo(tipo_array.id).tipo
+                            try:
+                                if isinstance(tipo_array,str):
+                                    tipo_array = ts.ObtenerSimbolo(tipo_array).tipo
+                            except:
+                                pass
+
 
                             if tipo_array != aux_exp_data.tipo:
                                 return False

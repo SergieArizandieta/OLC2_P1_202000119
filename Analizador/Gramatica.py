@@ -640,7 +640,8 @@ def p_definiciones(t):
 def p_tipados_tipos(t):
     '''tipados_tipos :  DP REFERENCE dimensiones_def
                     |  DP REFERENCE CI tipo_datos CD
-                    | DP REFERENCE  tipado_vector'''
+                    | DP REFERENCE  tipado_vector
+                    | DP REFERENCE ID'''
 
     if len(t)==4:
         if t.slice[3].type == 'dimensiones_def':
