@@ -46,6 +46,14 @@ class AccesoStruct(Intruccion,Expresion):
                     valor_acc = struck_dic.get(id)
                     if valor_acc is not None:
                         return RetornoType(valor_acc.valor, valor_acc.tipo)
+                else:
+                    id = expresiones[0].id
+                    valor_acc = struck_dic.get(id)
+                    if valor_acc is not None:
+
+                        struck_dic = valor_acc.valor.diccionario
+                        expresiones.pop(0)
+
             else:
 
                 expr = expresiones[0].identificador

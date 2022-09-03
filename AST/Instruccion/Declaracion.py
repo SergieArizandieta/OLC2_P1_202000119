@@ -4,8 +4,6 @@ from AST.TablaSimbolos.Simbolos import Simbolos
 from AST.TablaSimbolos.Tipos import tipo, RetornoType
 from AST.Instruccion.DeclaracionArreglo import DeclaracionArreglo
 from AST.Instruccion.DeclaracionVector import DeclaracionVector
-
-
 class Declaracion(Intruccion):
 
     def __init__(self, id: Identificador, expresion, tipo, mut,referencia = False):
@@ -20,9 +18,6 @@ class Declaracion(Intruccion):
         if self.expresion is not None:
             return_exp: RetornoType = self.expresion.ObtenerValor(controlador, ts)
             try:
-
-
-
                 ValorExpresion = return_exp.valor
                 TipoExpresion = return_exp.tipo
                 if TipoExpresion == tipo.ARRAY:

@@ -1,98 +1,102 @@
+struct Carro {
+    placa: String,
+    color: String,
+    tipo: String
+}
 
-fn main () {
-    
-    println!("----------------------");
-    println!("----ARCHIVO BASICO----");
-    println!("----------------------");
-    
-    
-    
-    let bo1: bool = false;
-    let bol21: bool = !bo1;
-    let cad1: String = "imprimir".to_string();
-    let cad21: String = "cadena valida".to_string();
-    let letra1: char = 'c';
-    
-    
-    let val11 = 7 - (5 + 10 * (2 + 4 * (5 + 2 * 3)) - 8 * 3 * 3) + 50 * (6 * 2);
-    let val21 = (2 * 2 * 2 * 2) - 9 - (8 - 6 + (3 * 3 - 6 * 5 - 7 - (9 + 7 * 7 * 7) + 10) - 5) + 8 - (6 - 5 * (2 * 3));
-    let val31 = val11 + ((2 + val21 * 3) + 1 - ((2 * 2 * 2) - 2) * 2) - 2;
-    
-    println!("El valor de val11 es:              {}",val11);
-    println!("El valor de val21 es:              {}",val21);
-    println!("El valor de val31 es:              {}",val31);
-    println!("El resultado de la operación es:  {}",val31);
-    println!("El valor de bo1 es:                {}",bo1);
-    println!("El valor de cad1 es:               {}",cad1);
-    println!("El valor de cad21 es:               {}",cad21);
-    println!("El valor de letra1 es:             {}",letra1);
-    println!("El valor de bol21:            {}",bol21);
-    println!("");
-    
+struct Personaje {
+    nombre: String,
+    edad: i64,
+    descripcion: String,
+    carro_: Carro
+}
+// Struct
+
+
+
+fn main (){
 
     
-    let a:i64 = 100;
-    let b:i64 = 100;
-    let c:i64 = 7;
-    let f:bool = true;
-    let j:f64 = 10.0;
-    let k:f64 = 10.0;
+    println!("*******************CREANDO STRUCTS ");
     
-    println!("");
-    println!("");
-    if a > b || b < c {
-        println!(">>>>>> Esto no debería de imprimirse");
-    }else{
-        println!(">>>>>> Esto debería de imprimirse");
+    let mut p1 = Personaje { 
+        nombre:"Fer".to_string(),
+        edad:18,
+        descripcion:"No hace nada".to_string(),
+        carro_: Carro { placa:"090PLO".to_string(),
+                        color:"gris".to_string(), 
+                        tipo:"mecanico".to_string() 
+            
+        }
+    };
+    
+    let per1 = CreandoPersonaje(2000,2,true);
+    let per2 = CreandoPersonaje(2007,2,true);
+    let per3 = CreandoPersonaje(2000,3,false);
+    
+    
+    println!("Persona <<per1>> nombre: {}, edad: {}, carroTipo: {}, carroColor: {} ",per1.nombre, per1.edad, per1.carro_.tipo,per1.carro_.color);
+    println!("Persona <<per2>> nombre: {}, edad: {}, carroTipo: {}, carroColor: {} ",per2.nombre, per2.edad, per2.carro_.tipo,per2.carro_.color);
+    println!("Persona <<per3>> nombre: {}, edad: {}, carroTipo: {}, carroColor: {} ",per3.nombre, per3.edad, per3.carro_.tipo,per3.carro_.color);
+
+
+}
+
+fn CreandoPersonaje (anio: i64, color: i64, mecanico: bool) -> Personaje{
+
+
+    let mut car = CreandoStruct(anio,color,mecanico);
+    
+    let mut p1 = Personaje { 
+        nombre:"Fer".to_string(),
+        edad:18,
+        descripcion:"No hace nada".to_string(),
+        carro_: car
+    };
+    
+    return p1;
+}
+
+
+fn CreandoStruct ( anio: i64, color: i64, mecanico: bool) ->  Carro{
+
+    let mut placa_: String = "".to_string();
+
+    // Ejemplo 1: Match como instrucción 
+    // Después del match sigue una expresión
+    match anio {
+        // 1 | 2 | 3 estas son coincidencias
+        2000 | 2001 | 2002 => {
+            placa_ = "20012PLO0".to_string();
+        } //esto se conoce como brazo
+        
+        2003 | 2004 | 2005 => placa_ = "200345LO0".to_string(),//esto se conoce como brazo
+        2006 =>  placa_ = "20090PLO0".to_string(), // esto es un error!
+        _ => println!("Resto de casos"), //brazo por defecto
     }
     
+    //  Match como expresión 
+    let colorAuto = match color {
+        1 => "amarillo",
+        2 => "verde",
+        3 => "rojo",
+        4 => "azul",
+        5 => "negro",
+        _ => "N/A",
+    };
+
+    let mut tipo : String = "".to_string();
     
-    if a == b && j == k || 14 != c {
-        println!(">>>>>> Esto debería de imprimirse");
-    }else{
-        println!(">>>>>> Esto no debería de imprimirse");
-    }
-    
-    let val1:i64 = 5;
-    let resp:i64 = 5;
-    let mut valorVerdadero : i64 = 100;
-    
-    if((valorVerdadero == (50 + 50 + (val1 - val1))) && ! ! ! ! ! ! ! ! ! ! true) {
-        println!(">>>>>> En este lugar deberia de entrar :)");
-        valorVerdadero = 50;
-    }
-    else if (f || (valorVerdadero > 50)) && ((resp != 100) && ! ! ! ! ! f){
-        println!(">>>>>> Aca no deberia de entrar :ccc");
-        valorVerdadero = 70;
+    if mecanico {
+        tipo = "mecanico".to_string(); 
     }
     else{
-        println!(">>>>>> Aca no deberia de entrar :cccc");
+        tipo = "Automatico".to_string();
     }
 
-    let x1: i64 = 15;
-
-    if x1 % 2 == 0 {
-        println!(">>>>> numeroPar ingreso a if verdadero, {} es par",x1);
-    }
-    else {
-        println!(">>>>> numeroPar ingreso a if falso, {} no es par",x1);
-    }
-
-
-
-    let abs1:i64 = 7-11;
-    let abs2:f64 = 10.0;
-    let raiz1:i64 = 9;
-    let raiz2:f64 = 100.0;
-    
-    
-    println!("");
-    println!("*************PRUEBA DE NATIVAS");
-    println!(" valor de b: {:?}",b);
-    
-    println!(" valor absoluto1: {}",abs1.abs());
-    println!(" valor absoluto2: {}",abs2.abs());
-    println!(" valor raiz1: {}",(raiz1 as f64).sqrt());
-    println!(" valor raiz2: {}",raiz2.sqrt());
-    
+    return Carro { placa: placa_,
+                    color:colorAuto.to_string(), 
+                    tipo:tipo
+        
+    };
 }
