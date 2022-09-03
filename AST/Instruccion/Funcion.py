@@ -1,7 +1,7 @@
 from AST.Abstracto.Instruccion import Intruccion
 from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos
 from AST.TablaSimbolos.Tipos import RetornoType, tipo
-
+from AST.Expresion.Identificador import Identificador
 
 class Funcion(Intruccion):
 
@@ -16,11 +16,15 @@ class Funcion(Intruccion):
 
         for instruccion in self.instrucciones:
 
+
             retorno = instruccion.EjecutarInstruccion(controlador, ts)
 
             if retorno is not None and isinstance(retorno, RetornoType):
+                if isinstance( self.tipo,Identificador):
+                    self.tipo = ts.ObtenerSimbolo(self.tipo.id).tipo
                 if retorno.tipo == self.tipo:
                     return retorno
+
 
                 if self.tipo is None:
                     if retorno.tipo != tipo.UNDEFINED:

@@ -4,6 +4,8 @@ from AST.TablaSimbolos.Simbolos import Simbolos
 from AST.TablaSimbolos.Tipos import tipo, RetornoType
 from AST.Instruccion.DeclaracionArreglo import DeclaracionArreglo
 from AST.Instruccion.DeclaracionVector import DeclaracionVector
+
+
 class Declaracion(Intruccion):
 
     def __init__(self, id: Identificador, expresion, tipo, mut,referencia = False):
@@ -18,6 +20,9 @@ class Declaracion(Intruccion):
         if self.expresion is not None:
             return_exp: RetornoType = self.expresion.ObtenerValor(controlador, ts)
             try:
+
+
+
                 ValorExpresion = return_exp.valor
                 TipoExpresion = return_exp.tipo
                 if TipoExpresion == tipo.ARRAY:
@@ -27,6 +32,9 @@ class Declaracion(Intruccion):
                 elif TipoExpresion == tipo.VECTOR:
                     declaracion_vector = DeclaracionVector(self.identificador.id,self.expresion,self.tipo,self.mut)
                     declaracion_vector.EjecutarInstruccion(controlador,ts)
+                    return None
+                elif TipoExpresion == tipo.STRUCT:
+                    ts.Agregar_Simbolo(self.identificador.id, return_exp)
                     return None
             except:
                 print("Declaracion no se esta recuperando un dato")

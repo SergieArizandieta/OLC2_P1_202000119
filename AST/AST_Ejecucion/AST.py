@@ -1,6 +1,7 @@
 from ..Abstracto.Instruccion import Intruccion
 from AST.Instruccion import Funcion
 from AST.Instruccion.Llamada import Llamada
+from AST.Expresion.DeclararStruct import DeclararStruct
 
 
 class AST(Intruccion):
@@ -15,9 +16,11 @@ class AST(Intruccion):
 
             for intruccion in self.Lista_instrucciones:
                 if isinstance(intruccion,Funcion.Funcion):
-                    #if intruccion.identificador != "main":
                         funcion = intruccion
                         funcion.agregarFuncion(ts)
+                elif isinstance(intruccion, DeclararStruct):
+                    structt = intruccion
+                    structt.GuardarStruct(ts)
 
             llamar_main = Llamada("main",[])
             llamar_main.EjecutarInstruccion(controlador, ts)

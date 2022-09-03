@@ -16,7 +16,8 @@ class tipo(Enum):
     OBJETO = 11,
     USIZE = 12,
     VECTOR = 13,
-    ERROR = 14
+    STRUCT = 14,
+    ERROR = 15
 
 class RetornoType():
     def __init__(self,  valor = None , tipo = tipo.UNDEFINED , final = tipo.UNDEFINED):
