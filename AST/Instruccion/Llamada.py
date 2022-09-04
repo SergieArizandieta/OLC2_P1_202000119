@@ -4,12 +4,15 @@ from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos, Simbolos
 from AST.Instruccion import Funcion
 from AST.TablaSimbolos.Tipos import RetornoType
 from AST.Expresion.Identificador import Identificador
+from Analizador.Gramatica import *
 
 class Llamada(Intruccion, Expresion):
 
-    def __init__(self, identificador, parametos):
+    def __init__(self, identificador, parametos,linea,columna):
         self.identificador = identificador
         self.parametos = parametos
+        self.linea = linea
+        self.columna =columna
 
     def EjecutarInstruccion(self, controlador, ts: TablaDeSimbolos):
         print("====Funcion=== como intruccion")
@@ -86,6 +89,9 @@ class Llamada(Intruccion, Expresion):
                         print("= Simbolo id: ", aux_id, " valor: ",aux_exp_valor, " tipo ",aux_tipo)
                         ts_loca.Agregar_Simbolo(aux_id, simbolo)
                     else:
+                        E_list.agregar_error("Se intento asigar un dato: "+ str(aux_exp_tipo) + " a un parametro: " + str(aux_tipo), 2, ts.name,
+                                             self.linea, self.columna)
+                        E_list.print_errores()
                         return False
                 else:
                     print("Se llego")
@@ -114,9 +120,10 @@ class Llamada(Intruccion, Expresion):
                             tipo_array = aux_tipo[0]
 
                             aux_exp_data: Simbolos = ts.ObtenerSimbolo(aux_exp.id)
-                            if isinstance(tipo_array ,Identificador):
-                                tipo_array = ts.ObtenerSimbolo(tipo_array.id).tipo
                             try:
+                                if isinstance(tipo_array ,Identificador):
+                                    tipo_array = ts.ObtenerSimbolo(tipo_array.id).tipo
+
                                 if isinstance(tipo_array,str):
                                     tipo_array = ts.ObtenerSimbolo(tipo_array).tipo
                             except:

@@ -5,8 +5,8 @@ from AST.TablaSimbolos.Tipos import RetornoType
 
 class Relacional(Operacion, Expresion):
 
-    def __init__(self, exp1, signo, exp2, expU):
-        super().__init__(exp1, signo, exp2, expU)
+    def __init__(self, exp1, signo, exp2, expU,linea=0,columna=0):
+        super().__init__(exp1, signo, exp2, expU,linea,columna)
 
     def ObtenerValor(self, controlador, ts):
         return_exp1:RetornoType = self.exp1.ObtenerValor(controlador, ts)

@@ -1,4 +1,5 @@
-from AST.Expresion.Casteo.Casteo import Casteo
+from AST.TablaErrores import TablaErrores
+E_list = TablaErrores()
 
 reservadas = {
     # ACCESO
@@ -143,8 +144,6 @@ t_BARRA = r'\|'
 t_GBAJO = r'_'
 t_REFER = r'&'
 
-
-
 def t_FLOAT(t):
     r'\d+\.\d+'
     try:
@@ -154,7 +153,6 @@ def t_FLOAT(t):
         print("Float value too large %d", t.value)
         t.value = 0
     return t
-
 
 def t_ENTERO(t):
     r'\d+'
@@ -166,31 +164,25 @@ def t_ENTERO(t):
         t.value = 0
     return t
 
-
 def t_Especiales_0(t):
     r'::[a-zA-Z_][a-zA-Z_0-9]*\(\)'
     return revicion_reservadas(t)
-
 
 def t_Especiales_1(t):
     r'[a-zA-Z][a-zA-Z_0-9]*\(\)'
     return revicion_reservadas(t)
 
-
 def t_Especiales_2(t):
     r'::[a-zA-Z][a-zA-Z_0-9]*'
     return revicion_reservadas(t)
-
 
 def t_Especiales_3(t):
     r'[a-zA-Z][a-zA-Z_0-9]*!'
     return revicion_reservadas(t)
 
-
 def t_Especiales_4(t):
     r'&[a-zA-Z][a-zA-Z_0-9]*'
     return revicion_reservadas(t)
-
 
 # [a-zA-Z_][a-zA-Z_0-9]*
 def t_ID(t):
@@ -199,12 +191,10 @@ def t_ID(t):
     print("Se reconcio: ", t.type, ": ", t.value)
     return t
 
-
 def revicion_reservadas(t):
     t.type = reservadas.get(t.value, 'ERR')
     print("Se reconcio: ", t.type, ": ", t.value)
     return t
-
 
 def t_CADENA(t):
     r'\".*?\"'
@@ -212,13 +202,11 @@ def t_CADENA(t):
     print("Se reconcio cadena: ", t.value)
     return t
 
-
 def t_CARACTER(t):
     r'\'.?\''
     t.value = t.value[1:-1]  # remuevo las comillas
     print("Se reconcio caracter: ", t.value)
     return t
-
 
 # Comentario simple // ...
 def t_COMENTARIO(t):
@@ -226,20 +214,26 @@ def t_COMENTARIO(t):
     print("Se reconcio comentario: ", t.value.replace('\n', ''))
     t.lexer.lineno += 1
 
-
 # Caracteres ignorados
 t_ignore = " \t\r"
-
 
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += t.value.count("\n")
 
-
 def t_error(t):
+    E_list.agregar_error("El caracter no es aceptado por analizador", 0, " Lectura de entrada ", t.lexer.lineno,find_column(t.value, t))
+    #E_list.print_errores()
     print("Error lexico ", t.value[0])
     t.lexer.skip(1)
 
+
+
+
+
+def find_column(input, token):
+    line_start = input.rfind('\n', 0, token.lexpos) + 1
+    return (token.lexpos - line_start) + 1
 
 # Construyendo el analizador léxico
 import ply.lex as lex
@@ -257,13 +251,10 @@ precedence = (
     ('right', 'NOT', 'UMENOS')
 )
 
-
-
 # Definición de la gramática
 def p_init(t):
     'init            : instrucciones'
     t[0] = t[1]
-
 
 def p_instrucciones_lista(t):
     '''instrucciones    : instrucciones instruccion
@@ -276,7 +267,6 @@ def p_instrucciones_lista(t):
     else:
         t[0] = [t[1]]
 
-
 def p_instruccion(t):
     '''instruccion  : funcion
                     | declaracion
@@ -286,7 +276,6 @@ def p_instruccion(t):
                     '''
 
     t[0] = t[1]
-
 
 def p_lista_bloque(t):
     ''' lista_bloque : lista_bloque bloque
@@ -341,6 +330,7 @@ def p_bloque_match(t):
 
 '''xxx'''
 from AST.Expresion import Identificador
+from AST.Expresion.Casteo.Casteo import Casteo
 from AST.Instruccion import Declaracion, Asignacion, Funcion, Llamada, DeclaracionArreglo,DeclaracionVector
 from AST.TablaSimbolos.Tipos import tipo
 from AST.Expresion.Nativas import Nativas, NativasVectores
@@ -358,6 +348,7 @@ from AST.Expresion.Vector import VectorData
 from AST.TablaSimbolos import InstanciaStruct
 from AST.Expresion.Struct import AccesoStruct
 from AST.Expresion import DeclararStruct, Repeticiones
+
 '''zzz'''
 def p_star_struct(t):
     ''' star_struct :  STRUCT definition_strct'''
@@ -502,13 +493,13 @@ def p_start_if(t):
 
     print('Llego if gramatica ', len(t))
     if len(t) == 6:
-        t[0]= Ifs.Ifs(t[2],t[4],None,None)
+        t[0]= Ifs.Ifs(t[2],t[4],None,None,t.lexer.lineno,t.lexer.lexpos)
     elif len(t)==10:
-        t[0] = Ifs.Ifs(t[2], t[4], t[8],None)
+        t[0] = Ifs.Ifs(t[2], t[4], t[8],None,t.lexer.lineno,t.lexer.lexpos)
     if len(t) == 7:
-        t[0]= Ifs.Ifs(t[2],t[4],None,t[6])
+        t[0]= Ifs.Ifs(t[2],t[4],None,t[6],t.lexer.lineno,t.lexer.lexpos)
     if len(t) == 11:
-        t[0]= Ifs.Ifs(t[2],t[4],t[9],t[6])
+        t[0]= Ifs.Ifs(t[2],t[4],t[9],t[6],t.lexer.lineno,t.lexer.lexpos)
 
 def p_lista_if(t):
     ''' lista_elif : lista_elif else_if
@@ -581,10 +572,10 @@ def p_llamada(t):
 
     if len(t) == 4:
         print("=== llamda tipo 1")
-        t[0] = Llamada.Llamada(t[1], [])
+        t[0] = Llamada.Llamada(t[1], [],t.lexer.lineno,t.lexer.lexpos)
     else:
         print("=== llamda tipo 2")
-        t[0] = Llamada.Llamada(t[1], t[3])
+        t[0] = Llamada.Llamada(t[1], t[3],t.lexer.lineno,t.lexer.lexpos)
 
 def p_lista_expres(t):
     '''lista_expres : lista_expres COMA  expresiones
@@ -603,11 +594,11 @@ def p_funciones(t):
                 |  FUNCION ID PI parametros PD tipo_funcion LI lista_bloque LD'''
 
     if len(t) == 8:
-        t[0] = Funcion.Funcion(t[2], None, [], t[6])
+        t[0] = Funcion.Funcion(t[2], None, [], t[6],t.lexer.lineno,t.lexer.lexpos)
     elif len(t) == 9:
-        t[0] = Funcion.Funcion(t[2], t[5], [], t[7])
+        t[0] = Funcion.Funcion(t[2], t[5], [], t[7],t.lexer.lineno,t.lexer.lexpos)
     elif len(t) == 10:
-        t[0] = Funcion.Funcion(t[2], t[6], t[4], t[8])
+        t[0] = Funcion.Funcion(t[2], t[6], t[4], t[8],t.lexer.lineno,t.lexer.lexpos)
 
 def p_parametros(t):
     '''parametros : parametros COMA definiciones
@@ -711,7 +702,7 @@ def p_tipado_vect(t):
 def p_asignacio(t):
     '''asignacion      : ID IGUAL expresiones
                         '''
-    t[0] = Asignacion.Asignacion(t[1], t[3])
+    t[0] = Asignacion.Asignacion(t[1], t[3],t.lexer.lineno,t.lexer.lexpos)
 
 def p_mutable(t):
     '''mutable      : MUT
@@ -916,7 +907,6 @@ def p_acceso_struct(t):
     else:
         t[0] = AccesoStruct.AccesoStruct(None, aux, t[4])
 
-
 def p_list_acceso_struck(t):
     '''list_acceso_struck : list_acceso_struck PUNTO  ID
                         | PUNTO ID
@@ -936,12 +926,12 @@ def p_expre_logica(t):
                     | NOT  expresiones'''
     if len(t) == 3:
         if t.slice[1].type == 'NOT':
-            t[0] = Logica.Logica(t[2], "!", None, True)
+            t[0] = Logica.Logica(t[2], "!", None, True,t.lexer.lineno,t.lexer.lexpos)
     elif len(t) == 4:
         if t.slice[2].type == 'OR':
-            t[0] = Logica.Logica(t[1], "||", t[3], False)
+            t[0] = Logica.Logica(t[1], "||", t[3], False,t.lexer.lineno,t.lexer.lexpos)
         elif t.slice[2].type == 'AND':
-            t[0] = Logica.Logica(t[1], "&&", t[3], False)
+            t[0] = Logica.Logica(t[1], "&&", t[3], False,t.lexer.lineno,t.lexer.lexpos)
 
 def p_expre_relacional(t):
     '''expre_relacional : expresiones MAYORIGUAL expresiones
@@ -953,17 +943,17 @@ def p_expre_relacional(t):
 
     if len(t) == 4:
         if t[2] == ">=":
-            t[0] = Relacional.Relacional(t[1], ">=", t[3], False)
+            t[0] = Relacional.Relacional(t[1], ">=", t[3], False,t.lexer.lineno,t.lexer.lexpos)
         elif t[2] == ">":
-            t[0] = Relacional.Relacional(t[1], ">", t[3], False)
+            t[0] = Relacional.Relacional(t[1], ">", t[3], False,t.lexer.lineno,t.lexer.lexpos)
         elif t[2] == "<=":
-            t[0] = Relacional.Relacional(t[1], "<=", t[3], False)
+            t[0] = Relacional.Relacional(t[1], "<=", t[3], False,t.lexer.lineno,t.lexer.lexpos)
         elif t[2] == "<":
-            t[0] = Relacional.Relacional(t[1], "<", t[3], False)
+            t[0] = Relacional.Relacional(t[1], "<", t[3], False,t.lexer.lineno,t.lexer.lexpos)
         elif t[2] == "==":
-            t[0] = Relacional.Relacional(t[1], "==", t[3], False)
+            t[0] = Relacional.Relacional(t[1], "==", t[3], False,t.lexer.lineno,t.lexer.lexpos)
         elif t[2] == "!=":
-            t[0] = Relacional.Relacional(t[1], "!=", t[3], False)
+            t[0] = Relacional.Relacional(t[1], "!=", t[3], False,t.lexer.lineno,t.lexer.lexpos)
 
 def p_expre_aritmetica(t):
     '''expre_aritmetica : RESTA expresiones %prec UMENOS
@@ -978,27 +968,26 @@ def p_expre_aritmetica(t):
 
     if len(t) == 3:
         if t[1] == "-":
-            t[0] = Aritmetica.Aritmetica(t[2], "-", 0, True)
+            t[0] = Aritmetica.Aritmetica(t[2], "-", 0, True,t.lexer.lineno,t.lexer.lexpos)
     elif len(t) == 4:
         if t[2] == "+":
-            t[0] = Aritmetica.Aritmetica(t[1], "+", t[3], False)
+            t[0] = Aritmetica.Aritmetica(t[1], "+", t[3], False,t.lexer.lineno,t.lexer.lexpos)
         elif t[2] == "-":
-            t[0] = Aritmetica.Aritmetica(t[1], "-", t[3], False)
+            t[0] = Aritmetica.Aritmetica(t[1], "-", t[3], False,t.lexer.lineno,t.lexer.lexpos)
         elif t[2] == "*":
-            t[0] = Aritmetica.Aritmetica(t[1], "*", t[3], False)
+            t[0] = Aritmetica.Aritmetica(t[1], "*", t[3], False,t.lexer.lineno,t.lexer.lexpos)
         elif t[2] == "/":
-            t[0] = Aritmetica.Aritmetica(t[1], "/", t[3], False)
+            t[0] = Aritmetica.Aritmetica(t[1], "/", t[3], False,t.lexer.lineno,t.lexer.lexpos)
         elif t[2] == "%":
-            t[0] = Aritmetica.Aritmetica(t[1], "%", t[3], False)
+            t[0] = Aritmetica.Aritmetica(t[1], "%", t[3], False,t.lexer.lineno,t.lexer.lexpos)
         elif t[1] == "(" and t[3] == ")":
             t[0] = t[2]
     elif len(t) == 8:
 
         if t[2] == "::pow":
-            t[0] = Aritmetica.Aritmetica(t[4], "^", t[6], False)
+            t[0] = Aritmetica.Aritmetica(t[4], "^", t[6], False,t.lexer.lineno,t.lexer.lexpos)
         elif t[2] == "::powf":
-            t[0] = Aritmetica.Aritmetica(t[4], "^f", t[6], False)
-
+            t[0] = Aritmetica.Aritmetica(t[4], "^f", t[6], False,t.lexer.lineno,t.lexer.lexpos)
 
 def p_datos_cast(t):
     ''' datos_cast : datos
@@ -1008,8 +997,6 @@ def p_datos_cast(t):
         t[0] = t[1]
     else:
         t[0]= Casteo.Casteo(t[1],t[3])
-
-
 
 def p_datos(t):
     '''datos : ENTERO
@@ -1044,10 +1031,14 @@ def p_datos(t):
 def p_error(t):
     try:
         print("\n========================= Error sintáctico en '%s'" % t.value, " =========================")
+        E_list.agregar_error("No se esperaba el caracter: " + str(t.value) + ", se ignoro", 1, " Lectura de entrada ", t.lexer.lineno,t.lexer.lexpos)
+        E_list.print_errores()
+
     except:
         print("")
 
     if t:
+
         print("Token: ", t, "\n")
         parser.errok()
     else:

@@ -2,14 +2,17 @@ from AST.Abstracto.Instruccion import Intruccion
 from AST.Abstracto.Expresion import Expresion
 from AST.TablaSimbolos.Tipos import tipo,RetornoType
 from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos
+from Analizador.Gramatica import *
 
 class Ifs(Intruccion,Expresion):
 
-    def __init__(self,condicion,bloque_if,bloque_else,bloques_elif):
+    def __init__(self,condicion,bloque_if,bloque_else,bloques_elif,linea=0,columna=0):
         self.condicion=condicion
         self.bloque_if = bloque_if
         self.bloque_else = bloque_else
         self.bloques_elif = bloques_elif
+        self.linea = linea
+        self.columna = columna
 
     def EjecutarInstruccion(self, controlador, ts):
         print("If como  instruccion")
@@ -41,6 +44,11 @@ class Ifs(Intruccion,Expresion):
                     ts_local = TablaDeSimbolos(ts, "Else" + str(id(self)))
                     return self.Recorrer_ins(controlador, ts_local,self.bloque_else)
 
+        else:
+            E_list.agregar_error("La expresion en if no es booleano : "+ str(valor_Exp), 2, ts.name,
+                                 self.linea, self.columna)
+            E_list.print_errores()
+
     def Recorrer_ins(self,controlador,ts,lista):
         retorno = None
         for instruccion in lista:
@@ -49,7 +57,7 @@ class Ifs(Intruccion,Expresion):
 
                 if retorno is not None:
                     if isinstance(retorno,RetornoType):
-                        return retorno
+                            return retorno
             #except:
             #    print("Erro en if")
 

@@ -21,7 +21,7 @@ class AST(Intruccion):
                     structt = intruccion
                     structt.GuardarStruct(ts)
 
-            llamar_main = Llamada("main",[])
+            llamar_main = Llamada("main",[],0,0)
             llamar_main.EjecutarInstruccion(controlador, ts)
 
 
