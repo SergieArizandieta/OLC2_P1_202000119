@@ -33,9 +33,9 @@ class AccesoArreglo(Expresion,Intruccion):
 
 
     def ObtenerValor(self, controlador,ts:TablaDeSimbolos) -> RetornoType:
-        print("Llego a accesoL ",self.idArreglo, " lista dimensiones: ",self.listaExpresiones)
-        ts.Print_Table()
-        ts.padre.Print_Table()
+        #print("Llego a accesoL ",self.idArreglo, " lista dimensiones: ",self.listaExpresiones)
+        #ts.Print_Table()
+        #ts.padre.Print_Table()
         if ts.Existe_id(self.idArreglo) is not True:
             return RetornoType()
 

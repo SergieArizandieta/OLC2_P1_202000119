@@ -38,9 +38,9 @@ class Loop(Intruccion,Expresion):
 
 
     def EjecutarInstruccion(self, controlador, ts):
-        print("Loop ins")
-        print("Llego a loop")
-        try:
+        #print("Loop ins")
+        #print("Llego a loop")
+        #try:
             while True:
                 ts_local = TablaDeSimbolos(ts, "Loop" + str(id(self)))
 
@@ -60,6 +60,6 @@ class Loop(Intruccion,Expresion):
 
                             if retorno.final == tipo.RETURN:
                                 return retorno
-        except:
-            print("Error en el Loop")
+        #except:
+            #print("Error en el Loop")
 

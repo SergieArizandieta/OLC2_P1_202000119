@@ -44,14 +44,14 @@ class Ifs(Intruccion,Expresion):
     def Recorrer_ins(self,controlador,ts,lista):
         retorno = None
         for instruccion in lista:
-            try:
+            #try:
                 retorno = instruccion.EjecutarInstruccion(controlador, ts)
 
                 if retorno is not None:
                     if isinstance(retorno,RetornoType):
                         return retorno
-            except:
-                print("Erro en if")
+            #except:
+            #    print("Erro en if")
 
 
     def ObtenerValor(self, controlador, ts):
