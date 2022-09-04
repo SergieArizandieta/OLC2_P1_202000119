@@ -1,11 +1,11 @@
 from AST.Abstracto.Expresion import Expresion
 from AST.Expresion.Operaciones.Operacion import operador, Operacion
 from AST.TablaSimbolos.Tipos import tipo,RetornoType
-from Analizador.Gramatica import *
+
 
 class Aritmetica(Operacion, Expresion):
-    def __init__(self, exp1, signo, exp2, expU=False,linea=0,columna=0):
-        super().__init__(exp1, signo, exp2, expU,linea,columna)
+    def __init__(self, exp1, signo, exp2, expU=False):
+        super().__init__(exp1, signo, exp2, expU)
 
     def ObtenerValor(self, controlador, ts):
 
@@ -37,8 +37,6 @@ class Aritmetica(Operacion, Expresion):
                     return RetornoType(int(valor_exp1 + valor_exp2),tipo.USIZE)
 
                 else:
-                    E_list.agregar_error("No se puede sumar datos " + str(tipo_exp1) + " y " + str(tipo_exp2), 2, ts.name, self.linea, self.columna)
-                    E_list.print_errores()
                     return "No son el mismo formato"
 
             elif self.operador == operador.RESTA:
@@ -56,8 +54,6 @@ class Aritmetica(Operacion, Expresion):
                     return RetornoType(int(valor_exp1 - valor_exp2),tipo.USIZE)
 
                 else:
-                    E_list.agregar_error("No se puede resta datos " + str(tipo_exp1) + " y " + str(tipo_exp2), 2,ts.name, self.linea, self.columna)
-                    E_list.print_errores()
                     return "No son el mismo formato"
 
             elif self.operador == operador.MULTIPLICACION:
@@ -75,9 +71,6 @@ class Aritmetica(Operacion, Expresion):
                     return RetornoType(int(valor_exp1 * valor_exp2),tipo.USIZE)
 
                 else:
-                    E_list.agregar_error("No se puede multiplicar datos " + str(tipo_exp1) + " y " + str(tipo_exp2), 2,
-                                         ts.name, self.linea, self.columna)
-                    E_list.print_errores()
                     return "No son el mismo formato"
 
             elif self.operador == operador.DIVISION:
@@ -95,9 +88,6 @@ class Aritmetica(Operacion, Expresion):
                     return RetornoType(int(valor_exp1 / valor_exp2),tipo.USIZE)
 
                 else:
-                    E_list.agregar_error("No se puede dividir datos " + str(tipo_exp1) + " y " + str(tipo_exp2), 2,
-                                         ts.name, self.linea, self.columna)
-                    E_list.print_errores()
                     return "No son el mismo formato"
 
             elif self.operador == operador.MOD:
@@ -115,9 +105,6 @@ class Aritmetica(Operacion, Expresion):
                     return RetornoType(int(valor_exp1 % valor_exp2),tipo.USIZE)
 
                 else:
-                    E_list.agregar_error("No se puede realizar modulo entre datos " + str(tipo_exp1) + " y " + str(tipo_exp2), 2,
-                                         ts.name, self.linea, self.columna)
-                    E_list.print_errores()
                     return "No son el mismo formato"
 
             elif self.operador == operador.POT:
@@ -126,10 +113,6 @@ class Aritmetica(Operacion, Expresion):
                     return RetornoType(int(valor_exp1 ** valor_exp2), tipo.ENTERO)
 
                 else:
-                    E_list.agregar_error(
-                        "No se puede realizar potencia entre datos " + str(tipo_exp1) + " y " + str(tipo_exp2), 2,
-                        ts.name, self.linea, self.columna)
-                    E_list.print_errores()
                     return "No son el mismo formato"
 
             elif self.operador == operador.POTF:
@@ -138,10 +121,6 @@ class Aritmetica(Operacion, Expresion):
                     return RetornoType(float(valor_exp1 ** valor_exp2), tipo.DECIMAL)
 
                 else:
-                    E_list.agregar_error(
-                        "No se puede realizar potencia F entre datos " + str(tipo_exp1) + " y " + str(tipo_exp2), 2,
-                        ts.name, self.linea, self.columna)
-                    E_list.print_errores()
                     return "No son el mismo formato"
 
         else:
@@ -155,7 +134,5 @@ class Aritmetica(Operacion, Expresion):
                     return RetornoType(float(valor_exp1 * -1), tipo.DECIMAL)
 
                 else:
-                    E_list.agregar_error("No se puede realizar unario de dato " + str(tipo_exp1) , 2,ts.name, self.linea, self.columna)
-                    E_list.print_errores()
                     return "No es digito"
 

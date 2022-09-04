@@ -26,14 +26,12 @@ class operador(Enum):
 
 class Operacion():
 
-    def __init__(self, exp1, signo, exp2, expU,linea,columna):
+    def __init__(self, exp1, signo, exp2, expU):
         self.exp1 = exp1
         self.exp2 = exp2
         self.expU = expU
         self.signo = signo
         self.operador = self.ObtenerOperador(self.signo)
-        self.linea = linea
-        self.columna = columna
 
     def ObtenerOperador(self, signo_operador):
         print("============= Signo valor ", signo_operador)

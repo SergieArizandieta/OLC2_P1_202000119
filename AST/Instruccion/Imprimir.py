@@ -41,7 +41,6 @@ class Imprimir(Intruccion):
 
                                     texto_salida += str(valor.valor)
                             except:
-                                texto_salida+= "Fallo en: " + str(self.lista[i])
                                 print("Fallo en: ",self.lista[i])
 
                     print("Print final: ", texto_salida)
