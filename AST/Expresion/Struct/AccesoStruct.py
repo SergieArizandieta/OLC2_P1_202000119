@@ -9,12 +9,14 @@ from colorama import Style
 import copy
 class AccesoStruct(Intruccion,Expresion):
 
-    def __init__(self,id,expresiones,exp):
+    def __init__(self,id,expresiones,exp,linea,columna):
         self.identificador = id
         self.expresiones =expresiones
         self.exp=exp
         self.ts = None
         self.controlador = None
+        self.linea=linea
+        self.columna=columna
 
 
     def EjecutarInstruccion(self, controlador, ts):

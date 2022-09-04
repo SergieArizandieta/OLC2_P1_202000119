@@ -3,8 +3,10 @@ from AST.TablaSimbolos.Tipos import RetornoType,tipo
 
 
 class Break(Intruccion):
-    def __init__(self,  expresion):
+    def __init__(self,  expresion,linea,columna):
         self.expresion = expresion
+        self.linea=linea
+        self.columna=columna
 
     def EjecutarInstruccion(self, controlador, ts):
         print(" Se encontro con un break: ",self.expresion)

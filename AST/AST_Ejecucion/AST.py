@@ -2,6 +2,7 @@ from ..Abstracto.Instruccion import Intruccion
 from AST.Instruccion import Funcion
 from AST.Instruccion.Llamada import Llamada
 from AST.Expresion.DeclararStruct import DeclararStruct
+from AST.TablaSimbolos.Tipos import RetornoType
 
 class AST(Intruccion):
     def __init__(self, Lista_instrucciones):
@@ -21,7 +22,7 @@ class AST(Intruccion):
                     structt = intruccion
                     structt.GuardarStruct(ts)
 
-            llamar_main = Llamada("main",[])
+            llamar_main = Llamada("main",[],0,0)
             llamar_main.EjecutarInstruccion(controlador, ts)
 
 
@@ -36,3 +37,22 @@ class AST(Intruccion):
 
         #except:
             #print("Err")
+
+
+    def Reporte_Tabla_simbolos(self,ts):
+        actual = ts
+
+        while(actual is not None):
+
+            print("=========== ",actual.name," =========== ")
+
+            for x in actual.tabla:
+                recorido = actual.tabla[x]
+                print(x)
+                if isinstance(recorido,RetornoType):
+                    recorido = recorido.valor
+
+                print(recorido," L: ",recorido.linea," C:",recorido.columna)
+
+
+            actual = actual.siguiente

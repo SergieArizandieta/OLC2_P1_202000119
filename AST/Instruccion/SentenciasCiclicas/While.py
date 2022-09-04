@@ -3,9 +3,11 @@ from AST.TablaSimbolos.Tipos import tipo,RetornoType
 from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos
 
 class While(Intruccion):
-    def __init__(self,expresion,lista_instrucciones):
+    def __init__(self,expresion,lista_instrucciones,linea,columna):
         self.expresion = expresion
         self.lista_instrucciones = lista_instrucciones
+        self.linea=linea
+        self.columna=columna
 
     def EjecutarInstruccion(self, controlador, ts):
         return_exp: RetornoType = self.expresion.ObtenerValor(controlador, ts)

@@ -6,10 +6,12 @@ from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos
 from AST.TablaSimbolos.InstanciaVector import InstanciaVector
 
 class AccesoArreglo(Expresion,Intruccion):
-    def __init__(self, idArreglo, listaExpresiones, valor = None):
+    def __init__(self, idArreglo, listaExpresiones, valor = None,linea=0,columna=0):
         self.idArreglo = idArreglo
         self.listaExpresiones = listaExpresiones
         self.valor = valor
+        self.linea = linea
+        self.columna = columna
 
     def EjecutarInstruccion(self, controlador, ts):
 

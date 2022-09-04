@@ -5,11 +5,13 @@ from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos
 
 class Ifs(Intruccion,Expresion):
 
-    def __init__(self,condicion,bloque_if,bloque_else,bloques_elif):
+    def __init__(self,condicion,bloque_if,bloque_else,bloques_elif,linea,columna):
         self.condicion=condicion
         self.bloque_if = bloque_if
         self.bloque_else = bloque_else
         self.bloques_elif = bloques_elif
+        self.linea=linea
+        self.columna=columna
 
     def EjecutarInstruccion(self, controlador, ts):
         print("If como  instruccion")

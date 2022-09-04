@@ -9,9 +9,11 @@ class DeclararStruct(Expresion):
     def ObtenerValor(self, controlador, ts):
         pass
 
-    def __init__(self,id,declaraciones):
+    def __init__(self,id,declaraciones,linea,columna):
         self.identificador = id
         self.declaraciones = declaraciones
+        self.linea=linea
+        self.columna=columna
 
 
 

@@ -2,9 +2,11 @@ from AST.Abstracto.Instruccion import Intruccion
 from AST.Abstracto.Expresion import Expresion
 from AST.TablaSimbolos.Tipos import RetornoType
 class Match(Intruccion,Expresion):
-    def __init__(self, expresion, matches):
+    def __init__(self, expresion, matches,linea,columna):
         self.expresion = expresion
         self.matches = matches
+        self.linea=linea
+        self.columna=columna
 
     def ObtenerValor(self, controlador, ts):
         return_exp: RetornoType = self.expresion.ObtenerValor(controlador, ts)

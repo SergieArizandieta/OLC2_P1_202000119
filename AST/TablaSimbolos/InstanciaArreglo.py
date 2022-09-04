@@ -2,9 +2,11 @@ from AST.TablaSimbolos.Simbolos import Simbolos
 
 class InstanciaArreglo(Simbolos):
 
-    def __init__(self,tipo, dimensiones, valores:[]):
-        super().__init__()
+    def __init__(self,tipo, dimensiones, valores:[],liena,columa):
+        super().__init__(liena,columa)
         super().iniciarSimboloArreglo(tipo,dimensiones, valores)
+        self.linea=liena
+        self.columna=columa
 
     def SetValor(self, listaDimensiones, index, valores, dato_new):
 

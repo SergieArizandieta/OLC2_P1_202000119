@@ -5,7 +5,7 @@ from AST.TablaSimbolos.InstanciaArreglo import InstanciaArreglo
 
 class ArregloInstancia(Expresion):
 
-    def __init__(self, tipo, dimensiones ):
+    def __init__(self, tipo, dimensiones):
         self.tipo = tipo
         self.dimensiones = dimensiones
 

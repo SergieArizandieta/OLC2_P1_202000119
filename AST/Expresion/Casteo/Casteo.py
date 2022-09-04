@@ -4,9 +4,11 @@ from AST.TablaSimbolos.Tipos import tipo, RetornoType
 
 class Casteo(Expresion):
 
-    def __init__(self, expresion, tipo_destino):
+    def __init__(self, expresion, tipo_destino,linea,columna):
         self.expresion = expresion
         self.tipo_destino = tipo_destino
+        self.linea = linea
+        self.columna = columna
 
     def ObtenerValor(self, controlador, ts):
         return_exp1: RetornoType = self.expresion.ObtenerValor(controlador, ts)

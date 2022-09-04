@@ -1,8 +1,8 @@
 class Simbolos() :
 
-    def __init__(self):
-        self.linea = 0
-        self.columna = 0
+    def __init__(self,linea,columna):
+        self.linea = linea
+        self.columna = columna
         self.id = ""
         self.valor = 0
         self.tipo =  None

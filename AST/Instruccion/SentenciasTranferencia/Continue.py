@@ -4,6 +4,9 @@ from AST.TablaSimbolos.Tipos import RetornoType,tipo
 
 class Continue(Intruccion):
 
+    def __init__(self,linea,columna):
+        self.linea=linea
+        self.columna=columna
 
     def EjecutarInstruccion(self, controlador, ts):
         print(" Se encontro con un continue: ")

@@ -5,11 +5,13 @@ from AST.Expresion.Identificador import Identificador
 
 class Funcion(Intruccion):
 
-    def __init__(self, identificador, tipo, parametros, instrucciones):
+    def __init__(self, identificador, tipo, parametros, instrucciones,linea,columna):
         self.identificador = identificador
         self.tipo = tipo
         self.parametros = parametros
         self.instrucciones = instrucciones
+        self.linea=linea
+        self.columna=columna
 
     def EjecutarInstruccion(self, controlador, ts):
         print("Intrucciones de : ", self.identificador)

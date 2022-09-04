@@ -4,11 +4,13 @@ from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos
 
 class BloqueMatch(Intruccion,Expresion):
 
-    def __init__(self, matches, instrucciones,condicion):
+    def __init__(self, matches, instrucciones,condicion,linea,columna):
         self.matches = matches
         self.instrucciones = instrucciones
         self.condicion=condicion
         self.ts_local = None
+        self.linea=linea
+        self.columna=columna
 
     def EjecutarInstruccion(self, controlador, ts):
         #print("Se ejecuto instucccion con: ", ("ts","tslocal")[self.condicion])

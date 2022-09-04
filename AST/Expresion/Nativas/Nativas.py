@@ -8,9 +8,11 @@ import copy
 
 class Nativas(Expresion):
 
-    def __init__(self, expresion, funcion):
+    def __init__(self, expresion, funcion,linea,columna):
         self.expresion = expresion
         self.funcion = funcion
+        self.linea=linea
+        self.columna = columna
 
     def ObtenerValor(self, controlador, ts):
 

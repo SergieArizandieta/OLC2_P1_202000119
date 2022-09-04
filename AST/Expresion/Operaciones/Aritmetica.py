@@ -4,8 +4,10 @@ from AST.TablaSimbolos.Tipos import tipo,RetornoType
 
 
 class Aritmetica(Operacion, Expresion):
-    def __init__(self, exp1, signo, exp2, expU=False):
+    def __init__(self, exp1, signo, exp2, expU=False,linea=0,columna=0):
         super().__init__(exp1, signo, exp2, expU)
+        self.linea= linea
+        self.columna = columna
 
     def ObtenerValor(self, controlador, ts):
 

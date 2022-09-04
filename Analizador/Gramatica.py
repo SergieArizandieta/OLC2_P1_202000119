@@ -365,11 +365,11 @@ def p_star_struct(t):
 
 def p_definition_strct(t):
     ''' definition_strct :  ID LI list_struct_var LD'''
-    t[0] = DeclararStruct.DeclararStruct(t[1], t[3])
+    t[0] = DeclararStruct.DeclararStruct(t[1], t[3],t.lexer.lineno,t.lexer.lexpos)
 
 def p_definition_strct_v2(t):
     ''' definition_strct_v2 :  ID LI list_struct_var LD'''
-    t[0] = InstanciaStruct.InstanciaStruct(t[1], t[3])
+    t[0] = InstanciaStruct.InstanciaStruct(t[1], t[3],t.lexer.lineno,t.lexer.lexpos)
 
 def p_list_declaracion_coma(t):
     '''list_struct_var  : list_struct_var COMA  struct_var
@@ -386,11 +386,11 @@ def p_struct_var(t):
                 |  ID DP definition_strct_v2
                 | ID DP expresiones
                 '''
-    t[0] = Declaracion.Declaracion(t[1], t[3], None, None)
+    t[0] = Declaracion.Declaracion(t[1], t[3], None, None,False,t.lexer.lineno,t.lexer.lexpos)
 
 def p_start_for(t):
     '''start_for : FOR ID IN opciones_for LI lista_bloque LD '''
-    t[0]= For.For(t[2],t[4],t[6])
+    t[0]= For.For(t[2],t[4],t[6],t.lexer.lineno,t.lexer.lexpos)
 
 def p_opciones_for(t):
     '''opciones_for :  expresiones
@@ -408,7 +408,7 @@ def p_asignacion_arreglo(t):
 
 def p_declaracion_arreglo(t):
     '''declaracion_arreglo : LET mutable ID validacion_dimension IGUAL expresiones PYC '''
-    t[0]= DeclaracionArreglo.DeclaracionArreglo(t[2],t[3],t[4],t[6])
+    t[0]= DeclaracionArreglo.DeclaracionArreglo(t[2],t[3],t[4],t[6],t.lexer.lineno,t.lexer.lexpos)
 
 def p_validacion_dimension(t):
     '''validacion_dimension : DP dimensiones_def'''
@@ -439,7 +439,7 @@ def p_dimensiones_def(t):
 def p_acceso_arreglo(t):
     '''acceso_arreglo : ID dimensiones '''
     print("Deberia ser id: ", t[1], " dimensiones: ",t[2])
-    t[0] = AccesoArreglo.AccesoArreglo(t[1], t[2])
+    t[0] = AccesoArreglo.AccesoArreglo(t[1], t[2],None,t.lexer.lineno,t.lexer.lexpos)
 
 def p_dimensiones(t):
     '''dimensiones : dimensiones dimension
@@ -457,32 +457,32 @@ def p_dimension(t):
 
 def p_start_loop(t):
     '''start_loop : LOOP LI lista_bloque LD'''
-    t[0] = Loop.Loop(t[3])
+    t[0] = Loop.Loop(t[3],t.lexer.lineno,t.lexer.lexpos)
 
 def p_continue_ins(t):
     '''continue_ins : CONTINUE'''
-    t[0] = Continue.Continue()
+    t[0] = Continue.Continue(t.lexer.lineno,t.lexer.lexpos)
 
 def p_break_ins(t):
     '''break_ins : BREAK
                     | BREAK expresiones'''
     if len(t) == 2:
-        t[0] = Break.Break(None)
+        t[0] = Break.Break(None,t.lexer.lineno,t.lexer.lexpos)
     else:
-        t[0] = Break.Break(t[2])
+        t[0] = Break.Break(t[2],t.lexer.lineno,t.lexer.lexpos)
 
 def p_return_ins(t):
     '''return_ins : RETURN
                     | RETURN definition_strct_v2
                     | RETURN expresiones'''
     if len(t) == 2:
-        t[0] = Return.Return(None)
+        t[0] = Return.Return(None,t.lexer.lineno,t.lexer.lexpos)
     else:
-        t[0] = Return.Return(t[2])
+        t[0] = Return.Return(t[2],t.lexer.lineno,t.lexer.lexpos)
 
 def p_start_while(t):
     '''start_while : WHILE expresiones LI lista_bloque LD '''
-    t[0] = While.While(t[2],t[4])
+    t[0] = While.While(t[2],t[4],t.lexer.lineno,t.lexer.lexpos)
 
 def p_list_exp_ins(t):
     '''list_exp_ins : list_exp_ins bloque_exp
@@ -502,13 +502,13 @@ def p_start_if(t):
 
     print('Llego if gramatica ', len(t))
     if len(t) == 6:
-        t[0]= Ifs.Ifs(t[2],t[4],None,None)
+        t[0]= Ifs.Ifs(t[2],t[4],None,None,t.lexer.lineno,t.lexer.lexpos)
     elif len(t)==10:
-        t[0] = Ifs.Ifs(t[2], t[4], t[8],None)
+        t[0] = Ifs.Ifs(t[2], t[4], t[8],None,t.lexer.lineno,t.lexer.lexpos)
     if len(t) == 7:
-        t[0]= Ifs.Ifs(t[2],t[4],None,t[6])
+        t[0]= Ifs.Ifs(t[2],t[4],None,t[6],t.lexer.lineno,t.lexer.lexpos)
     if len(t) == 11:
-        t[0]= Ifs.Ifs(t[2],t[4],t[9],t[6])
+        t[0]= Ifs.Ifs(t[2],t[4],t[9],t[6],t.lexer.lineno,t.lexer.lexpos)
 
 def p_lista_if(t):
     ''' lista_elif : lista_elif else_if
@@ -522,12 +522,12 @@ def p_lista_if(t):
 
 def p_else_if(t):
     ''' else_if : ELSE IF expresiones  LI list_exp_ins LD '''
-    t[0] = Ifs.Ifs(t[3], t[5], None,None)
+    t[0] = Ifs.Ifs(t[3], t[5], None,None,t.lexer.lineno,t.lexer.lexpos)
 
 def p_start_match(t):
     '''start_match : MATCH expresiones LI matches LD '''
     print("Llego a match")
-    t[0] = Match.Match(t[2], t[4])
+    t[0] = Match.Match(t[2], t[4],t.lexer.lineno,t.lexer.lexpos)
 
 def p_matches(t):
     '''matches : matches bloque_match
@@ -546,10 +546,9 @@ def p_list_match(t):
     if len(t) == 6:
         print("Llego con coma =")
         print(t[4])
-        t[0] = BloqueMatch.BloqueMatch(t[1], [t[4]],False)
+        t[0] = BloqueMatch.BloqueMatch(t[1], [t[4]],False,t.lexer.lineno,t.lexer.lexpos)
     elif len(t) == 7:
-        t[0] = BloqueMatch.BloqueMatch(t[1], t[5],True
-                                       )
+        t[0] = BloqueMatch.BloqueMatch(t[1], t[5],True,t.lexer.lineno,t.lexer.lexpos)
 
 def p_simple_bloque_exp(t):
     ''' simple_bloque_exp : expresiones
@@ -581,10 +580,10 @@ def p_llamada(t):
 
     if len(t) == 4:
         print("=== llamda tipo 1")
-        t[0] = Llamada.Llamada(t[1], [])
+        t[0] = Llamada.Llamada(t[1], [],t.lexer.lineno,t.lexer.lexpos)
     else:
         print("=== llamda tipo 2")
-        t[0] = Llamada.Llamada(t[1], t[3])
+        t[0] = Llamada.Llamada(t[1], t[3],t.lexer.lineno,t.lexer.lexpos)
 
 def p_lista_expres(t):
     '''lista_expres : lista_expres COMA  expresiones
@@ -603,11 +602,11 @@ def p_funciones(t):
                 |  FUNCION ID PI parametros PD tipo_funcion LI lista_bloque LD'''
 
     if len(t) == 8:
-        t[0] = Funcion.Funcion(t[2], None, [], t[6])
+        t[0] = Funcion.Funcion(t[2], None, [], t[6],t.lexer.lineno,t.lexer.lexpos)
     elif len(t) == 9:
-        t[0] = Funcion.Funcion(t[2], t[5], [], t[7])
+        t[0] = Funcion.Funcion(t[2], t[5], [], t[7],t.lexer.lineno,t.lexer.lexpos)
     elif len(t) == 10:
-        t[0] = Funcion.Funcion(t[2], t[6], t[4], t[8])
+        t[0] = Funcion.Funcion(t[2], t[6], t[4], t[8],t.lexer.lineno,t.lexer.lexpos)
 
 def p_parametros(t):
     '''parametros : parametros COMA definiciones
@@ -629,13 +628,13 @@ def p_definiciones(t):
     print("Llego a definiciones, ",len(t))
 
     if len(t) == 4 :
-        t[0] = Declaracion.Declaracion(Identificador.Identificador(t[2]), None, t[3],True)
+        t[0] = Declaracion.Declaracion(Identificador.Identificador(t[2]), None, t[3],True,False,t.lexer.lineno,t.lexer.lexpos)
 
     elif len(t) == 3:
         if t.slice[2].type == 'tipado':
-            t[0] = Declaracion.Declaracion(Identificador.Identificador(t[1]), None, t[2], False)
+            t[0] = Declaracion.Declaracion(Identificador.Identificador(t[1]), None, t[2], False,False,t.lexer.lineno,t.lexer.lexpos)
         else:
-            t[0] = Declaracion.Declaracion(Identificador.Identificador(t[1]), None, t[2], True,True)
+            t[0] = Declaracion.Declaracion(Identificador.Identificador(t[1]), None, t[2], True,True,t.lexer.lineno,t.lexer.lexpos)
 
 def p_tipados_tipos(t):
     '''tipados_tipos :  DP REFERENCE dimensiones_def
@@ -688,16 +687,16 @@ def p_declaracion(t):
                         | LET mutable ID tipado IGUAL definition_strct_v2 PYC'''
 
     if len(t) == 6:
-        t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), None, t[4], t[2])
+        t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), None, t[4], t[2],False,t.lexer.lineno,t.lexer.lexpos)
 
     elif len(t) == 8:
 
-        t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), t[6], t[4], t[2])
+        t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), t[6], t[4], t[2],False,t.lexer.lineno,t.lexer.lexpos)
     else:
         if  t.slice[6].type == 'definition_strct_v2':
-            t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), t[6], tipo.STRUCT, t[2])
+            t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), t[6], tipo.STRUCT, t[2],False,t.lexer.lineno,t.lexer.lexpos)
         else:
-            t[0] = DeclaracionVector.DeclaracionVector(t[3],t[7],t[5],t[2])
+            t[0] = DeclaracionVector.DeclaracionVector(t[3],t[7],t[5],t[2],False,t.lexer.lineno,t.lexer.lexpos)
 
 def p_tipado_vect(t):
     '''tipado_vector : VECTOR MENOR tipado_vector MAYOR
@@ -711,7 +710,7 @@ def p_tipado_vect(t):
 def p_asignacio(t):
     '''asignacion      : ID IGUAL expresiones
                         '''
-    t[0] = Asignacion.Asignacion(t[1], t[3])
+    t[0] = Asignacion.Asignacion(t[1], t[3],t.lexer.lineno,t.lexer.lexpos)
 
 def p_mutable(t):
     '''mutable      : MUT
@@ -756,7 +755,7 @@ def p_tipo_datos(t):
     elif t[1] == "usize":
         t[0] = tipo.USIZE
     else:
-        t[0] = Identificador.Identificador(t[1])
+        t[0] = Identificador.Identificador(t[1],False,t.lexer.lineno,t.lexer.lexpos)
 
 def p_instruccion_imprimir(t):
     '''impresiones     : PRINTLN PI CADENA PD
@@ -767,20 +766,20 @@ def p_instruccion_imprimir(t):
     if len(t) == 5:
 
         if t[1] == 'println!':
-            t[0] = Imprimir.Imprimir(Primitivo.Primitivo(t[3], 'STRING'), True, [])
+            t[0] = Imprimir.Imprimir(Primitivo.Primitivo(t[3], 'STRING',t.lexer.lineno,t.lexer.lexpos), True, [],t.lexer.lineno,t.lexer.lexpos)
             # print("\nRe reocnocio: println! con el token: ", t[3], "\n")
         elif t[1] == 'print!':
-            t[0] = Imprimir.Imprimir(Primitivo.Primitivo(t[3], 'STRING'), False, [])
+            t[0] = Imprimir.Imprimir(Primitivo.Primitivo(t[3], 'STRING',t.lexer.lineno,t.lexer.lexpos), False, [],t.lexer.lineno,t.lexer.lexpos)
             # print("\nRe reocnocio: print! con el token: ", t[3], "\n")
 
     else:
 
         if t[1] == 'println!':
-            t[0] = Imprimir.Imprimir(t[3], True, t[5])
+            t[0] = Imprimir.Imprimir(t[3], True, t[5],t.lexer.lineno,t.lexer.lexpos)
             # print("\nRe reocnocio: println! con el token: ", t[5], "\n")
 
         elif t[1] == 'print!':
-            t[0] = Imprimir.Imprimir(t[3], False, t[5])
+            t[0] = Imprimir.Imprimir(t[3], False, t[5],t.lexer.lineno,t.lexer.lexpos)
             # print("\nRe reocnocio: print! con el token: ", t[5], "\n")
 
 def p_imprimir_lista_valores(t):
@@ -822,9 +821,9 @@ def p_repeticiones(t):
     '''repeticiones : CI expresiones PYC expresiones CD
                     | CI tipo_datos PYC expresiones CD '''
     if  t.slice[2].type == 'expresiones':
-        t[0] = Repeticiones.Repeticiones(t[2],t[4])
+        t[0] = Repeticiones.Repeticiones(t[2],t[4],False,t.lexer.lineno,t.lexer.lexpos)
     else:
-        t[0] = Repeticiones.Repeticiones(t[2], t[4],True)
+        t[0] = Repeticiones.Repeticiones(t[2], t[4],True,t.lexer.lineno,t.lexer.lexpos)
 
 def p_iniciando_vector(t):
     ''' iniciando_vector : VECTOR NEW
@@ -837,13 +836,13 @@ def p_iniciando_vector(t):
         t[0]= [t[4]]
     elif t.slice[2].type == 'CI':
         if t.slice[3].type == 'lista_Expresiones':
-            t[0] = VectorData.VectorData(t[3])
+            t[0] = VectorData.VectorData(t[3],None,t.lexer.lineno,t.lexer.lexpos)
         else:
-            t[0] = VectorData.VectorData(t[3],t[5])
+            t[0] = VectorData.VectorData(t[3],t[5],t.lexer.lineno,t.lexer.lexpos)
 
 def p_arreglo_init(t):
     '''arreglo_init : CI lista_Expresiones CD '''
-    t[0] = ArregloData.ArregloData(t[2])
+    t[0] = ArregloData.ArregloData(t[2],t.lexer.lineno,t.lexer.lexpos)
 
 def p_lista_expresiones(t):
     '''lista_Expresiones : lista_Expresiones COMA expresiones
@@ -874,7 +873,7 @@ def p_funcion_nativa(t):
         t[0]= t[3]
     else:
 
-        t[0] = Nativas.Nativas(t[1], t[3])
+        t[0] = Nativas.Nativas(t[1], t[3],t.lexer.lineno,t.lexer.lexpos)
 
 def p_nativas_vectores(t):
     '''nativas_vectores : PUSH PI expresiones PD
@@ -885,11 +884,11 @@ def p_nativas_vectores(t):
                         | CAPACITY '''
 
     if len(t)==5:
-        t [0] = NativasVectores.NativasVectores(t[3],t[1].lower())
+        t [0] = NativasVectores.NativasVectores(t[3],t[1].lower(),None,t.lexer.lineno,t.lexer.lexpos)
     elif len(t) == 7:
-        t[0] = NativasVectores.NativasVectores(t[3], t[1].lower(),t[5])
+        t[0] = NativasVectores.NativasVectores(t[3], t[1].lower(),t[5],t.lexer.lineno,t.lexer.lexpos)
     else:
-        t[0] = NativasVectores.NativasVectores(None, t[1].lower())
+        t[0] = NativasVectores.NativasVectores(None, t[1].lower(),None,t.lexer.lineno,t.lexer.lexpos)
 
 def p_nativas(t):
     '''nativas      : ABS
@@ -912,9 +911,9 @@ def p_acceso_struct(t):
         aux.append(x)
 
     if len(t) == 3:
-        t[0] = AccesoStruct.AccesoStruct(None, aux, None)
+        t[0] = AccesoStruct.AccesoStruct(None, aux, None,t.lexer.lineno,t.lexer.lexpos)
     else:
-        t[0] = AccesoStruct.AccesoStruct(None, aux, t[4])
+        t[0] = AccesoStruct.AccesoStruct(None, aux, t[4],t.lexer.lineno,t.lexer.lexpos)
 
 
 def p_list_acceso_struck(t):
@@ -936,12 +935,12 @@ def p_expre_logica(t):
                     | NOT  expresiones'''
     if len(t) == 3:
         if t.slice[1].type == 'NOT':
-            t[0] = Logica.Logica(t[2], "!", None, True)
+            t[0] = Logica.Logica(t[2], "!", None, True,t.lexer.lineno,t.lexer.lexpos)
     elif len(t) == 4:
         if t.slice[2].type == 'OR':
-            t[0] = Logica.Logica(t[1], "||", t[3], False)
+            t[0] = Logica.Logica(t[1], "||", t[3], False,t.lexer.lineno,t.lexer.lexpos)
         elif t.slice[2].type == 'AND':
-            t[0] = Logica.Logica(t[1], "&&", t[3], False)
+            t[0] = Logica.Logica(t[1], "&&", t[3], False,t.lexer.lineno,t.lexer.lexpos)
 
 def p_expre_relacional(t):
     '''expre_relacional : expresiones MAYORIGUAL expresiones
@@ -953,17 +952,17 @@ def p_expre_relacional(t):
 
     if len(t) == 4:
         if t[2] == ">=":
-            t[0] = Relacional.Relacional(t[1], ">=", t[3], False)
+            t[0] = Relacional.Relacional(t[1], ">=", t[3], False,t.lexer.lineno,t.lexer.lexpos)
         elif t[2] == ">":
-            t[0] = Relacional.Relacional(t[1], ">", t[3], False)
+            t[0] = Relacional.Relacional(t[1], ">", t[3], False,t.lexer.lineno,t.lexer.lexpos)
         elif t[2] == "<=":
-            t[0] = Relacional.Relacional(t[1], "<=", t[3], False)
+            t[0] = Relacional.Relacional(t[1], "<=", t[3], False,t.lexer.lineno,t.lexer.lexpos)
         elif t[2] == "<":
-            t[0] = Relacional.Relacional(t[1], "<", t[3], False)
+            t[0] = Relacional.Relacional(t[1], "<", t[3], False,t.lexer.lineno,t.lexer.lexpos)
         elif t[2] == "==":
-            t[0] = Relacional.Relacional(t[1], "==", t[3], False)
+            t[0] = Relacional.Relacional(t[1], "==", t[3], False,t.lexer.lineno,t.lexer.lexpos)
         elif t[2] == "!=":
-            t[0] = Relacional.Relacional(t[1], "!=", t[3], False)
+            t[0] = Relacional.Relacional(t[1], "!=", t[3], False,t.lexer.lineno,t.lexer.lexpos)
 
 def p_expre_aritmetica(t):
     '''expre_aritmetica : RESTA expresiones %prec UMENOS
@@ -978,26 +977,26 @@ def p_expre_aritmetica(t):
 
     if len(t) == 3:
         if t[1] == "-":
-            t[0] = Aritmetica.Aritmetica(t[2], "-", 0, True)
+            t[0] = Aritmetica.Aritmetica(t[2], "-", 0, True,t.lexer.lineno,t.lexer.lexpos)
     elif len(t) == 4:
         if t[2] == "+":
-            t[0] = Aritmetica.Aritmetica(t[1], "+", t[3], False)
+            t[0] = Aritmetica.Aritmetica(t[1], "+", t[3], False,t.lexer.lineno,t.lexer.lexpos)
         elif t[2] == "-":
-            t[0] = Aritmetica.Aritmetica(t[1], "-", t[3], False)
+            t[0] = Aritmetica.Aritmetica(t[1], "-", t[3], False,t.lexer.lineno,t.lexer.lexpos)
         elif t[2] == "*":
-            t[0] = Aritmetica.Aritmetica(t[1], "*", t[3], False)
+            t[0] = Aritmetica.Aritmetica(t[1], "*", t[3], False,t.lexer.lineno,t.lexer.lexpos)
         elif t[2] == "/":
-            t[0] = Aritmetica.Aritmetica(t[1], "/", t[3], False)
+            t[0] = Aritmetica.Aritmetica(t[1], "/", t[3], False,t.lexer.lineno,t.lexer.lexpos)
         elif t[2] == "%":
-            t[0] = Aritmetica.Aritmetica(t[1], "%", t[3], False)
+            t[0] = Aritmetica.Aritmetica(t[1], "%", t[3], False,t.lexer.lineno,t.lexer.lexpos)
         elif t[1] == "(" and t[3] == ")":
             t[0] = t[2]
     elif len(t) == 8:
 
         if t[2] == "::pow":
-            t[0] = Aritmetica.Aritmetica(t[4], "^", t[6], False)
+            t[0] = Aritmetica.Aritmetica(t[4], "^", t[6], False,t.lexer.lineno,t.lexer.lexpos)
         elif t[2] == "::powf":
-            t[0] = Aritmetica.Aritmetica(t[4], "^f", t[6], False)
+            t[0] = Aritmetica.Aritmetica(t[4], "^f", t[6], False,t.lexer.lineno,t.lexer.lexpos)
 
 
 def p_datos_cast(t):
@@ -1007,7 +1006,7 @@ def p_datos_cast(t):
     if len(t) == 2:
         t[0] = t[1]
     else:
-        t[0]= Casteo.Casteo(t[1],t[3])
+        t[0]= Casteo.Casteo(t[1],t[3],t.lexer.lineno,t.lexer.lexpos)
 
 
 
@@ -1023,23 +1022,23 @@ def p_datos(t):
             | REFER CADENA'''
 
     if t.slice[1].type == 'ENTERO':
-        t[0] = Primitivo.Primitivo(t[1], 'ENTERO')
+        t[0] = Primitivo.Primitivo(t[1], 'ENTERO',t.lexer.lineno,t.lexer.lexpos)
     elif t.slice[1].type == 'FLOAT':
-        t[0] = Primitivo.Primitivo(t[1], 'DECIMAL')
+        t[0] = Primitivo.Primitivo(t[1], 'DECIMAL',t.lexer.lineno,t.lexer.lexpos)
     elif t.slice[1].type == 'CADENA':
-        t[0] = Primitivo.Primitivo(t[1], 'DIRSTRING')
+        t[0] = Primitivo.Primitivo(t[1], 'DIRSTRING',t.lexer.lineno,t.lexer.lexpos)
     elif t.slice[1].type == 'TRUE':
-        t[0] = Primitivo.Primitivo(True, 'BOOLEANO')
+        t[0] = Primitivo.Primitivo(True, 'BOOLEANO',t.lexer.lineno,t.lexer.lexpos)
     elif t.slice[1].type == 'FALSE':
-        t[0] = Primitivo.Primitivo(False, 'BOOLEANO')
+        t[0] = Primitivo.Primitivo(False, 'BOOLEANO',t.lexer.lineno,t.lexer.lexpos)
     elif t.slice[1].type == 'CARACTER':
-        t[0] = Primitivo.Primitivo(t[1], 'CARACTER')
+        t[0] = Primitivo.Primitivo(t[1], 'CARACTER',t.lexer.lineno,t.lexer.lexpos)
     elif t.slice[1].type == 'ID':
-        t[0] = Identificador.Identificador(t[1])
+        t[0] = Identificador.Identificador(t[1],False,t.lexer.lineno,t.lexer.lexpos)
     elif t.slice[1].type == 'REFERENCE':
-        t[0] = Identificador.Identificador(t[2], True)
+        t[0] = Identificador.Identificador(t[2], True,t.lexer.lineno,t.lexer.lexpos)
     else:
-        t[0] = Primitivo.Primitivo(t[2], 'DIRSTRING')
+        t[0] = Primitivo.Primitivo(t[2], 'DIRSTRING',t.lexer.lineno,t.lexer.lexpos)
 
 def p_error(t):
     try:
