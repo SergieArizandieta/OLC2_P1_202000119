@@ -1,4 +1,3 @@
-
 struct Points {
     right : i64,
     left : i64
@@ -101,6 +100,57 @@ fn InsertLast(val : i64, actualDL : &mut Vec<Node>, valores: &mut ValoresPiv){
 }
 
 
+
+fn InsertInto(val : i64, pos:i64, actualDL : &mut Vec<Node>, valores: &mut ValoresPiv){
+
+ 
+    let mut i : i64 = 0;
+
+    if (valores.first == -1) || (pos == 0){
+        InsertFirst(val,actualDL,valores);
+    }else if ((valores.count - 1) == pos) {
+        InsertLast(val,actualDL,valores);
+    } else{
+        
+        // root = actualDL[first];
+        
+        //root
+        let mut indice:i64 = actualDL[valores.first as usize].idx;
+        let mut auxIndice = 0;
+        let mut rootIndice:i64 = indice;
+        
+
+        loop {
+            
+            auxIndice = actualDL[rootIndice as usize].idx;
+            let otro:i64 = actualDL[rootIndice as usize].point.right;
+            rootIndice = actualDL[otro as usize].idx;
+            i = i + 1;
+            if i == pos {
+                break;
+            }
+        }
+        
+       
+        let posicionNueva = valores.count;
+ 
+        actualDL[auxIndice as usize].point.right = posicionNueva;
+
+ 
+        actualDL[rootIndice as usize].point.left = posicionNueva ;
+
+        actualDL[valores.count as usize].idx = valores.count;
+        actualDL[valores.count as usize].val = val;
+        actualDL[valores.count as usize].point.left = auxIndice;
+        actualDL[valores.count as usize].point.right = rootIndice;
+        
+        valores.count = valores.count + 1;
+    }
+}
+
+
+
+
 fn PrintListNormal(actualDL : &mut Vec<Node>, valores: &mut ValoresPiv){
 
 
@@ -174,16 +224,16 @@ fn main (){
     InsertLast(9, &mut actualDL, &mut refs);
     println!("---Insertar al inicio---");
     InsertFirst(7, &mut actualDL, &mut refs);
-    println!("---Insertar al inicio --");
-    InsertFirst(8, &mut actualDL, &mut refs);
+    println!("---Insertar en posicion 2---");
+    InsertInto(8,2, &mut actualDL, &mut refs);
     println!("---Insertar al inicio---");
     InsertFirst(6, &mut actualDL, &mut refs);
     println!("---Insertar al final---");
     InsertLast(5, &mut actualDL, &mut refs);
     println!("---Insertar al inicio---");
     InsertFirst(4, &mut actualDL, &mut refs);
-    println!("---Insertar al inicio---");
-    InsertFirst(9, &mut actualDL, &mut refs);
+    println!("---Insertar en posicion 4---");
+    InsertInto(3,4, &mut actualDL, &mut refs);
     
     println!("Primero: {},  Ultimo: {}, Tamaño: {}",  refs.first,refs.last, refs.count);
     
