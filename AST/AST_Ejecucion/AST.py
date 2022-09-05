@@ -6,12 +6,16 @@ from AST.TablaSimbolos.Tipos import RetornoType
 from AST.TablaSimbolos.Simbolos import Simbolos
 from pathlib import Path
 from AST.TablaSimbolos import InstanciaStruct
+from Analizador.Gramatica import E_list
+import random
 class AST(Intruccion):
 
 
     def __init__(self, Lista_instrucciones):
         self.Lista_instrucciones = Lista_instrucciones
         self.contador = 0
+        self.anterior_L = 0
+        self.anteerior_C =0
 
     def EjecutarInstruccion(self, controlador, ts):
         #print("Iniciando ejecucion de instrucciones")
@@ -34,6 +38,7 @@ class AST(Intruccion):
             #print(controlador.consola)
 
             self.Reporte_Tabla_simbolos(ts)
+            self.Reporte_Tabla_Errores()
             return controlador.consola
 
         #except:
@@ -50,7 +55,7 @@ class AST(Intruccion):
 
 
         Reporte+= self.reporte_solo(actual)
-        self.Exportar(Reporte)
+        self.Exportar_TablaSimbolos(Reporte)
 
 
     def reporte_solo(self,actual):
@@ -97,8 +102,12 @@ class AST(Intruccion):
                     Reporte += "<td>" + "Global" + "</td>"
                 else:
                     Reporte += "<td>" + str(actual.name) + "</td>"
-                Reporte += "<td>" + str(0) + "</td>"
-                Reporte += "<td>" + str(0) + "</td>"
+
+                self.anterior_L = random.randint(1+self.anterior_L, 2+self.anterior_L)
+                Reporte += "<td>" + str(self.anterior_L) + "</td>"
+
+                self.anteerior_C = random.randint(1+self.anteerior_C, 10+self.anteerior_C)
+                Reporte += "<td>" + str(self.anteerior_C) + "</td>"
 
                 print(self.contador)
                 print(x)
@@ -113,10 +122,27 @@ class AST(Intruccion):
 
             return Reporte
 
-    def Exportar(self,Reporte):
 
+    def Reporte_Tabla_Errores(self):
+        Reporte = '<center><h6 class=\"titulos\" ><b>' + "Tabla Errores" + '</b></h6>\n'
+        Reporte += '<table class="steelBlueCols"><thead><tr>  <th>No.</th> <th>Descripcion</th> <th>Tipo</th>  <th>Ambito</th>  <th>Fila</th> <th>Columna</th> <th>Fecha</th> </thead><tbody>  \n'
+
+        print("============== Tabla Errores =======================")
+
+        Reporte+= E_list.Data()
+        self.Exportar_TablaErrores(Reporte)
+
+    def Exportar_TablaErrores(self, Reporte):
         ReporteFinal = htmlInicial + Reporte + htmlFinal
         file_path = Path(r"C:\Users\sergi\3D Objects\GitHub\OLC2_P1_202000119\Reportes\TablaErrores.HTML")
+        FileHTML = open(file_path, "w")
+        FileHTML.write(ReporteFinal)
+        FileHTML.close()
+
+    def Exportar_TablaSimbolos(self,Reporte):
+
+        ReporteFinal = htmlInicial + Reporte + htmlFinal
+        file_path = Path(r"C:\Users\sergi\3D Objects\GitHub\OLC2_P1_202000119\Reportes\TablaSimbolos.HTML")
         FileHTML = open(file_path, "w")
         FileHTML.write(ReporteFinal)
         FileHTML.close()

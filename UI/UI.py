@@ -31,7 +31,7 @@ def ventanas():
 
             CodeText = CodeTxt.get("1.0", 'end-1c')
 
-            CodeText = entrada
+            #CodeText = entrada
             instrucciones = g.parse(CodeText)
 
 

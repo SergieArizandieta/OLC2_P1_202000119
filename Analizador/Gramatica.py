@@ -1,4 +1,6 @@
 from AST.Expresion.Casteo.Casteo import Casteo
+from AST.TablaErrores import TablaErrores
+E_list = TablaErrores()
 
 reservadas = {
     # ACCESO
@@ -237,9 +239,14 @@ def t_newline(t):
 
 
 def t_error(t):
+    E_list.agregar_error("El caracter" + str(t.value[0]) +" no es aceptado por analizador", 0, " Lectura de entrada ", t.lexer.lineno,find_column(t.value, t))
+    E_list.print_errores()
     print("Error lexico ", t.value[0])
     t.lexer.skip(1)
 
+def find_column(input, token):
+    line_start = input.rfind('\n', 0, token.lexpos) + 1
+    return (token.lexpos - line_start) + 1
 
 # Construyendo el analizador léxico
 import ply.lex as lex
@@ -1044,6 +1051,9 @@ def p_datos(t):
 def p_error(t):
     try:
         print("\n========================= Error sintáctico en '%s'" % t.value, " =========================")
+        E_list.agregar_error("No se esperaba el caracter: " + str(t.value) + ", se ignoro", 1, " Lectura de entrada ",
+                             t.lexer.lineno, t.lexer.lexpos)
+        E_list.print_errores()
     except:
         print("")
 
