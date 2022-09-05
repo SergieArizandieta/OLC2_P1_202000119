@@ -8,7 +8,6 @@ from pathlib import Path
 from AST.TablaSimbolos import InstanciaStruct
 from Analizador.Gramatica import E_list
 import random
-from AST.TablaErrores import TablaErrores
 
 class AST(Intruccion):
 
@@ -23,7 +22,7 @@ class AST(Intruccion):
         #print("Iniciando ejecucion de instrucciones")
             print("=== Iniciando ejecucion de instrucciones ==")
 
-            E_list.reiniciar()
+
         #try:
 
 

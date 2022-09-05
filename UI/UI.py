@@ -22,7 +22,7 @@ def ventanas():
             exit()
 
         def Run_code():
-
+            g.E_list.reiniciar()
             ConsoleTxt.configure(state='normal')
             ConsoleTxt.delete('1.0', END)
             ConsoleTxt.configure(state='disabled')
