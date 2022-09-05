@@ -1,7 +1,7 @@
 from AST.Abstracto.Expresion import Expresion
 from AST.Expresion.Operaciones.Operacion import operador, Operacion
 from AST.TablaSimbolos.Tipos import tipo,RetornoType
-
+from Analizador.Gramatica import *
 
 class Aritmetica(Operacion, Expresion):
     def __init__(self, exp1, signo, exp2, expU=False):

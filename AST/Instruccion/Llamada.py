@@ -4,6 +4,7 @@ from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos, Simbolos
 from AST.Instruccion import Funcion
 from AST.TablaSimbolos.Tipos import RetornoType
 from AST.Expresion.Identificador import Identificador
+from Analizador.Gramatica import *
 
 class Llamada(Intruccion, Expresion):
 
@@ -86,6 +87,9 @@ class Llamada(Intruccion, Expresion):
                         print("= Simbolo id: ", aux_id, " valor: ",aux_exp_valor, " tipo ",aux_tipo)
                         ts_loca.Agregar_Simbolo(aux_id, simbolo)
                     else:
+                        E_list.agregar_error("Se intento asigar un dato: "+ str(aux_exp_tipo) + " a un parametro: " + str(aux_tipo), 2, ts.name,
+                                             0, 0)
+                        E_list.print_errores()
                         return False
                 else:
                     print("Se llego")
@@ -98,9 +102,16 @@ class Llamada(Intruccion, Expresion):
                             aux_tipo.reverse()
                             for x in range(0,len(aux_tipo)-1):
                                 if aux_tipo[x].valor != aux_exp_data.dimensiones[x]:
+                                    E_list.agregar_error("No se cumplio con los parametros" , 2, ts.name,0, 0)
+                                    E_list.print_errores()
                                     return False
                             aux_tipo.reverse()
                             if tipo_array != aux_exp_data.tipo:
+                                E_list.agregar_error(
+                                    "Se intento asigar un dato: " + str(aux_exp_data.tipo) + " a un parametro: " + str(
+                                        aux_tipo), 2, ts.name,
+                                    0, 0)
+                                E_list.print_errores()
                                 return False
 
                             if (aux_exp.referencia or aux_exp_data.referencia) and aux_mut:
@@ -124,6 +135,11 @@ class Llamada(Intruccion, Expresion):
 
 
                             if tipo_array != aux_exp_data.tipo:
+                                E_list.agregar_error(
+                                    "Se intento asigar un dato: " + str(tipo_array) + " a un parametro: " + str(
+                                        aux_exp_data.tipo), 2, ts.name,
+                                    0, 0)
+                                E_list.print_errores()
                                 return False
 
                             if (aux_exp.referencia or aux_exp_data.referencia)and aux_mut:

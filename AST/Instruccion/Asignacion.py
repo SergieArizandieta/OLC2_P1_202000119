@@ -14,4 +14,4 @@ class Asignacion(Intruccion):
             ValorExpresion = Expression.valor
             TipoExpresion = Expression.tipo
 
-            ts.Actualizar_Simbolo(self.identificador,TipoExpresion,ValorExpresion)
+            ts.Actualizar_Simbolo(self.identificador,TipoExpresion,ValorExpresion,ts.name)

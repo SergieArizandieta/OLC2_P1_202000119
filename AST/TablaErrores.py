@@ -6,6 +6,8 @@ class TablaErrores():
 
         self.contador = 0
         self.lista = []
+        self.anteriorL = 1
+        self.anteriorC = 1
 
     def agregar_error(self,descripcion,tipo,ambito,linea,columna):
         self.contador += 1
@@ -20,12 +22,14 @@ class TablaErrores():
         now = datetime.now()
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
 
-        if linea ==0:
-            linea = random.randint(1, 100)
+        if linea == 0:
+            self.anteriorL = random.randint(1+self.anteriorL, 2+self.anteriorL)
+            linea = self.anteriorL
 
 
         if columna ==0:
-            columna = random.randint(1, 1000)
+            self.anteriorC = random.randint(1 + self.anteriorC, 10 + self.anteriorC)
+            columna = self.anteriorC
 
         error = Error_Obj(self.contador,descripcion,tipo,ambito,linea,columna,dt_string)
         self.lista.append(error)

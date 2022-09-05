@@ -1,5 +1,5 @@
 from AST.TablaSimbolos.Simbolos import Simbolos
-
+from Analizador.Gramatica import *
 
 class TablaDeSimbolos():
 
@@ -53,7 +53,7 @@ class TablaDeSimbolos():
 
         return None
 
-    def Actualizar_Simbolo(self,id, tipo,valor):
+    def Actualizar_Simbolo(self,id, tipo,valor,ambito):
         ts = self
         while ts is not None:
             existe = ts.tabla.get(id)
@@ -64,6 +64,16 @@ class TablaDeSimbolos():
                     ts.tabla[id].valor = valor
                     break
                 else:
+                    if not existe.mut:
+                        E_list.agregar_error("Se intento actulizar la varible inmutable : " + str(id), 2, ambito, 0,
+                                             0)
+                        E_list.print_errores()
+
+                    if existe.tipo != tipo:
+                        E_list.agregar_error(
+                            "Se intento actulizar la varible " + str(id) + " a distinto tipo de: " + str(
+                                existe.tipo) + " a " + str(tipo), 2, ambito, 0, 0)
+                        E_list.print_errores()
                     print("Los tipos no coinciden o la varible es inmutable")
 
 
