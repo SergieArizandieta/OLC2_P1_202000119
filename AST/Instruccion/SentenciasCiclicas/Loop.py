@@ -6,10 +6,8 @@ from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos
 
 class Loop(Intruccion,Expresion):
 
-    def __init__(self, lista_instrucciones,linea,columna):
+    def __init__(self, lista_instrucciones):
         self.lista_instrucciones = lista_instrucciones
-        self.linea=linea
-        self.columna=columna
 
     def ObtenerValor(self, controlador, ts):
         print("Llego a loop")

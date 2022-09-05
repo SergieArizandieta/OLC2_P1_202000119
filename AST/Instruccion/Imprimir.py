@@ -8,12 +8,10 @@ from AST.Expresion.Arreglo.AccesoArreglo import AccesoArreglo
 from AST.Expresion.Struct.AccesoStruct import AccesoStruct
 class Imprimir(Intruccion):
 
-    def __init__(self,  expresion, tipo, lista,linea,columna):
+    def __init__(self,  expresion, tipo, lista):
         self.expresion = expresion
         self.tipo = tipo
         self.lista =lista
-        self.linea=linea
-        self.columna=columna
 
     def EjecutarInstruccion(self, controlador, ts):
 

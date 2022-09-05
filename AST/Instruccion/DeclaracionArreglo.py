@@ -5,14 +5,12 @@ from colorama import Style
 from AST.TablaSimbolos.Tipos import tipo, RetornoType
 
 class DeclaracionArreglo(Intruccion):
-    def __init__(self, mutable, identificador, dimensiones, expresion,linea,columna):
+    def __init__(self, mutable, identificador, dimensiones, expresion):
         self.mutable = mutable
         self.identificador = identificador
         self.dimensiones = dimensiones
         self.expresion = expresion
         self.tipo = None
-        self.linea=linea
-        self.columna=columna
 
     def EjecutarInstruccion(self, controlador, ts):
         print(Fore.BLUE + Style.BRIGHT + "Llegpo a declaracion arreglo" + Style.RESET_ALL)

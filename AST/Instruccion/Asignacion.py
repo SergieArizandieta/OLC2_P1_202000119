@@ -2,11 +2,9 @@ from AST.Abstracto.Instruccion import Intruccion
 from AST.TablaSimbolos.Tipos import RetornoType
 
 class Asignacion(Intruccion):
-    def __init__(self,identificador,valor,linea,columna):
+    def __init__(self,identificador,valor):
         self.identificador=identificador
         self.valor = valor
-        self.linea=linea
-        self.columna=columna
 
 
     def EjecutarInstruccion(self, controlador, ts):

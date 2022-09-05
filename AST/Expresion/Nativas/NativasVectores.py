@@ -12,13 +12,11 @@ class NativasVectores(Expresion,Intruccion):
     def EjecutarInstruccion(self, controlador, ts):
         self.ObtenerValor(controlador,ts)
 
-    def __init__(self, expresion1, funcion, expresion2 = None,linea=0,columna=0):
+    def __init__(self, expresion1, funcion, expresion2 = None):
         self.exp1 = expresion1
         self.exp2 = expresion2
         self.funcion = funcion
         self.expresion = None
-        self.linea= linea
-        self.columna = columna
 
     def ObtenerValor(self, controlador, ts):
         if self.exp1 is not None:

@@ -8,12 +8,10 @@ from AST.Expresion.Repeticiones import Repeticiones
 import copy
 
 class InstanciaStruct(Expresion):
-    def __init__(self, id, asignaciones,linea,colmna):
+    def __init__(self, id, asignaciones):
         self.identificador = id
         self.asignaciones = asignaciones
         self.diccionario = 0
-        self.linea=linea
-        self.columna=colmna
 
     def ObtenerValor(self, controlador, ts):
         struct = ts.ObtenerSimbolo(self.identificador)

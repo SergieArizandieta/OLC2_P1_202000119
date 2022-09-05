@@ -5,10 +5,8 @@ from AST.TablaSimbolos.InstanciaArreglo import InstanciaArreglo
 
 class ArregloData(Expresion):
 
-    def __init__(self,expresiones,linea,columna):
+    def __init__(self,expresiones):
         self.expresiones=expresiones
-        self.linea=linea
-        self.columna = columna
 
     def ObtenerValor(self, controlador, ts):
         print("=== Llego a arreglo data")
@@ -55,6 +53,6 @@ class ArregloData(Expresion):
 
                 valores.insert(i, instanciaArray.valores)
 
-        instanciaArrayRetorno = InstanciaArreglo(tipoFinal, listaDimensiones, valores,self.linea,self.columna)
+        instanciaArrayRetorno = InstanciaArreglo(tipoFinal, listaDimensiones, valores)
         return RetornoType(instanciaArrayRetorno, t.ARRAY)
 

@@ -7,11 +7,9 @@ from AST.Expresion.Identificador import Identificador
 
 class Llamada(Intruccion, Expresion):
 
-    def __init__(self, identificador, parametos,linea,columna):
+    def __init__(self, identificador, parametos):
         self.identificador = identificador
         self.parametos = parametos
-        self.linea=linea
-        self.columna=columna
 
     def EjecutarInstruccion(self, controlador, ts: TablaDeSimbolos):
         print("====Funcion=== como intruccion")

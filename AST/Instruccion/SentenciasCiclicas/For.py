@@ -4,12 +4,10 @@ from AST.TablaSimbolos.Tipos import RetornoType
 from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos,Simbolos
 from AST.TablaSimbolos.InstanciaArreglo import InstanciaArreglo
 class For(Intruccion):
-    def __init__(self,ID_Iterable,elementos,lista_instrucciones,linea,columna):
+    def __init__(self,ID_Iterable,elementos,lista_instrucciones):
         self.ID_Iterable = ID_Iterable
         self.elementos = elementos
         self.lista_instrucciones = lista_instrucciones
-        self.linea=linea
-        self.columna=columna
 
     def EjecutarInstruccion(self, controlador, ts):
         print("Con iteracion: ",self.ID_Iterable)
@@ -27,7 +25,7 @@ class For(Intruccion):
                 for i in valores:
                     print("iteracion: ", i)
                     ts_local = TablaDeSimbolos(ts, "for" + str(id(self)))
-                    newSimbolo = Simbolos(self.linea,self.columna)
+                    newSimbolo = Simbolos()
                     newSimbolo.SimboloPremitivo(self.ID_Iterable, i,tipo_array , False)
                     ts_local.Agregar_Simbolo(self.ID_Iterable, newSimbolo)
 
@@ -59,7 +57,7 @@ class For(Intruccion):
             for i in range(parametro1_valor,parametro2_valor):
                 print("iteracion: ", i)
                 ts_local = TablaDeSimbolos(ts, "for" + str(id(self)))
-                newSimbolo = Simbolos(self.linea,self.columna)
+                newSimbolo = Simbolos()
                 newSimbolo.SimboloPremitivo(self.ID_Iterable, i, tipo.ENTERO, False)
                 ts_local.Agregar_Simbolo(self.ID_Iterable,newSimbolo)
 

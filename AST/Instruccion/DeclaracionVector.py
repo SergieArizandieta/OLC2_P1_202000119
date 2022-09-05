@@ -10,15 +10,13 @@ from AST.Expresion.Identificador import Identificador
 
 class DeclaracionVector(Intruccion):
 
-    def __init__(self, id: Identificador, expresion, tipo  , mut = False, referencia = False,linea=0,columna=0):
+    def __init__(self, id: Identificador, expresion, tipo  , mut = False, referencia = False):
         self.identificador = id
         self.expresion = expresion
         self.tipo = tipo
         self.capacidad = 0
         self.mut = mut
         self.referencia = referencia
-        self.linea=linea
-        self.columna=columna
 
 
     def EjecutarInstruccion(self, controlador, ts):
@@ -57,7 +55,7 @@ class DeclaracionVector(Intruccion):
 
                 self.capacidad= self.expresion.pop(0).ObtenerValor(controlador, ts).valor
 
-                new_vector = InstanciaVector(self.tipo, 1, [],self.linea,self.columna)
+                new_vector = InstanciaVector(self.tipo, 1, [])
                 new_vector.withcapacity = self.capacidad
 
                 if isinstance(self.tipo, Identificador):

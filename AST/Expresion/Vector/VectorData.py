@@ -5,11 +5,9 @@ from AST.TablaSimbolos.InstanciaVector import InstanciaVector
 
 class VectorData(Expresion):
 
-    def __init__(self,expresiones,exp2=None,linea=0,columna=0):
+    def __init__(self,expresiones,exp2=None):
         self.expresiones=expresiones
         self.exp2 = exp2
-        self.linea=linea
-        self.columna=columna
 
     def ObtenerValor(self, controlador, ts):
         print("=== Llego a vector data")
@@ -57,7 +55,7 @@ class VectorData(Expresion):
     
                     valores.insert(i, instanciaArray.valores)
     
-            instanciaArrayRetorno = InstanciaVector(tipoFinal, listaDimensiones, valores,self.linea,self.columna)
+            instanciaArrayRetorno = InstanciaVector(tipoFinal, listaDimensiones, valores)
             return RetornoType(instanciaArrayRetorno, t.VECTOR)
         else:
             valor= []

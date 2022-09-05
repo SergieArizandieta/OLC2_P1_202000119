@@ -3,12 +3,10 @@ from AST.TablaSimbolos.Tipos import RetornoType,tipo
 from AST.Expresion.Arreglo import ArregloData
 from AST.TablaSimbolos.InstanciaArreglo import InstanciaArreglo
 class Repeticiones(Expresion):
-    def __init__(self,valor,numero,tipo = False,linea=0,columna=0):
+    def __init__(self,valor,numero,tipo = False):
         self.valor=valor
         self.numero=numero
         self.tipo =tipo
-        self.linea=linea
-        self.columna=columna
 
     def ObtenerValor(self, controlador, ts):
         if not self.tipo:

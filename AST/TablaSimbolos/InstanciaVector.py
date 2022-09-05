@@ -2,11 +2,9 @@ from AST.TablaSimbolos.Simbolos import Simbolos
 
 class InstanciaVector(Simbolos):
 
-    def __init__(self,tipo, dimensiones, valores:[],linea,columna):
+    def __init__(self,tipo, dimensiones, valores:[]):
         super().__init__()
         super().iniciarSimboloVector(tipo,dimensiones, valores)
-        self.linea=linea
-        self.columna=columna
 
     def SetValor(self, listaDimensiones, index, valores, dato_new):
 
