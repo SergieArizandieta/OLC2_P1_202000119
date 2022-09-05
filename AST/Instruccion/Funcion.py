@@ -2,7 +2,7 @@ from AST.Abstracto.Instruccion import Intruccion
 from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos
 from AST.TablaSimbolos.Tipos import RetornoType, tipo
 from AST.Expresion.Identificador import Identificador
-from Analizador.Gramatica import *
+from Analizador.Gramatica import E_list
 
 class Funcion(Intruccion):
 
@@ -21,8 +21,8 @@ class Funcion(Intruccion):
 
             if retorno is not None and isinstance(retorno, RetornoType):
                 if retorno.final == tipo.BREAK:
-                    E_list.agregar_error("Se utilizo sentencia BREAK fuera de sentencia ciclica" , 2,ts.name, 0, 0)
-                    E_list.print_errores()
+                    E_list.agregar_error("Se utilizo sentencia BREAK fuera de sentencia ciclica", 2, ts.name,
+                                         0, 0)
                     continue
 
                 if isinstance(self.tipo, Identificador):

@@ -9,6 +9,12 @@ class TablaErrores():
         self.anteriorL = 1
         self.anteriorC = 1
 
+    def reiniciar(self):
+        self.contador = 0
+        self.lista = []
+        self.anteriorL = 1
+        self.anteriorC = 1
+
     def agregar_error(self,descripcion,tipo,ambito,linea,columna):
         self.contador += 1
 

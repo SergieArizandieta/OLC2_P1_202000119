@@ -2,7 +2,7 @@ from AST.Abstracto.Instruccion import Intruccion
 from AST.Abstracto.Expresion import Expresion
 from AST.TablaSimbolos.Tipos import tipo,RetornoType
 from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos
-from Analizador.Gramatica import *
+from Analizador.Gramatica import E_list
 
 class Ifs(Intruccion,Expresion):
 
@@ -43,9 +43,9 @@ class Ifs(Intruccion,Expresion):
                     return self.Recorrer_ins(controlador, ts_local,self.bloque_else)
         else:
 
-            E_list.agregar_error("La expresion en if no es booleano : " + str(valor_Exp), 2, ts.name,0, 0)
+            E_list.agregar_error("La expresion en if no es booleano : " + str(valor_Exp), 2, ts.name,
+                                 0, 0)
             E_list.print_errores()
-            
     def Recorrer_ins(self,controlador,ts,lista):
         retorno = None
         for instruccion in lista:

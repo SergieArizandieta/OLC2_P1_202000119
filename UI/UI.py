@@ -8,6 +8,7 @@ from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos
 import io
 import webbrowser
 import os
+from AST.TablaErrores import TablaErrores
 opcion = ["No data"]
 def ventanas():
         global opcion
@@ -21,6 +22,7 @@ def ventanas():
             exit()
 
         def Run_code():
+
             ConsoleTxt.configure(state='normal')
             ConsoleTxt.delete('1.0', END)
             ConsoleTxt.configure(state='disabled')
