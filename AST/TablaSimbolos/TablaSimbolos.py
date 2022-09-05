@@ -9,9 +9,15 @@ class TablaDeSimbolos():
         self.tabla = {}
 
         # Solo para reportes
-        self.siguiente = None
+        self.siguiente = []
         if padre != None:
-            padre.siguiente = self
+            bandera = True
+            for x in padre.siguiente:
+                if x.name == self.name:
+                    bandera = False
+                    break
+            if bandera:
+                padre.siguiente.append(self)
 
     def Agregar_Simbolo(self, id, simbolo):
         print("Agregando: ", id, " con simbolo: ", simbolo, " en: ", self.name)

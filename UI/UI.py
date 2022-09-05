@@ -25,24 +25,28 @@ def ventanas():
             ConsoleTxt.delete('1.0', END)
             ConsoleTxt.configure(state='disabled')
 
+            f = io.open("../Analizador/entrada.txt", mode="r", encoding="utf-8")
+            entrada = f.read()
+            # instrucciones = g.parse(entrada)
+
             CodeText = CodeTxt.get("1.0", 'end-1c')
+
+            CodeText = entrada
             instrucciones = g.parse(CodeText)
 
 
             #messagebox.showinfo(title="Error", message="Ingrese un valor")
 
-            #f = io.open("../Analizador/entrada.txt", mode="r", encoding="utf-8")
-            #entrada = f.read()
-            #instrucciones = g.parse(entrada)
+
+
 
             ts = TablaDeSimbolos(None,"Main")
             controlador= Controlador()
             AST_ej = AST(instrucciones)
 
-
-            print("\nImprimeinedo arboles")
             consola = AST_ej.EjecutarInstruccion(controlador,ts)
-            print(consola)
+            #print(consola)
+
             ConsoleTxt.configure(state='normal')
             ConsoleTxt.insert("1.0",consola)
             ConsoleTxt.configure(state='disabled')
