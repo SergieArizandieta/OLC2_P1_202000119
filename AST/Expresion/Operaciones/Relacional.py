@@ -20,10 +20,13 @@ class Relacional(Operacion, Expresion):
 
         if self.operador == operador.MAYORIGUAL:
 
-            if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
+            if tipo_exp1 == t.ENTERO and  tipo_exp2 == t.ENTERO:
                 return RetornoType(valor_exp1 >= valor_exp2,t.BOOLEANO)
 
-            elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+            elif tipo_exp1 == t.DECIMAL and tipo_exp2 == t.DECIMAL :
+                return RetornoType(valor_exp1 >= valor_exp2,t.BOOLEANO)
+
+            elif (tipo_exp2 == t.USIZE or tipo_exp2 == t.ENTERO )  and (tipo_exp2 == t.USIZE or tipo_exp2 == t.ENTERO ):
                 return RetornoType(valor_exp1 >= valor_exp2,t.BOOLEANO)
 
             elif tipo_exp1 == t.STRING and tipo_exp2 == t.STRING:
@@ -37,11 +40,14 @@ class Relacional(Operacion, Expresion):
 
         elif self.operador == operador.MAYORQUE:
 
-            if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
+            if tipo_exp1 == t.ENTERO and  tipo_exp2 == t.ENTERO:
                 return RetornoType(valor_exp1 > valor_exp2, t.BOOLEANO)
 
-            elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+            elif tipo_exp1 == t.DECIMAL and tipo_exp2 == t.DECIMAL:
                 return RetornoType(valor_exp1 > valor_exp2, t.BOOLEANO)
+
+            elif (tipo_exp2 == t.USIZE or tipo_exp2 == t.ENTERO )  and (tipo_exp2 == t.USIZE or tipo_exp2 == t.ENTERO ) :
+                return RetornoType(valor_exp1 > valor_exp2,t.BOOLEANO)
 
             elif tipo_exp1 == t.STRING and tipo_exp2 == t.STRING:
                 return RetornoType(valor_exp1 > valor_exp2, t.BOOLEANO)
@@ -54,11 +60,14 @@ class Relacional(Operacion, Expresion):
 
         elif self.operador == operador.MENORIGUAL:
 
-            if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
+            if tipo_exp1 == t.ENTERO and  tipo_exp2 == t.ENTERO:
                 return RetornoType(valor_exp1 <= valor_exp2, t.BOOLEANO)
 
-            elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+            elif tipo_exp1 == t.DECIMAL and tipo_exp2 == t.DECIMAL:
                 return RetornoType(valor_exp1 <= valor_exp2, t.BOOLEANO)
+
+            elif (tipo_exp2 == t.USIZE or tipo_exp2 == t.ENTERO )  and (tipo_exp2 == t.USIZE or tipo_exp2 == t.ENTERO ):
+                return RetornoType(valor_exp1 <= valor_exp2,t.BOOLEANO)
 
             elif tipo_exp1 == t.STRING and tipo_exp2 == t.STRING:
                 return RetornoType(valor_exp1 <= valor_exp2, t.BOOLEANO)
@@ -71,11 +80,14 @@ class Relacional(Operacion, Expresion):
 
         elif self.operador == operador.MENORQUE:
 
-            if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
+            if tipo_exp1 == t.ENTERO and  tipo_exp2 == t.ENTERO:
                 return RetornoType(valor_exp1 < valor_exp2, t.BOOLEANO)
 
-            elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+            elif tipo_exp1 == t.DECIMAL and tipo_exp2 == t.DECIMAL:
                 return RetornoType(valor_exp1 < valor_exp2, t.BOOLEANO)
+
+            elif (tipo_exp2 == t.USIZE or tipo_exp2 == t.ENTERO ) and (tipo_exp2 == t.USIZE or tipo_exp2 == t.ENTERO ):
+                return RetornoType(valor_exp1 < valor_exp2,t.BOOLEANO)
 
             elif tipo_exp1 == t.STRING and tipo_exp2 == t.STRING:
                 return RetornoType(valor_exp1 < valor_exp2, t.BOOLEANO)
@@ -88,11 +100,14 @@ class Relacional(Operacion, Expresion):
 
         elif self.operador == operador.IGUALIGUAL:
 
-            if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
+            if tipo_exp1 == t.ENTERO and  tipo_exp2 == t.ENTERO:
                 return RetornoType(valor_exp1 == valor_exp2, t.BOOLEANO)
 
-            elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+            elif tipo_exp1 == t.DECIMAL and tipo_exp2 == t.DECIMAL:
                 return RetornoType(valor_exp1 == valor_exp2, t.BOOLEANO)
+
+            elif (tipo_exp2 == t.USIZE or tipo_exp2 == t.ENTERO )  and (tipo_exp2 == t.USIZE or tipo_exp2 == t.ENTERO ):
+                return RetornoType(valor_exp1 == valor_exp2,t.BOOLEANO)
 
             elif isinstance(valor_exp1, str) and isinstance(valor_exp2, str):
                 return RetornoType(valor_exp1 == valor_exp2, t.BOOLEANO)
@@ -102,11 +117,14 @@ class Relacional(Operacion, Expresion):
 
         elif self.operador == operador.DIFERENCIA:
 
-            if isinstance(valor_exp1, int) and isinstance(valor_exp2, int):
+            if tipo_exp1 == t.ENTERO and  tipo_exp2 == t.ENTERO:
                 return RetornoType(valor_exp1 != valor_exp2, t.BOOLEANO)
 
-            elif isinstance(valor_exp1, float) and isinstance(valor_exp2, float):
+            elif tipo_exp1 == t.DECIMAL and tipo_exp2 == t.DECIMAL:
                 return RetornoType(valor_exp1 != valor_exp2, t.BOOLEANO)
+
+            elif (tipo_exp2 == t.USIZE or tipo_exp2 == t.ENTERO )  and (tipo_exp2 == t.USIZE or tipo_exp2 == t.ENTERO ):
+                return RetornoType(valor_exp1 != valor_exp2,t.BOOLEANO)
 
             elif isinstance(valor_exp1, str) and isinstance(valor_exp2, str):
                 print(valor_exp1 != valor_exp2)

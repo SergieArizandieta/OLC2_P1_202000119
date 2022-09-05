@@ -1,3 +1,7 @@
+from AST.Expresion.Casteo.Casteo import Casteo
+from AST.TablaErrores import TablaErrores
+E_list = TablaErrores()
+
 reservadas = {
     # ACCESO
     'pub': 'PUBLICO',
@@ -8,6 +12,7 @@ reservadas = {
     'char': 'TIPOCHAR',
     'String': 'TIPOSTRING',
     '&str': 'DIRSTRING',
+    'usize': 'TIPOUSIZE',
     # CASTEO
     'as': 'AS',
     # IMPRIMIR
@@ -20,8 +25,8 @@ reservadas = {
     'fn': 'FUNCION',
     'main': 'MAIN',
     # FUNCIONES NATIVAS
-    'abs': 'ABS',
-    'sqrt': 'SQRT',
+    'abs()': 'ABS',
+    'sqrt()': 'SQRT',
     'to_string()': 'TOSTRING',
     'to_owned()': 'TOOWNED',
     'clone()': 'CLONE',
@@ -59,7 +64,9 @@ reservadas = {
     '::powf': 'POWF',
     # BOOLS
     'true': 'TRUE',
-    'false': 'FALSE'
+    'false': 'FALSE',
+    #
+    '&mut': 'REFERENCE'
 }
 
 tokens = [
@@ -137,6 +144,7 @@ t_IGUAL = r'='
 t_BARRA = r'\|'
 t_GBAJO = r'_'
 t_REFER = r'&'
+
 
 
 def t_FLOAT(t):
@@ -231,9 +239,14 @@ def t_newline(t):
 
 
 def t_error(t):
+    E_list.agregar_error("El caracter" + str(t.value[0]) +" no es aceptado por analizador", 0, " Lectura de entrada ", t.lexer.lineno,find_column(t.value, t))
+    E_list.print_errores()
     print("Error lexico ", t.value[0])
     t.lexer.skip(1)
 
+def find_column(input, token):
+    line_start = input.rfind('\n', 0, token.lexpos) + 1
+    return (token.lexpos - line_start) + 1
 
 # Construyendo el analizador léxico
 import ply.lex as lex
@@ -242,7 +255,7 @@ lexer = lex.lex()
 precedence = (
     ('left', 'OR'),
     ('left', 'AND'),
-    ('right', 'ABS', 'SQRT', 'TOSTRING', 'TOOWNED', 'CLONE'),
+    ('left', 'ABS', 'SQRT', 'TOSTRING', 'TOOWNED', 'CLONE','LEN'),
     ('left', 'MAYORIGUAL', 'MAYOR', 'MENORIGUAL', 'MENOR', 'IGUALDAD', 'DESIGUALDAD'),
     ('left', 'SUMA', 'RESTA'),
     ('left', 'MULTI', 'DIVI'),
@@ -275,9 +288,12 @@ def p_instruccion(t):
     '''instruccion  : funcion
                     | declaracion
                     | asignacion
+                    | declaracion_arreglo
+                    | star_struct
                     '''
 
     t[0] = t[1]
+
 
 def p_lista_bloque(t):
     ''' lista_bloque : lista_bloque bloque
@@ -297,12 +313,20 @@ def p_bloque(t):
                 | start_match
                 | start_if
                 | start_while
-                | return_ins PYC'''
+                | return_ins PYC
+                | break_ins PYC
+                | continue_ins PYC
+                | start_loop
+                | declaracion_arreglo
+                | asignacion_arreglo
+                | start_for
+                | funcion_nativa PYC
+                | '''
 
-    #start_match PYC | start_if PYC
-
-    #start_match
-    t[0] = t[1]
+    if len(t) > 1:
+        t[0] = t[1]
+    else:
+        t[0] = None
 
 def p_bloque_match(t):
     '''bloque_match : impresiones
@@ -311,25 +335,152 @@ def p_bloque_match(t):
                     | start_match
                     | start_if
                     | start_while
+                    | return_ins
+                    | start_loop
+                    | declaracion_arreglo
+                    | start_for
+                    |
                     '''
-    t[0]=t[1]
+    if len(t) >1 :
+        t[0]=t[1]
+    else:
+        t[0]= None
 
 '''xxx'''
 from AST.Expresion import Identificador
-from AST.Instruccion import Declaracion, Asignacion, Funcion, Llamada
+from AST.Instruccion import Declaracion, Asignacion, Funcion, Llamada, DeclaracionArreglo,DeclaracionVector
 from AST.TablaSimbolos.Tipos import tipo
-from AST.Expresion.Nativas import Nativas
+from AST.Expresion.Nativas import Nativas, NativasVectores
 from AST.Expresion.Operaciones import Logica
 from AST.Instruccion.Match import Match, BloqueMatch
 from AST.Expresion import Primitivo
 from AST.Instruccion import Imprimir
 from AST.Expresion.Operaciones import Aritmetica, Relacional
 from AST.Instruccion.SentenciasControl import Ifs
-from AST.Instruccion.SentenciasCiclicas import While
-from AST.Instruccion.SentenciasTranferencia import Return
+from AST.Instruccion.SentenciasCiclicas import While,Loop,For
+from AST.Instruccion.SentenciasTranferencia import Return,Break,Continue
+from AST.Expresion.Arreglo import ArregloData, AccesoArreglo
+from AST.Expresion.Casteo import  Casteo
+from AST.Expresion.Vector import VectorData
+from AST.TablaSimbolos import InstanciaStruct
+from AST.Expresion.Struct import AccesoStruct
+from AST.Expresion import DeclararStruct, Repeticiones
 '''zzz'''
+def p_star_struct(t):
+    ''' star_struct :  STRUCT definition_strct'''
+    t[0]= t[2]
+
+def p_definition_strct(t):
+    ''' definition_strct :  ID LI list_struct_var LD'''
+    t[0] = DeclararStruct.DeclararStruct(t[1], t[3])
+
+def p_definition_strct_v2(t):
+    ''' definition_strct_v2 :  ID LI list_struct_var LD'''
+    t[0] = InstanciaStruct.InstanciaStruct(t[1], t[3])
+
+def p_list_declaracion_coma(t):
+    '''list_struct_var  : list_struct_var COMA  struct_var
+                        | struct_var  '''
+    if len(t) > 2:
+        t[1].append(t[3])
+        t[0] = t[1]
+
+    else:
+        t[0] = [t[1]]
+
+def p_struct_var(t):
+    '''struct_var : ID DP tipo_datos
+                |  ID DP definition_strct_v2
+                | ID DP expresiones
+                '''
+    t[0] = Declaracion.Declaracion(t[1], t[3], None, None)
+
+def p_start_for(t):
+    '''start_for : FOR ID IN opciones_for LI lista_bloque LD '''
+    t[0]= For.For(t[2],t[4],t[6])
+
+def p_opciones_for(t):
+    '''opciones_for :  expresiones
+                    | expresiones PUNTO PUNTO expresiones'''
+
+    if len(t) == 2:
+        t[0]= [1,t[1]]
+    else:
+        t[0]= [2,t[1],t[4]]
+
+def p_asignacion_arreglo(t):
+    ''' asignacion_arreglo : acceso_arreglo IGUAL expresiones PYC '''
+    t[1].valor = t[3]
+    t[0] = t[1]
+
+def p_declaracion_arreglo(t):
+    '''declaracion_arreglo : LET mutable ID validacion_dimension IGUAL expresiones PYC '''
+    t[0]= DeclaracionArreglo.DeclaracionArreglo(t[2],t[3],t[4],t[6])
+
+def p_validacion_dimension(t):
+    '''validacion_dimension : DP dimensiones_def'''
+
+    if len(t) > 1:
+        t[0] = t[2]
+    else:
+        t[0] = None
+
+def p_dimensiones_def(t):
+    '''dimensiones_def :  CI dimensiones_def PYC expresiones CD
+                        | CI tipo_datos PYC expresiones CD '''
+
+
+    if t.slice[2].type == 'dimensiones_def':
+        print("Dimension: Se detcto expresion: ", t[2], " dimensiones: ", t[4])
+        t[2].append(t[4])
+        t[0] = t[2]
+
+    elif t.slice[2].type == 'tipo_datos':
+        print("Definicion: Se detcto tipo: ", t[2], " dimensiones: ",t[4])
+        if  t[0] is None:
+            t[0] = [t[2],t[4]]
+        else:
+            t[0].append(t[2])
+            t[0].append(t[4])
+
+def p_acceso_arreglo(t):
+    '''acceso_arreglo : ID dimensiones '''
+    print("Deberia ser id: ", t[1], " dimensiones: ",t[2])
+    t[0] = AccesoArreglo.AccesoArreglo(t[1], t[2])
+
+def p_dimensiones(t):
+    '''dimensiones : dimensiones dimension
+                    | dimension'''
+    if len(t) > 2:
+        t[1].append(t[2])
+        t[0] = t[1]
+
+    else:
+        t[0] = [t[1]]
+
+def p_dimension(t):
+    '''dimension : CI expresiones CD  '''
+    t[0] = t[2]
+
+def p_start_loop(t):
+    '''start_loop : LOOP LI lista_bloque LD'''
+    t[0] = Loop.Loop(t[3])
+
+def p_continue_ins(t):
+    '''continue_ins : CONTINUE'''
+    t[0] = Continue.Continue()
+
+def p_break_ins(t):
+    '''break_ins : BREAK
+                    | BREAK expresiones'''
+    if len(t) == 2:
+        t[0] = Break.Break(None)
+    else:
+        t[0] = Break.Break(t[2])
+
 def p_return_ins(t):
     '''return_ins : RETURN
+                    | RETURN definition_strct_v2
                     | RETURN expresiones'''
     if len(t) == 2:
         t[0] = Return.Return(None)
@@ -366,7 +517,6 @@ def p_start_if(t):
     if len(t) == 11:
         t[0]= Ifs.Ifs(t[2],t[4],t[9],t[6])
 
-
 def p_lista_if(t):
     ''' lista_elif : lista_elif else_if
                     | else_if'''
@@ -386,7 +536,6 @@ def p_start_match(t):
     print("Llego a match")
     t[0] = Match.Match(t[2], t[4])
 
-
 def p_matches(t):
     '''matches : matches bloque_match
                 | bloque_match'''
@@ -396,8 +545,6 @@ def p_matches(t):
 
     else:
         t[0] = [t[1]]
-
-
 
 def p_list_match(t):
     '''bloque_match :  varios_match IGUAL MAYOR simple_bloque_exp COMA
@@ -411,7 +558,6 @@ def p_list_match(t):
         t[0] = BloqueMatch.BloqueMatch(t[1], t[5],True
                                        )
 
-
 def p_simple_bloque_exp(t):
     ''' simple_bloque_exp : expresiones
                         | bloque_match'''
@@ -419,17 +565,15 @@ def p_simple_bloque_exp(t):
     print("Llego con coma = a un simeple ")
     print(t[1])
 
-
 def p_bloque_exp(t):
     ''' bloque_exp : bloque
                         | expresiones  '''
     t[0] = t[1]
 
-
 def p_varios_match(t):
     '''varios_match : varios_match BARRA expresiones
                     | expresiones
-                    | GBAJO'''
+                    | GBAJO '''
 
     if len(t) > 2:
         t[1].append(t[3])
@@ -449,7 +593,6 @@ def p_llamada(t):
         print("=== llamda tipo 2")
         t[0] = Llamada.Llamada(t[1], t[3])
 
-
 def p_lista_expres(t):
     '''lista_expres : lista_expres COMA  expresiones
                     | expresiones '''
@@ -460,7 +603,6 @@ def p_lista_expres(t):
 
     else:
         t[0] = [t[1]]
-
 
 def p_funciones(t):
     '''funcion  : FUNCION MAIN PI PD LI lista_bloque LD
@@ -474,7 +616,6 @@ def p_funciones(t):
     elif len(t) == 10:
         t[0] = Funcion.Funcion(t[2], t[6], t[4], t[8])
 
-
 def p_parametros(t):
     '''parametros : parametros COMA definiciones
                   | definiciones'''
@@ -486,13 +627,37 @@ def p_parametros(t):
     else:
         t[0] = [t[1]]
 
-
 def p_definiciones(t):
-    """ definiciones : referencias mutable ID VECTOR tipado_vector
-                    | referencias mutable ID tipado """
+    """ definiciones : MUT ID tipado
+                    | ID tipado
+                    | ID  tipados_tipos  """
 
-    if len(t) == 5:    t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), None, t[4], t[1])
 
+    print("Llego a definiciones, ",len(t))
+
+    if len(t) == 4 :
+        t[0] = Declaracion.Declaracion(Identificador.Identificador(t[2]), None, t[3],True)
+
+    elif len(t) == 3:
+        if t.slice[2].type == 'tipado':
+            t[0] = Declaracion.Declaracion(Identificador.Identificador(t[1]), None, t[2], False)
+        else:
+            t[0] = Declaracion.Declaracion(Identificador.Identificador(t[1]), None, t[2], True,True)
+
+def p_tipados_tipos(t):
+    '''tipados_tipos :  DP REFERENCE dimensiones_def
+                    |  DP REFERENCE CI tipo_datos CD
+                    | DP REFERENCE  tipado_vector
+                    | DP REFERENCE ID'''
+
+    if len(t)==4:
+        if t.slice[3].type == 'dimensiones_def':
+            t[0] = t[3]
+        else:
+            t[0] = [t[3]]
+    else:
+
+        t[0]= [t[4]]
 
 def p_referencias(t):
     '''referencias : REFER
@@ -504,11 +669,6 @@ def p_referencias(t):
     else:
         t[0] = False
 
-
-def p_tipado_vect(t):
-    '''tipado_vector : '''
-
-
 def p_accceso(t):
     '''acceso   : PUBLICO
                 |'''
@@ -517,7 +677,6 @@ def p_accceso(t):
 
     else:
         t[0] = False
-
 
 def p_tipo_funcion(t):
     '''tipo_funcion : RESTA MAYOR tipo_datos
@@ -529,24 +688,37 @@ def p_tipo_funcion(t):
     elif len(t) == 1:
         t[0] = None
 
-
 def p_declaracion(t):
     '''declaracion  : LET mutable ID tipado PYC
-                        | LET mutable ID tipado IGUAL expresiones PYC'''
+                        | LET mutable ID tipado IGUAL expresiones PYC
+                        | LET mutable ID DP  tipado_vector IGUAL expresiones PYC
+                        | LET mutable ID tipado IGUAL definition_strct_v2 PYC'''
 
     if len(t) == 6:
         t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), None, t[4], t[2])
 
     elif len(t) == 8:
-        print("Llego bien a declarar ", t[6])
-        t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), t[6], t[4], t[2])
 
+        t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), t[6], t[4], t[2])
+    else:
+        if  t.slice[6].type == 'definition_strct_v2':
+            t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), t[6], tipo.STRUCT, t[2])
+        else:
+            t[0] = DeclaracionVector.DeclaracionVector(t[3],t[7],t[5],t[2])
+
+def p_tipado_vect(t):
+    '''tipado_vector : VECTOR MENOR tipado_vector MAYOR
+                    |  VECTOR MENOR tipo_datos MAYOR'''
+
+    if len(t) == 1:
+        t[0]= t[3]
+    else:
+        t[0]=t[3]
 
 def p_asignacio(t):
-    '''asignacion      : ID IGUAL expresiones  '''
-
+    '''asignacion      : ID IGUAL expresiones
+                        '''
     t[0] = Asignacion.Asignacion(t[1], t[3])
-
 
 def p_mutable(t):
     '''mutable      : MUT
@@ -557,15 +729,14 @@ def p_mutable(t):
     else:
         t[0] = False
 
-
 def p_tipado(t):
     '''tipado      : DP tipo_datos
-                        | '''
+                     |'''
     if len(t) > 1:
+
         t[0] = t[2]
     else:
         t[0] = None
-
 
 def p_tipo_datos(t):
     '''tipo_datos     : TIPOINT
@@ -573,7 +744,9 @@ def p_tipo_datos(t):
                       | TIPOCHAR
                       | TIPOSTRING
                       | DIRSTRING
-                      | TIPOBOOL '''
+                      | TIPOBOOL
+                      | TIPOUSIZE
+                      | ID'''
 
     if t[1] == "i64":
         t[0] = tipo.ENTERO
@@ -587,7 +760,10 @@ def p_tipo_datos(t):
         t[0] = tipo.DIRSTRING
     elif t[1] == "bool":
         t[0] = tipo.BOOLEANO
-
+    elif t[1] == "usize":
+        t[0] = tipo.USIZE
+    else:
+        t[0] = Identificador.Identificador(t[1])
 
 def p_instruccion_imprimir(t):
     '''impresiones     : PRINTLN PI CADENA PD
@@ -614,7 +790,6 @@ def p_instruccion_imprimir(t):
             t[0] = Imprimir.Imprimir(t[3], False, t[5])
             # print("\nRe reocnocio: print! con el token: ", t[5], "\n")
 
-
 def p_imprimir_lista_valores(t):
     '''impresion_valores     :  impresion_valores COMA expresiones
                          | expresiones '''
@@ -625,6 +800,7 @@ def p_imprimir_lista_valores(t):
 
     else:
         t[0] = [t[1]]
+
 '''yyy'''
 def p_expresiones(t):
     '''expresiones  : funcion_nativa
@@ -632,7 +808,7 @@ def p_expresiones(t):
                     | expre_relacional
                     | expre_aritmetica
                     | expre_valor
-                    | '''
+                    '''
 
     t[0] = t[1]
 
@@ -640,28 +816,126 @@ def p_expre_valor(t):
     '''expre_valor : datos_cast
                     | start_match
                     | start_if
-                    | llamada '''
+                    | start_loop
+                    | llamada
+                    | arreglo_init
+                    | acceso_arreglo
+                    | iniciando_vector
+                    | repeticiones
+                    '''
     t[0] = t[1]
 
+def p_repeticiones(t):
+    '''repeticiones : CI expresiones PYC expresiones CD
+                    | CI tipo_datos PYC expresiones CD '''
+    if  t.slice[2].type == 'expresiones':
+        t[0] = Repeticiones.Repeticiones(t[2],t[4])
+    else:
+        t[0] = Repeticiones.Repeticiones(t[2], t[4],True)
 
-def p_funcion_nativa(t):
-    '''funcion_nativa : expresiones PUNTO nativas '''
+def p_iniciando_vector(t):
+    ''' iniciando_vector : VECTOR NEW
+                        | VECTOR WCAPACITY PI expresiones PD
+                        | VECT CI lista_Expresiones CD
+                        | VECT CI expresiones PYC expresiones CD'''
+    if t.slice[2].type == 'NEW':
+        t[0]= []
+    elif t.slice[2].type == 'WCAPACITY':
+        t[0]= [t[4]]
+    elif t.slice[2].type == 'CI':
+        if t.slice[3].type == 'lista_Expresiones':
+            t[0] = VectorData.VectorData(t[3])
+        else:
+            t[0] = VectorData.VectorData(t[3],t[5])
+
+def p_arreglo_init(t):
+    '''arreglo_init : CI lista_Expresiones CD '''
+    t[0] = ArregloData.ArregloData(t[2])
+
+def p_lista_expresiones(t):
+    '''lista_Expresiones : lista_Expresiones COMA expresiones
+                        | expresiones'''
 
     if len(t) > 2:
-        t[0] = Nativas.Nativas(t[1], t[3])
-    else:
+        t[1].append(t[3])
         t[0] = t[1]
 
+    else:
+        t[0] = [t[1]]
+
+def p_funcion_nativa(t):
+    '''funcion_nativa : expresiones PUNTO nativas'''
+#
+    print("Llego a nativas")
+
+    if isinstance(t[3],NativasVectores.NativasVectores):
+        nativa = t[3]
+        nativa.expresion = t[1]
+        print("Llego a nativa vectores", nativa)
+        t[0] = nativa
+
+    elif  isinstance(t[3],AccesoStruct.AccesoStruct):
+        print(t[3])
+        print(t[1])
+        t[3].identificador = t[1]
+        t[0]= t[3]
+    else:
+
+        t[0] = Nativas.Nativas(t[1], t[3])
+
+def p_nativas_vectores(t):
+    '''nativas_vectores : PUSH PI expresiones PD
+                        | PUSH PI definition_strct_v2 PD
+                        | REMOVE PI expresiones PD
+                        | CONTAINS PI expresiones PD
+                        | INSERT PI expresiones COMA expresiones PD
+                        | CAPACITY '''
+
+    if len(t)==5:
+        t [0] = NativasVectores.NativasVectores(t[3],t[1].lower())
+    elif len(t) == 7:
+        t[0] = NativasVectores.NativasVectores(t[3], t[1].lower(),t[5])
+    else:
+        t[0] = NativasVectores.NativasVectores(None, t[1].lower())
 
 def p_nativas(t):
     '''nativas      : ABS
                     | SQRT
                     | TOSTRING
                     | TOOWNED
-                    | CLONE'''
+                    | CLONE
+                    | LEN
+                    | nativas_vectores
+                    | acceso_struct '''
 
     t[0] = t[1]
 
+def p_acceso_struct(t):
+    '''acceso_struct : ID list_acceso_struck
+                        | ID list_acceso_struck IGUAL expresiones '''
+
+    aux= [Identificador.Identificador(t[1])]
+    for x in t[2]:
+        aux.append(x)
+
+    if len(t) == 3:
+        t[0] = AccesoStruct.AccesoStruct(None, aux, None)
+    else:
+        t[0] = AccesoStruct.AccesoStruct(None, aux, t[4])
+
+
+def p_list_acceso_struck(t):
+    '''list_acceso_struck : list_acceso_struck PUNTO  ID
+                        | PUNTO ID
+                        | '''
+    if len(t) > 3:
+        t[1].append(Identificador.Identificador(t[3]))
+        t[0] = t[1]
+
+    elif len(t)>1:
+        t[0] = [Identificador.Identificador(t[2])]
+    else:
+        t[0] = []
 
 def p_expre_logica(t):
     ''' expre_logica : expresiones OR expresiones
@@ -675,7 +949,6 @@ def p_expre_logica(t):
             t[0] = Logica.Logica(t[1], "||", t[3], False)
         elif t.slice[2].type == 'AND':
             t[0] = Logica.Logica(t[1], "&&", t[3], False)
-
 
 def p_expre_relacional(t):
     '''expre_relacional : expresiones MAYORIGUAL expresiones
@@ -699,8 +972,6 @@ def p_expre_relacional(t):
         elif t[2] == "!=":
             t[0] = Relacional.Relacional(t[1], "!=", t[3], False)
 
-
-
 def p_expre_aritmetica(t):
     '''expre_aritmetica : RESTA expresiones %prec UMENOS
                     | PI expresiones PD
@@ -709,8 +980,8 @@ def p_expre_aritmetica(t):
                     | expresiones MULTI expresiones
                     | expresiones DIVI expresiones
                     | expresiones MODULO expresiones
-                    | POWF PI expresiones COMA expresiones PD
-                    | POW PI expresiones COMA expresiones PD '''
+                    | TIPOFLOAT POWF PI expresiones COMA expresiones PD
+                    | TIPOINT POW PI expresiones COMA expresiones PD '''
 
     if len(t) == 3:
         if t[1] == "-":
@@ -728,16 +999,24 @@ def p_expre_aritmetica(t):
             t[0] = Aritmetica.Aritmetica(t[1], "%", t[3], False)
         elif t[1] == "(" and t[3] == ")":
             t[0] = t[2]
-    elif len(t) == 7:
-        if t[1] == "::pow":
-            t[0] = Aritmetica.Aritmetica(t[3], "^", t[5], False)
-        elif t[1] == "::powf":
-            t[0] = Aritmetica.Aritmetica(t[3], "^f", t[5], False)
+    elif len(t) == 8:
+
+        if t[2] == "::pow":
+            t[0] = Aritmetica.Aritmetica(t[4], "^", t[6], False)
+        elif t[2] == "::powf":
+            t[0] = Aritmetica.Aritmetica(t[4], "^f", t[6], False)
 
 
 def p_datos_cast(t):
-    ''' datos_cast : datos'''
-    t[0]=t[1]
+    ''' datos_cast : datos
+                   | expresiones AS tipo_datos'''
+
+    if len(t) == 2:
+        t[0] = t[1]
+    else:
+        t[0]= Casteo.Casteo(t[1],t[3])
+
+
 
 def p_datos(t):
     '''datos : ENTERO
@@ -746,7 +1025,9 @@ def p_datos(t):
             | CARACTER
             | ID
             | TRUE
-            | FALSE'''
+            | FALSE
+            | REFERENCE ID
+            | REFER CADENA'''
 
     if t.slice[1].type == 'ENTERO':
         t[0] = Primitivo.Primitivo(t[1], 'ENTERO')
@@ -762,10 +1043,17 @@ def p_datos(t):
         t[0] = Primitivo.Primitivo(t[1], 'CARACTER')
     elif t.slice[1].type == 'ID':
         t[0] = Identificador.Identificador(t[1])
+    elif t.slice[1].type == 'REFERENCE':
+        t[0] = Identificador.Identificador(t[2], True)
+    else:
+        t[0] = Primitivo.Primitivo(t[2], 'DIRSTRING')
 
 def p_error(t):
     try:
         print("\n========================= Error sintáctico en '%s'" % t.value, " =========================")
+        E_list.agregar_error("No se esperaba el caracter: " + str(t.value) + ", se ignoro", 1, " Lectura de entrada ",
+                             t.lexer.lineno, t.lexer.lexpos)
+        E_list.print_errores()
     except:
         print("")
 

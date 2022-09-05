@@ -5,8 +5,9 @@ from AST.TablaSimbolos.Tipos import RetornoType,tipo
 
 class Identificador(Expresion):
 
-    def __init__(self, id):
+    def __init__(self, id, referencia =False):
         self.id = id
+        self.referencia = referencia
 
     def ObtenerValor(self, controlador, ts):
         existe_id: Simbolos = ts.ObtenerSimbolo(self.id)

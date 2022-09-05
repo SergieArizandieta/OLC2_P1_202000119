@@ -6,10 +6,12 @@ class Asignacion(Intruccion):
         self.identificador=identificador
         self.valor = valor
 
+
     def EjecutarInstruccion(self, controlador, ts):
         if(ts.Existe_id(self.identificador)):
+
             Expression: RetornoType = self.valor.ObtenerValor(controlador, ts)
             ValorExpresion = Expression.valor
             TipoExpresion = Expression.tipo
 
-            ts.Actualizar_Simbolo(self.identificador,TipoExpresion,ValorExpresion)
+            ts.Actualizar_Simbolo(self.identificador,TipoExpresion,ValorExpresion,ts.name)
